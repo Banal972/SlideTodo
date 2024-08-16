@@ -5,6 +5,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import Label from "@/components/common/Label";
 import Input from "@/components/common/Input";
+import Button from "@/components/common/Button";
 
 export default function HomeScreen() {
   const [pwdInShow, setPwdInShow] = useState(true);
@@ -14,9 +15,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.testLogo}>로고</Text>
-
+    <>
       <View style={styles.inputContainer}>
         <View>
           <Label>아이디</Label>
@@ -40,11 +39,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <Pressable>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>로그인하기</Text>
-        </View>
-      </Pressable>
+      <Button label="로그인" />
 
       <Text style={styles.sign}>
         투두 리스트가 처음이신가요?{" "}
@@ -52,25 +47,14 @@ export default function HomeScreen() {
           회원가입
         </Link>{" "}
       </Text>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  testLogo: {
-    fontSize: 48,
-    textAlign: "center",
-    fontWeight: "black",
-    marginBottom: 24,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "white",
-    paddingHorizontal: 16,
-  },
   inputContainer: {
     gap: 25,
+    marginBottom: 48,
   },
   textInputIcon: {
     position: "absolute",
@@ -79,20 +63,6 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     position: "relative",
-  },
-  button: {
-    backgroundColor: Color.slate400,
-    marginTop: 48,
-    borderRadius: 12,
-    height: 48,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "semibold",
-    lineHeight: 24,
-    color: "white",
   },
   sign: {
     marginTop: 40,
