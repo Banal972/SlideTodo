@@ -1,11 +1,17 @@
 import { Link } from "expo-router";
 import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
-import Color from "../../constant/color";
+import Color from "../../src/constant/color";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
+import Label from "@/components/common/Label";
+import Input from "@/components/common/Input";
 
 export default function HomeScreen() {
-  const [pwdInShow, setPwdInShow] = useState(false);
+  const [pwdInShow, setPwdInShow] = useState(true);
+
+  const showPwdHandler = () => {
+    setPwdInShow(!pwdInShow);
+  };
 
   return (
     <View style={styles.container}>
@@ -13,27 +19,23 @@ export default function HomeScreen() {
 
       <View style={styles.inputContainer}>
         <View>
-          <Text style={styles.textInputLabel}>아이디</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="이메일을 입력해주세요"
-          />
+          <Label>아이디</Label>
+          <Input placeholder="이메일을 입력해주세요" />
         </View>
         <View>
-          <Text style={styles.textInputLabel}>비밀번호</Text>
+          <Label>비밀번호</Label>
           <View style={styles.textInputContainer}>
-            <TextInput
-              style={styles.textInput}
-              secureTextEntry
-              placeholder="이메일을 입력해주세요"
+            <Input
+              secureTextEntry={pwdInShow}
+              placeholder="비밀번호를 입력해주세요"
             />
-            <View style={styles.textInputIcon}>
+            <Pressable style={styles.textInputIcon} onPress={showPwdHandler}>
               {pwdInShow ? (
                 <Ionicons name="eye-off-outline" size={24} color="black" />
               ) : (
                 <Ionicons name="eye-outline" size={24} color="black" />
               )}
-            </View>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -70,11 +72,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     gap: 25,
   },
-  textInputLabel: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: "bold",
-  },
   textInputIcon: {
     position: "absolute",
     right: 24,
@@ -82,15 +79,6 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     position: "relative",
-  },
-  textInput: {
-    backgroundColor: Color.slate50,
-    marginTop: 12,
-    fontSize: 14,
-    lineHeight: 20,
-    height: 44,
-    paddingHorizontal: 24,
-    borderRadius: 12,
   },
   button: {
     backgroundColor: Color.slate400,
