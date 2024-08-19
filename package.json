@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-picker/picker": "2.7.5",
     "@react-navigation/drawer": "^6.7.2",
     "expo": "~51.0.28",
     "expo-checkbox": "~3.0.0",

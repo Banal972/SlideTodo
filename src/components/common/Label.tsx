@@ -1,3 +1,4 @@
+import Color from "@/constant/color";
 import { ReactNode } from "react";
 import { Text, StyleSheet } from "react-native";
 
@@ -11,6 +12,7 @@ const styles = StyleSheet.create({
   textInputLabel: {
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: "bold",
+    fontWeight: "600",
+    color: Color.slate900,
   },
 });

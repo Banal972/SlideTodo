@@ -1,4 +1,4 @@
-import { Slot, Stack } from "expo-router";
+import { Slot } from "expo-router";
 import { Image, StyleSheet, View } from "react-native";
 
 const AuthLayout = () => {
