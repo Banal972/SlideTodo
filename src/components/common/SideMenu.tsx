@@ -179,10 +179,10 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
               gap: 16,
             }}
           >
-            <Link style={styles.listTitle} href={"/"}>
+            <Link style={styles.listTitle} href={"/goal/1"}>
               · 자바스크립트로 웹 서비스 만들기
             </Link>
-            <Link style={styles.listTitle} href={"/"}>
+            <Link style={styles.listTitle} href={"/goal/2"}>
               · 디자인 시스템 강의 듣기
             </Link>
           </View>

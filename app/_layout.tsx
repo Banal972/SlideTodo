@@ -28,6 +28,18 @@ const RootLayout = () => {
           title: "",
         }}
       />
+      <Drawer.Screen
+        name="(goal)/goal"
+        options={{
+          title: "목표",
+        }}
+      />
+      <Drawer.Screen
+        name="(goal)/goal/[slug]"
+        options={{
+          title: "목표",
+        }}
+      />
     </Drawer>
   );
 };

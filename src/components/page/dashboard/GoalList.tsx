@@ -1,10 +1,11 @@
-import BaseContainer from "@/components/page/dashboard/common/BaseContainer";
+import BaseContainer from "@/components/common/Container/BaseContainer";
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle";
 import Color from "@/constant/color";
 import { Link } from "expo-router";
 import { View, Text, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CheckList from "@/components/common/CheckList";
+import Process from "@/components/page/goal/Process";
 
 const GoalList = () => {
   return (
@@ -19,9 +20,9 @@ const GoalList = () => {
 
       <View style={styles.goalListCotanier}>
         <View style={styles.goalListFlex}>
-          <Text style={styles.goalListTitle}>
+          <Link href={"/goal/1"} style={styles.goalListTitle}>
             자바스크립트로 웹 서비스 만들기
-          </Text>
+          </Link>
           <Link href={"/"}>
             <View style={styles.goalListLinkFlex}>
               <Ionicons name="add" size={24} color={Color.blue500} />
@@ -30,12 +31,7 @@ const GoalList = () => {
           </Link>
         </View>
 
-        <View style={styles.processContainer}>
-          <View style={styles.processBox}>
-            <View style={styles.processLine} />
-          </View>
-          <Text style={styles.processPercent}>64%</Text>
-        </View>
+        <Process />
 
         <View style={{ marginTop: 16 }}>
           <Text style={styles.goalViewTitle}>To do</Text>
@@ -71,12 +67,7 @@ const GoalList = () => {
           </Link>
         </View>
 
-        <View style={styles.processContainer}>
-          <View style={styles.processBox}>
-            <View style={styles.processLine} />
-          </View>
-          <Text style={styles.processPercent}>64%</Text>
-        </View>
+        <Process />
 
         <View style={{ marginTop: 16 }}>
           <Text style={styles.goalViewTitle}>To do</Text>
@@ -139,36 +130,5 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 8,
     marginTop: 12,
-  },
-  processContainer: {
-    marginTop: 8,
-    gap: 8,
-    backgroundColor: "white",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 9,
-    paddingVertical: 2,
-    borderRadius: 100,
-  },
-  processBox: {
-    position: "relative",
-    flex: 1,
-    height: 4,
-    borderRadius: 6,
-    backgroundColor: Color.slate100,
-  },
-  processLine: {
-    position: "absolute",
-    width: "50%",
-    height: "100%",
-    borderRadius: 6,
-    top: 0,
-    left: 0,
-    backgroundColor: Color.slate900,
-  },
-  processPercent: {
-    color: "#0F172A",
-    fontSize: 12,
-    fontWeight: "600",
   },
 });

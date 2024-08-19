@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Color from "@/constant/color";
-import BaseContainer from "@/components/page/dashboard/common/BaseContainer";
+import BaseContainer from "@/components/common/Container/BaseContainer";
 import TodoList from "@/components/page/dashboard/TodoList";
 import GoalList from "@/components/page/dashboard/GoalList";
 

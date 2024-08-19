@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React from "react";
-import BaseContainer from "@/components/page/dashboard/common/BaseContainer";
+import BaseContainer from "@/components/common/Container/BaseContainer";
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle";
 import CheckList from "@/components/common/CheckList";
 
