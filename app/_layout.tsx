@@ -218,20 +218,22 @@ const RootLayout = () => {
     <Drawer
       drawerContent={({ navigation }) => <SideMenu navigation={navigation} />}
       screenOptions={{
-        headerShadowVisible: false,
+        sceneContainerStyle: {
+          backgroundColor: Color.slate100,
+        },
         drawerStyle: {
-          backgroundColor: "#ffffff",
           width: "100%",
         },
       }}
     >
-      <Drawer.Screen name="(auth)" />
       <Drawer.Screen
         name="dashboard"
         options={{
           title: "대시보드",
         }}
       />
+      <Drawer.Screen name="(auth)" />
+      <Drawer.Screen name="(todo)" />
     </Drawer>
   );
 };

@@ -4,7 +4,6 @@ import { Image, StyleSheet, View } from "react-native";
 const AuthLayout = () => {
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerShown: false }} />
       <View
         style={{
           marginHorizontal: "auto",

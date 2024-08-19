@@ -13,7 +13,7 @@ const TodoList = () => {
           source: require("@/assets/images/dashboard/icon01.png"),
         }}
         title="최근 등록한 일"
-        linkURL="/"
+        linkURL="/alltodo"
       />
       <View style={styles.todoList}>
         <CheckList label="자바스크립트 기초 챕터4 듣기" />

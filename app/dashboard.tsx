@@ -22,7 +22,6 @@ export default Dashboard;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Color.slate100,
     flex: 1,
     padding: 16,
     gap: 16,
