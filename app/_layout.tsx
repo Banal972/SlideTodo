@@ -29,15 +29,15 @@ const RootLayout = () => {
         }}
       />
       <Drawer.Screen
-        name="(goal)/goal"
+        name="(goal)/goal/[slug]"
         options={{
           title: "목표",
         }}
       />
       <Drawer.Screen
-        name="(goal)/goal/[slug]"
+        name="(goal)/note/[slug]"
         options={{
-          title: "목표",
+          title: "",
         }}
       />
     </Drawer>

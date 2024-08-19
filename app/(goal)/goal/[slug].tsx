@@ -54,7 +54,7 @@ const GoalDetail = () => {
           <Process />
         </View>
       </BaseContainer>
-      <Pressable onPress={() => router.push("/")}>
+      <Pressable onPress={() => router.push("/note/1")}>
         <BaseContainer
           color={Color.blue100}
           style={{ flexDirection: "row", justifyContent: "space-between" }}
