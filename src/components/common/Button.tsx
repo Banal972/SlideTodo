@@ -6,17 +6,20 @@ import {
   StyleSheet,
   StyleProp,
   ViewStyle,
+  GestureResponderEvent,
 } from "react-native";
 
 const Button = ({
   style,
   label,
+  onPress,
 }: {
   style?: StyleProp<ViewStyle>;
   label: string;
+  onPress?: (event: GestureResponderEvent) => void;
 }) => {
   return (
-    <Pressable>
+    <Pressable onPress={onPress}>
       <View style={[styles.button, style]}>
         <Text style={styles.buttonText}>{label}</Text>
       </View>

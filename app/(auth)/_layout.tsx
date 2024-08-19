@@ -1,10 +1,18 @@
-import { Slot } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { Slot, Stack } from "expo-router";
+import { Image, StyleSheet, View } from "react-native";
 
 const AuthLayout = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.testLogo}>로고</Text>
+      <Stack.Screen options={{ headerShown: false }} />
+      <View
+        style={{
+          marginHorizontal: "auto",
+          marginBottom: 40,
+        }}
+      >
+        <Image source={require("@/assets/images/logo.png")} />
+      </View>
       <Slot />
     </View>
   );
@@ -13,7 +21,7 @@ const AuthLayout = () => {
 export default AuthLayout;
 
 const styles = StyleSheet.create({
-  testLogo: {
+  logo: {
     fontSize: 48,
     textAlign: "center",
     fontWeight: "black",

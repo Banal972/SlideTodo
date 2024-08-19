@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
 import Color from "../../src/constant/color";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -8,6 +8,8 @@ import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   const [pwdInShow, setPwdInShow] = useState(true);
 
   const showPwdHandler = () => {
@@ -39,13 +41,13 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <Button label="로그인" />
+      <Button label="로그인" onPress={() => router.push("/dashboard")} />
 
       <Text style={styles.sign}>
         투두 리스트가 처음이신가요?{" "}
         <Link style={styles.signLink} href={"/sign"}>
           회원가입
-        </Link>{" "}
+        </Link>
       </Text>
     </>
   );

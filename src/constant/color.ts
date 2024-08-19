@@ -21,6 +21,8 @@ const Color = {
   blue800: "#1E40AF",
   blue900: "#1E3A8A",
   blue950: "#172554",
+  orange100: "#FFEDD5",
+  orange500: "#F97316",
 };
 
 export default Color;
