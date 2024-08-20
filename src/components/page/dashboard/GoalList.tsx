@@ -2,12 +2,95 @@ import BaseContainer from "@/components/common/Container/BaseContainer";
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle";
 import Color from "@/constant/color";
 import { Link } from "expo-router";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CheckList from "@/components/common/CheckList";
 import Process from "@/components/page/goal/Process";
+import { useEffect, useState } from "react";
+import { db } from "firebaseConfig";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import useNewTodoModalStore from "@/store/useNewTodoModalStore";
+
+interface todoType {
+  title: any;
+  createDate: any;
+  done: boolean;
+  id: string;
+}
+
+interface goalType {
+  title: any;
+  todos: {
+    done: todoType[];
+    not: todoType[];
+  };
+  createDate: any;
+  id: string;
+}
 
 const GoalList = () => {
+  const { open: newTodoOpenHandler } = useNewTodoModalStore();
+  const [goals, setGoal] = useState<goalType[]>([]);
+
+  const fetchGoal = async () => {
+    const q = query(collection(db, "goal"), orderBy("createDate", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    const goals = await Promise.all(
+      querySnapshot.docs.map(async (doc) => {
+        const { title, createDate } = doc.data();
+
+        const todosDoneQuery = query(
+          collection(db, "todos"),
+          where("goal_ID", "==", doc.id),
+          where("done", "==", true),
+          orderBy("createDate", "desc")
+        );
+
+        const todosNotDoneQuery = query(
+          collection(db, "todos"),
+          where("goal_ID", "==", doc.id),
+          where("done", "==", false),
+          orderBy("createDate", "desc")
+        );
+
+        const todoDoneSnapShot = await getDocs(todosDoneQuery);
+        const todoNotDoneSnapShot = await getDocs(todosNotDoneQuery);
+
+        return {
+          title: title,
+          todos: {
+            done: todoDoneSnapShot.docs.map((doc) => {
+              const { title, createDate, notes, done } = doc.data();
+              return {
+                title,
+                createDate,
+                done,
+                id: doc.id,
+              };
+            }),
+            not: todoNotDoneSnapShot.docs.map((doc) => {
+              const { title, createDate, notes, done } = doc.data();
+              return {
+                title,
+                createDate,
+                done,
+                id: doc.id,
+              };
+            }),
+          },
+          createDate: createDate,
+          id: doc.id,
+        };
+      })
+    );
+    setGoal(goals);
+  };
+
+  useEffect(() => {
+    fetchGoal();
+  }, []);
+
   return (
     <BaseContainer color="white" style={{ gap: 16 }}>
       <BaseTitle
@@ -18,77 +101,59 @@ const GoalList = () => {
         title="목표 별 할 일"
       />
 
-      <View style={styles.goalListCotanier}>
-        <View style={styles.goalListFlex}>
-          <Link href={"/goal/1"} style={styles.goalListTitle}>
-            자바스크립트로 웹 서비스 만들기
-          </Link>
-          <Link href={"/"}>
-            <View style={styles.goalListLinkFlex}>
-              <Ionicons name="add" size={24} color={Color.blue500} />
-              <Text style={styles.goalListLink}>할일 추가</Text>
+      {goals.length > 0 ? (
+        goals.map((goal) => (
+          <View key={goal.id} style={styles.goalListCotanier}>
+            <View style={styles.goalListFlex}>
+              <Link href={"/goal/1"} style={styles.goalListTitle}>
+                {goal.title}
+              </Link>
+              <Pressable onPress={newTodoOpenHandler}>
+                <View style={styles.goalListLinkFlex}>
+                  <Ionicons name="add" size={24} color={Color.blue500} />
+                  <Text style={styles.goalListLink}>할일 추가</Text>
+                </View>
+              </Pressable>
             </View>
-          </Link>
-        </View>
 
-        <Process />
+            <Process />
 
-        <View style={{ marginTop: 16 }}>
-          <Text style={styles.goalViewTitle}>To do</Text>
-          <View style={styles.goalView}>
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
+            {goal.todos.not.length > 0 && (
+              <View style={{ marginTop: 16 }}>
+                <Text style={styles.goalViewTitle}>To do</Text>
+                <View style={styles.goalView}>
+                  {goal.todos.done.map((todo) => (
+                    <CheckList key={todo.id} label={todo.title} />
+                  ))}
+                </View>
+              </View>
+            )}
+
+            {goal.todos.not.length > 0 && (
+              <View style={{ marginTop: 24 }}>
+                <Text style={styles.goalViewTitle}>Done</Text>
+                <View style={styles.goalView}>
+                  {goal.todos.not.map((todo) => (
+                    <CheckList key={todo.id} label={todo.title} />
+                  ))}
+                </View>
+              </View>
+            )}
           </View>
-        </View>
-
-        <View style={{ marginTop: 24 }}>
-          <Text style={styles.goalViewTitle}>Done</Text>
-          <View style={styles.goalView}>
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.goalListCotanier}>
-        <View style={styles.goalListFlex}>
-          <Text style={styles.goalListTitle}>
-            자바스크립트로 웹 서비스 만들기
-          </Text>
-          <Link href={"/"}>
-            <View style={styles.goalListLinkFlex}>
-              <Ionicons name="add" size={24} color={Color.blue500} />
-              <Text style={styles.goalListLink}>할일 추가</Text>
-            </View>
-          </Link>
-        </View>
-
-        <Process />
-
-        <View style={{ marginTop: 16 }}>
-          <Text style={styles.goalViewTitle}>To do</Text>
-          <View style={styles.goalView}>
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-          </View>
-        </View>
-
-        <View style={{ marginTop: 24 }}>
-          <Text style={styles.goalViewTitle}>Done</Text>
-          <View style={styles.goalView}>
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-            <CheckList label="자바스크립트 기초 챕터4 듣기" />
-          </View>
-        </View>
-      </View>
+        ))
+      ) : (
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 14,
+            color: Color.slate500,
+            paddingTop: 30,
+            paddingBottom: 60,
+          }}
+        >
+          등록한 목표가 없어요
+        </Text>
+      )}
     </BaseContainer>
   );
 };
