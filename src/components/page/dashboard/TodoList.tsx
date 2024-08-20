@@ -1,42 +1,12 @@
 import { View, StyleSheet, Text } from "react-native";
-import React, { useEffect, useState } from "react";
 import BaseContainer from "@/components/common/Container/BaseContainer";
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle";
 import CheckList from "@/components/common/CheckList";
 import Color from "@/constant/color";
-import { todoType } from "@/types/todo";
-import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
-import { db } from "firebaseConfig";
+import useGetTodo from "@/hooks/todo/useGetTodo";
 
 const TodoList = () => {
-  const [todos, setTodos] = useState<todoType[]>([]);
-
-  const fetchTodo = async () => {
-    const q = query(
-      collection(db, "todos"),
-      orderBy("createDate", "desc"),
-      limit(10)
-    );
-
-    const querySnapshot = await getDocs(q);
-
-    const todos = querySnapshot.docs.map((doc) => {
-      const { title, createDate, done } = doc.data();
-
-      return {
-        title,
-        done,
-        createDate,
-        id: doc.id,
-      };
-    });
-
-    setTodos(todos);
-  };
-
-  useEffect(() => {
-    fetchTodo();
-  }, []);
+  const { todos } = useGetTodo();
 
   return (
     <BaseContainer color="white">
