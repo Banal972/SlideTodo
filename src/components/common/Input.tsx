@@ -1,15 +1,29 @@
 import Color from "@/constant/color";
-import { StyleSheet, TextInput } from "react-native";
+import {
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInput,
+  TextInputFocusEventData,
+} from "react-native";
 
 const Input = ({
   placeholder,
   secureTextEntry,
+  onBlur,
+  onChangeText,
+  value,
 }: {
+  onBlur?: (event: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  onChangeText?: (text: string) => void;
+  value?: string;
   placeholder: string;
   secureTextEntry?: boolean;
 }) => {
   return (
     <TextInput
+      onBlur={onBlur}
+      onChangeText={onChangeText}
+      value={value}
       secureTextEntry={secureTextEntry}
       style={styles.textInput}
       placeholder={placeholder}

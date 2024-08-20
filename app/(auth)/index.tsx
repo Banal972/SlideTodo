@@ -6,11 +6,32 @@ import { useState } from "react";
 import Label from "@/components/common/Label";
 import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
+import { useForm, Controller } from "react-hook-form";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "firebaseConfig";
+import useUserStore from "@/store/useUserStore";
 
 export default function HomeScreen() {
+  const { login } = useUserStore();
   const router = useRouter();
-
+  const { control, handleSubmit } = useForm();
   const [pwdInShow, setPwdInShow] = useState(true);
+
+  const onSubmitHandler = (data: any) => {
+    const { email, password } = data;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        login(user);
+        router.push("/dashboard");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
 
   const showPwdHandler = () => {
     setPwdInShow(!pwdInShow);
@@ -21,14 +42,40 @@ export default function HomeScreen() {
       <View style={styles.inputContainer}>
         <View>
           <Label>아이디</Label>
-          <Input placeholder="이메일을 입력해주세요" />
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                placeholder="이메일을 입력해주세요"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="email"
+          />
         </View>
         <View>
           <Label>비밀번호</Label>
           <View style={styles.textInputContainer}>
-            <Input
-              secureTextEntry={pwdInShow}
-              placeholder="비밀번호를 입력해주세요"
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  secureTextEntry={pwdInShow}
+                  placeholder="비밀번호를 입력해주세요"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="password"
             />
             <Pressable style={styles.textInputIcon} onPress={showPwdHandler}>
               {pwdInShow ? (
@@ -41,7 +88,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <Button label="로그인" onPress={() => router.push("/dashboard")} />
+      <Button label="로그인" onPress={handleSubmit(onSubmitHandler)} />
 
       <Text style={styles.sign}>
         투두 리스트가 처음이신가요?{" "}
