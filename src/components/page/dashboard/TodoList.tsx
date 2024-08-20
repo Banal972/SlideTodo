@@ -6,7 +6,7 @@ import Color from "@/constant/color";
 import useGetTodo from "@/hooks/todo/useGetTodo";
 
 const TodoList = () => {
-  const { todos } = useGetTodo();
+  const { todos } = useGetTodo({});
 
   return (
     <BaseContainer color="white">

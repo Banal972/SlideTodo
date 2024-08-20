@@ -4,21 +4,27 @@ import {
   limit,
   orderBy,
   query,
+  QueryConstraint,
   where,
 } from "firebase/firestore";
 import { auth, db } from "firebaseConfig";
 
-const getTodo = async () => {
+const getDoneTodo = async (lmt: number = 10) => {
   const user = auth.currentUser;
 
-  if (!user) return;
+  if (!user) return [];
 
-  const q = query(
-    collection(db, "todos"),
+  const constraints: QueryConstraint[] = [
     where("uid", "==", user.uid),
+    where("done", "==", true),
     orderBy("createDate", "desc"),
-    limit(10)
-  );
+  ];
+
+  if (lmt > 0) {
+    constraints.push(limit(lmt));
+  }
+
+  const q = query(collection(db, "todos"), ...constraints);
 
   const querySnapshot = await getDocs(q);
 
@@ -35,4 +41,4 @@ const getTodo = async () => {
   return todos;
 };
 
-export default getTodo;
+export default getDoneTodo;

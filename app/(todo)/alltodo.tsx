@@ -1,20 +1,22 @@
 import CheckList from "@/components/common/CheckList";
 import Color from "@/constant/color";
+import { todoType } from "@/constant/type";
+import useGetTodo from "@/hooks/todo/useGetTodo";
 import useNewTodoModalStore from "@/store/useNewTodoModalStore";
-import { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
 const Alltodo = () => {
   const { open: openModalHanlder } = useNewTodoModalStore();
-  const [type, setType] = useState("");
-  const typePressHanlder = (type: string) => {
-    setType(type);
+  const { type, setType, todos } = useGetTodo({});
+
+  const typePressHanlder = (key: string) => {
+    setType(key);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>모든 할 일(6)</Text>
+        <Text style={styles.title}>모든 할 일({todos.length})</Text>
         <Pressable onPress={openModalHanlder}>
           <Text style={styles.titleLink}>+ 할일 추가</Text>
         </Pressable>
@@ -22,58 +24,31 @@ const Alltodo = () => {
 
       <View style={styles.todoContainer}>
         <View style={styles.tagContainer}>
-          <Pressable
-            style={[styles.tagButton, type === "" && styles.tagButtonActive]}
-            onPress={() => typePressHanlder("")}
-          >
-            <Text
-              style={[styles.tagButtonText, type === "" && { color: "#fff" }]}
-            >
-              All
-            </Text>
-          </Pressable>
-          <Pressable
-            style={[
-              styles.tagButton,
-              type === "todo" && styles.tagButtonActive,
-            ]}
-            onPress={() => typePressHanlder("todo")}
-          >
-            <Text
+          {todoType.map((types) => (
+            <Pressable
+              key={types.key}
               style={[
-                styles.tagButtonText,
-                type === "todo" && { color: "#fff" },
+                styles.tagButton,
+                type === types.key && styles.tagButtonActive,
               ]}
+              onPress={() => typePressHanlder(types.key)}
             >
-              To do
-            </Text>
-          </Pressable>
-          <Pressable
-            style={[
-              styles.tagButton,
-              type === "done" && styles.tagButtonActive,
-            ]}
-            onPress={() => typePressHanlder("done")}
-          >
-            <Text
-              style={[
-                styles.tagButtonText,
-                type === "done" && { color: "#fff" },
-              ]}
-            >
-              Done
-            </Text>
-          </Pressable>
+              <Text
+                style={[
+                  styles.tagButtonText,
+                  type === types.key && { color: "#fff" },
+                ]}
+              >
+                {types.value}
+              </Text>
+            </Pressable>
+          ))}
         </View>
 
         <View style={styles.checkListContainer}>
-          <CheckList label="자바스크립트 기초 챕터4 듣기" />
-          <CheckList label="자바스크립트 기초 챕터4 듣기" />
-          <CheckList label="자바스크립트 기초 챕터4 듣기" />
-          <CheckList label="자바스크립트 기초 챕터4 듣기" />
-          <CheckList label="자바스크립트 기초 챕터4 듣기" />
-          <CheckList label="자바스크립트 기초 챕터4 듣기" />
-          <CheckList label="자바스크립트 기초 챕터4 듣기" />
+          {todos.map((todo) => (
+            <CheckList done={todo.done} key={todo.id} label={todo.title} />
+          ))}
         </View>
       </View>
     </View>
