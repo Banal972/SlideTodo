@@ -7,6 +7,41 @@ const Note = () => {
   return (
     <ScrollView>
       <View style={{ gap: 16, padding: 16 }}>
+        <BaseContainer color="white" style={{ paddingHorizontal: 24 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+            >
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  backgroundColor: Color.slate800,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 15,
+                }}
+              >
+                <Image source={require("@/assets/images/goal/icon01.png")} />
+              </View>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: Color.slate800,
+                }}
+              >
+                자바스크립트로 웹 서비스 만들기
+              </Text>
+            </View>
+          </View>
+        </BaseContainer>
         <BaseContainer color="white">
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}

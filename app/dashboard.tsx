@@ -1,17 +1,14 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import Color from "@/constant/color";
-import BaseContainer from "@/components/common/Container/BaseContainer";
+import { View, StyleSheet, ScrollView } from "react-native";
 import TodoList from "@/components/page/dashboard/TodoList";
 import GoalList from "@/components/page/dashboard/GoalList";
+import Progress from "@/components/page/dashboard/Progress";
 
 const Dashboard = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
         <TodoList />
-        <BaseContainer color={Color.blue50}>
-          <Text>asdasdasd</Text>
-        </BaseContainer>
+        <Progress />
         <GoalList />
       </View>
     </ScrollView>
