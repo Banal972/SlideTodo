@@ -44,6 +44,12 @@ const RootLayout = () => {
             title: "",
           }}
         />
+        <Drawer.Screen
+          name="(goal)/note/post"
+          options={{
+            title: "",
+          }}
+        />
       </Drawer>
       <NewTodo isModal={isModal} />
     </>
