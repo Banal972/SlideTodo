@@ -1,11 +1,16 @@
+import Input from "@/components/common/Input";
 import Color from "@/constant/color";
+import useGetGoalList from "@/hooks/goal/useGetGoalList";
 import useGetUser from "@/hooks/useGetUser";
 import useNewTodoModalStore from "@/store/useNewTodoModalStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types";
 import { Link, useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
-import { auth } from "firebaseConfig";
+import { addDoc, collection } from "firebase/firestore";
+import { auth, db } from "firebaseConfig";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   Alert,
   Image,
@@ -19,8 +24,34 @@ import {
 
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   const router = useRouter();
+  const { control, handleSubmit, setValue } = useForm();
   const { user } = useGetUser();
   const { open: newModalOpenHandler } = useNewTodoModalStore();
+  const { goalLists } = useGetGoalList();
+  const [isGoalInput, setIsGoalInput] = useState(false);
+
+  const isGoalHandler = () => {
+    setIsGoalInput(!isGoalInput);
+  };
+
+  const addGoalHanlder = async (data: any) => {
+    const { goal } = data;
+
+    if (!user || !goal) return;
+
+    try {
+      await addDoc(collection(db, "goals"), {
+        uid: user.uid,
+        title: goal,
+        todos: [],
+        createDate: new Date(),
+      });
+      setValue("goal", "");
+      setIsGoalInput(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const logoutHandler = () => {
     Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
@@ -179,11 +210,12 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
               alignItems: "center",
             }}
           >
-            <Pressable style={styles.listBtnContainer}>
+            <View style={styles.listBtnContainer}>
               <Ionicons name="flag" size={24} color="black" />
               <Text>목표</Text>
-            </Pressable>
+            </View>
             <Pressable
+              onPress={isGoalHandler}
               style={[
                 styles.listBtn,
                 {
@@ -206,18 +238,40 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             </Pressable>
           </View>
 
+          {isGoalInput && (
+            <View>
+              <Controller
+                control={control}
+                name="goal"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Input
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    placeholder="목표를 입력해주세요"
+                    onSubmitEditing={handleSubmit(addGoalHanlder)}
+                    returnKeyType="done"
+                  />
+                )}
+              />
+            </View>
+          )}
+
           <View
             style={{
               marginTop: 20,
               gap: 16,
             }}
           >
-            <Link style={styles.listTitle} href={"/goal/1"}>
-              · 자바스크립트로 웹 서비스 만들기
-            </Link>
-            <Link style={styles.listTitle} href={"/goal/2"}>
-              · 디자인 시스템 강의 듣기
-            </Link>
+            {goalLists.map((goalList) => (
+              <Link
+                key={goalList.id}
+                style={styles.listTitle}
+                href={`/goal/${goalList.id}`}
+              >
+                · {goalList.title}
+              </Link>
+            ))}
           </View>
         </View>
       </View>
@@ -245,7 +299,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   listTitle: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "500",
   },
 });
