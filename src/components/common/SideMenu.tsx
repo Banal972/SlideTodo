@@ -121,8 +121,8 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             <ImageBackground src={user?.photoURL || ""} resizeMode="cover">
               <View
                 style={{
-                  width: 32,
-                  height: 32,
+                  width: 42,
+                  height: 42,
                   borderRadius: 6,
                   backgroundColor: Color.blue50,
                 }}
@@ -131,7 +131,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             <View>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 14,
                   lineHeight: 16,
                   color: Color.slate800,
                   fontWeight: "600",
@@ -141,7 +141,8 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 14,
+                  marginTop: 4,
                   lineHeight: 16,
                   color: Color.slate600,
                   fontWeight: "500",
@@ -155,7 +156,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             <Text
               style={{
                 color: Color.slate400,
-                fontSize: 12,
+                fontSize: 16,
                 fontWeight: "500",
               }}
             >
@@ -260,7 +261,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
           <View
             style={{
               marginTop: 20,
-              gap: 16,
+              gap: 20,
             }}
           >
             {goalLists.map((goalList) => (
@@ -288,18 +289,18 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   listBtn: {
-    width: 84,
+    width: 94,
     height: 36,
-    borderRadius: 12,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
   },
   listBtnText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "600",
   },
   listTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "500",
   },
 });

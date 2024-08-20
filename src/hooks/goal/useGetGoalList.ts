@@ -1,3 +1,4 @@
+import useGetUser from "@/hooks/useGetUser";
 import { goalListType } from "@/types/goal";
 import {
   collection,
@@ -12,13 +13,12 @@ import { useEffect, useState } from "react";
 
 const useGetGoalList = () => {
   const [goalLists, setGoalLists] = useState<goalListType[]>([]);
+  const { user } = useGetUser();
 
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
 
     const fetch = async () => {
-      const user = auth.currentUser;
-
       if (!user) return [];
 
       const q = query(
@@ -45,7 +45,7 @@ const useGetGoalList = () => {
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, []);
+  }, [user]);
 
   return { goalLists };
 };
