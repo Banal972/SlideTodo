@@ -1,10 +1,12 @@
 import Color from "@/constant/color";
+import useGetUser from "@/hooks/useGetUser";
 import useNewTodoModalStore from "@/store/useNewTodoModalStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types";
 import { Link } from "expo-router";
 import {
   Image,
+  ImageBackground,
   Pressable,
   SafeAreaView,
   StyleSheet,
@@ -13,6 +15,8 @@ import {
 } from "react-native";
 
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
+  const { user } = useGetUser();
+
   const { open: newModalOpenHandler } = useNewTodoModalStore();
   return (
     <SafeAreaView
@@ -59,14 +63,16 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
               gap: 8,
             }}
           >
-            <View
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 6,
-                backgroundColor: Color.blue50,
-              }}
-            />
+            <ImageBackground src={user?.photoURL || ""} resizeMode="cover">
+              <View
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 6,
+                  backgroundColor: Color.blue50,
+                }}
+              ></View>
+            </ImageBackground>
             <View>
               <Text
                 style={{
@@ -76,7 +82,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
                   fontWeight: "600",
                 }}
               >
-                체다치즈
+                {user?.displayName}
               </Text>
               <Text
                 style={{
@@ -86,7 +92,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
                   fontWeight: "500",
                 }}
               >
-                chedacheese@slid.kr
+                {user?.email}
               </Text>
             </View>
           </View>

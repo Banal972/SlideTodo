@@ -52,7 +52,7 @@ export default function HomeScreen() {
     <>
       <View style={styles.inputContainer}>
         <View>
-          <Label>아이디</Label>
+          <Label>이름</Label>
           <Controller
             control={control}
             name="name"

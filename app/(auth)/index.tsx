@@ -9,10 +9,8 @@ import Button from "@/components/common/Button";
 import { useForm, Controller } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "firebaseConfig";
-import useUserStore from "@/store/useUserStore";
 
 export default function HomeScreen() {
-  const { login } = useUserStore();
   const router = useRouter();
   const { control, handleSubmit } = useForm();
   const [pwdInShow, setPwdInShow] = useState(true);
@@ -22,9 +20,9 @@ export default function HomeScreen() {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        login(user);
-        router.push("/dashboard");
+        if (userCredential) {
+          router.push("/dashboard");
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
