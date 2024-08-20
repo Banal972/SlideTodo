@@ -41,6 +41,12 @@ const RootLayout = () => {
           }}
         />
         <Drawer.Screen
+          name="note/post/[slug]"
+          options={{
+            title: "",
+          }}
+        />
+        <Drawer.Screen
           name="dashboard/index"
           options={{
             title: "대시보드",

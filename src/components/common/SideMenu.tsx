@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native"
 
+import SmallBtn from "@/components/common/Button/SmallBtn"
 import Input from "@/components/common/Input"
 import Color from "@/constant/color"
 import useGetGoalList from "@/hooks/goal/useGetGoalList"
@@ -186,12 +187,9 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             </View>
           </Link>
 
-          <Pressable
-            style={[styles.listBtn, { backgroundColor: Color.blue500 }]}
-            onPress={newModalOpenHandler}
-          >
-            <Text style={[styles.listBtnText, { color: "white" }]}>+ 새 할 일</Text>
-          </Pressable>
+          <SmallBtn onPress={newModalOpenHandler} backgroundColor={Color.blue500} color={"#fff"}>
+            + 새 할 일
+          </SmallBtn>
         </View>
         <View
           style={{
@@ -214,28 +212,17 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
               <Ionicons name="flag" size={24} color="black" />
               <Text>목표</Text>
             </View>
-            <Pressable
+            <SmallBtn
               onPress={isGoalHandler}
-              style={[
-                styles.listBtn,
-                {
-                  backgroundColor: "white",
-                  borderWidth: 1,
-                  borderColor: Color.blue500,
-                },
-              ]}
+              style={{
+                backgroundColor: "white",
+                borderWidth: 1,
+                borderColor: Color.blue500,
+              }}
+              color={Color.blue500}
             >
-              <Text
-                style={[
-                  styles.listBtnText,
-                  {
-                    color: Color.blue500,
-                  },
-                ]}
-              >
-                + 새 목표
-              </Text>
-            </Pressable>
+              + 새 목표
+            </SmallBtn>
           </View>
 
           {isGoalInput && (
@@ -282,17 +269,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-  },
-  listBtn: {
-    width: 94,
-    height: 36,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  listBtnText: {
-    fontSize: 14,
-    fontWeight: "600",
   },
   listTitle: {
     fontSize: 16,

@@ -12,10 +12,10 @@ import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebas
 import { db } from "firebaseConfig"
 
 const NoteList = () => {
-  const { name } = useNoteNameStore()
-  const [noteList, setNoteList] = useState<noteType[]>([])
   const { slug } = useLocalSearchParams<{ slug: string }>()
+  const { name } = useNoteNameStore()
   const { user } = useGetUser()
+  const [noteList, setNoteList] = useState<noteType[]>([])
 
   useEffect(() => {
     const fetch = async () => {

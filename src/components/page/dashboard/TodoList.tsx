@@ -22,7 +22,13 @@ const TodoList = () => {
       {todos.length > 0 ? (
         <View style={styles.todoList}>
           {todos.map((todo) => (
-            <CheckList docId={todo.id} done={todo.done} key={todo.id} label={todo.title} />
+            <CheckList
+              goal_ID={todo.goal_ID}
+              docId={todo.id}
+              done={todo.done}
+              key={todo.id}
+              label={todo.title}
+            />
           ))}
         </View>
       ) : (

@@ -3,4 +3,5 @@ export interface todoType {
   createDate: any
   done: boolean
   id: string
+  goal_ID: string
 }

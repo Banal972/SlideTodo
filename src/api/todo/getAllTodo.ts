@@ -37,12 +37,13 @@ const getAllTodo = async ({ lmt = 10, type }: { lmt?: number; type?: "done" | "t
   const querySnapshot = await getDocs(q)
 
   const todos = querySnapshot.docs.map((doc) => {
-    const { title, createDate, done } = doc.data()
+    const { title, createDate, done, goal_ID } = doc.data()
 
     return {
       title,
       done,
       createDate,
+      goal_ID,
       id: doc.id,
     }
   })

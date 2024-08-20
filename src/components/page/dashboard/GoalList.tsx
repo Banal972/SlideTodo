@@ -40,7 +40,12 @@ const GoalList = () => {
               {goal.todos.not.length > 0 ? (
                 <View style={styles.goalView}>
                   {goal.todos.not.map((todo) => (
-                    <CheckList docId={todo.id} key={todo.id} label={todo.title} />
+                    <CheckList
+                      goal_ID={todo.goal_ID}
+                      docId={todo.id}
+                      key={todo.id}
+                      label={todo.title}
+                    />
                   ))}
                 </View>
               ) : (
@@ -53,7 +58,13 @@ const GoalList = () => {
               {goal.todos.done.length > 0 ? (
                 <View style={styles.goalView}>
                   {goal.todos.done.map((todo) => (
-                    <CheckList docId={todo.id} done={todo.done} key={todo.id} label={todo.title} />
+                    <CheckList
+                      goal_ID={todo.goal_ID}
+                      docId={todo.id}
+                      done={todo.done}
+                      key={todo.id}
+                      label={todo.title}
+                    />
                   ))}
                 </View>
               ) : (

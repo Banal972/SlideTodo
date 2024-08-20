@@ -59,20 +59,22 @@ const GoalDetail = () => {
           title: title,
           todos: {
             done: todoDoneSnapShot.docs.map((doc) => {
-              const { title, createDate, notes, done } = doc.data()
+              const { title, createDate, goal_ID, done } = doc.data()
               return {
                 title,
                 createDate,
                 done,
+                goal_ID,
                 id: doc.id,
               }
             }),
             not: todoNotDoneSnapShot.docs.map((doc) => {
-              const { title, createDate, notes, done } = doc.data()
+              const { title, createDate, goal_ID, done } = doc.data()
               return {
                 title,
                 createDate,
                 done,
+                goal_ID,
                 id: doc.id,
               }
             }),
@@ -158,7 +160,12 @@ const GoalDetail = () => {
           {goalData && goalData.todos.not.length > 0 ? (
             <>
               {goalData.todos.not.map((todo) => (
-                <CheckList docId={todo.id} key={todo.id} label={todo.title} />
+                <CheckList
+                  goal_ID={todo.goal_ID}
+                  docId={todo.id}
+                  key={todo.id}
+                  label={todo.title}
+                />
               ))}
             </>
           ) : (
@@ -189,7 +196,13 @@ const GoalDetail = () => {
           {goalData && goalData.todos.done.length > 0 ? (
             <>
               {goalData.todos.done.map((todo) => (
-                <CheckList docId={todo.id} done={todo.done} key={todo.id} label={todo.title} />
+                <CheckList
+                  goal_ID={todo.goal_ID}
+                  docId={todo.id}
+                  done={todo.done}
+                  key={todo.id}
+                  label={todo.title}
+                />
               ))}
             </>
           ) : (

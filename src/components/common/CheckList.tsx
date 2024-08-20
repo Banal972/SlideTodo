@@ -1,12 +1,23 @@
 import { useState } from "react"
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 
 import Color from "@/constant/color"
 import Checkbox from "expo-checkbox"
+import { Link } from "expo-router"
 import { doc, setDoc } from "firebase/firestore"
 import { db } from "firebaseConfig"
 
-const CheckList = ({ done, label, docId }: { done?: boolean; label: string; docId: string }) => {
+const CheckList = ({
+  done,
+  label,
+  docId,
+  goal_ID,
+}: {
+  done?: boolean
+  label: string
+  docId: string
+  goal_ID: string
+}) => {
   const [isChecked, setIsChecked] = useState(done)
 
   const checkPressHanlder = async () => {
@@ -19,16 +30,20 @@ const CheckList = ({ done, label, docId }: { done?: boolean; label: string; docI
   }
 
   return (
-    <Pressable onPress={checkPressHanlder} style={styles.listFlex}>
+    <View style={styles.listFlex}>
       <Checkbox
         value={isChecked}
         color={isChecked ? Color.blue500 : undefined}
         style={styles.todoListCheckbox}
+        onValueChange={checkPressHanlder}
       />
-      <Text style={[styles.listText, isChecked && { textDecorationLine: "line-through" }]}>
+      <Link
+        href={`/note/post/${goal_ID}`}
+        style={[styles.listText, isChecked && { textDecorationLine: "line-through" }]}
+      >
         {label}
-      </Text>
-    </Pressable>
+      </Link>
+    </View>
   )
 }
 
