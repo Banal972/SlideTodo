@@ -1,7 +1,6 @@
-import { View, Text } from "react-native";
-import React, { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
 import { auth } from "firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 
 interface UserType {
   displayName: string | null;
@@ -17,12 +16,7 @@ const useGetUser = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const { displayName, email, uid, photoURL } = user;
-        setUser({
-          displayName: displayName,
-          email: email,
-          uid: uid,
-          photoURL,
-        });
+        setUser({ displayName, email, uid, photoURL });
       } else {
         setUser(null);
       }

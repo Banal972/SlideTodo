@@ -1,8 +1,16 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { db } from "firebaseConfig";
+import { auth, db } from "firebaseConfig";
 
 const getGoal = async () => {
-  const q = query(collection(db, "goal"), orderBy("createDate", "desc"));
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  const q = query(
+    collection(db, "goals"),
+    where("uid", "==", user.uid),
+    orderBy("createDate", "desc")
+  );
   const querySnapshot = await getDocs(q);
 
   const goals = await Promise.all(

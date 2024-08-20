@@ -3,8 +3,11 @@ import useGetUser from "@/hooks/useGetUser";
 import useNewTodoModalStore from "@/store/useNewTodoModalStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { signOut } from "firebase/auth";
+import { auth } from "firebaseConfig";
 import {
+  Alert,
   Image,
   ImageBackground,
   Pressable,
@@ -15,9 +18,30 @@ import {
 } from "react-native";
 
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
+  const router = useRouter();
   const { user } = useGetUser();
-
   const { open: newModalOpenHandler } = useNewTodoModalStore();
+
+  const logoutHandler = () => {
+    Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
+      {
+        text: "네",
+        onPress: () => {
+          signOut(auth)
+            .then(() => {
+              router.push("/");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        },
+      },
+      {
+        text: "아니요",
+      },
+    ]);
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -96,7 +120,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
               </Text>
             </View>
           </View>
-          <Pressable>
+          <Pressable onPress={logoutHandler}>
             <Text
               style={{
                 color: Color.slate400,

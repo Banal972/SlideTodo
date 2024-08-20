@@ -6,6 +6,7 @@ import { Drawer } from "expo-router/drawer";
 
 const RootLayout = () => {
   const { newPostIsModal: isModal } = useNewTodoModalStore();
+
   return (
     <>
       <Drawer
