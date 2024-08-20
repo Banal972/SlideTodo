@@ -10,23 +10,7 @@ import { useEffect, useState } from "react";
 import { db } from "firebaseConfig";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import useNewTodoModalStore from "@/store/useNewTodoModalStore";
-
-interface todoType {
-  title: any;
-  createDate: any;
-  done: boolean;
-  id: string;
-}
-
-interface goalType {
-  title: any;
-  todos: {
-    done: todoType[];
-    not: todoType[];
-  };
-  createDate: any;
-  id: string;
-}
+import { goalType } from "@/types/goal";
 
 const GoalList = () => {
   const { open: newTodoOpenHandler } = useNewTodoModalStore();
@@ -122,19 +106,23 @@ const GoalList = () => {
               <View style={{ marginTop: 16 }}>
                 <Text style={styles.goalViewTitle}>To do</Text>
                 <View style={styles.goalView}>
-                  {goal.todos.done.map((todo) => (
+                  {goal.todos.not.map((todo) => (
                     <CheckList key={todo.id} label={todo.title} />
                   ))}
                 </View>
               </View>
             )}
 
-            {goal.todos.not.length > 0 && (
+            {goal.todos.done.length > 0 && (
               <View style={{ marginTop: 24 }}>
                 <Text style={styles.goalViewTitle}>Done</Text>
                 <View style={styles.goalView}>
-                  {goal.todos.not.map((todo) => (
-                    <CheckList key={todo.id} label={todo.title} />
+                  {goal.todos.done.map((todo) => (
+                    <CheckList
+                      done={todo.done}
+                      key={todo.id}
+                      label={todo.title}
+                    />
                   ))}
                 </View>
               </View>

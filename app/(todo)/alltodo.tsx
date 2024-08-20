@@ -5,10 +5,8 @@ import { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
 const Alltodo = () => {
-  const { newPostIsModal: isModal, open: openModalHanlder } =
-    useNewTodoModalStore();
+  const { open: openModalHanlder } = useNewTodoModalStore();
   const [type, setType] = useState("");
-
   const typePressHanlder = (type: string) => {
     setType(type);
   };
