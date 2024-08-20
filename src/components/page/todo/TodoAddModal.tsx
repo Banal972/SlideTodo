@@ -17,7 +17,7 @@ import Color from "@/constant/color";
 import Checkbox from "expo-checkbox";
 import useNewTodoModalStore from "@/store/useNewTodoModalStore";
 
-const NewTodo = ({ isModal }: { isModal: boolean }) => {
+const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
   const { close: isModalCloseHandler } = useNewTodoModalStore();
   const [selectedLanguage, setSelectedLanguage] = useState();
   return (
@@ -191,7 +191,7 @@ const NewTodo = ({ isModal }: { isModal: boolean }) => {
   );
 };
 
-export default NewTodo;
+export default TodoAddModal;
 
 const styles = StyleSheet.create({
   modalContainer: {

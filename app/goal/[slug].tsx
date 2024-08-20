@@ -21,14 +21,14 @@ import { goalType } from "@/types/goal";
 import AddToDoBtn from "@/components/common/Button/AddToDoBtn";
 
 const GoalDetail = () => {
-  const { slug } = useLocalSearchParams();
+  const { slug } = useLocalSearchParams<{ slug: string }>();
   const router = useRouter();
   const [goalData, setGoalData] = useState<goalType | null>(null);
   const { user } = useGetUser();
 
   useEffect(() => {
     const fetch = async () => {
-      const documentId = slug as string;
+      const documentId = slug;
       const docRef = doc(db, "goals", documentId);
       const docSnap = await getDoc(docRef);
 
@@ -131,7 +131,7 @@ const GoalDetail = () => {
           <Process />
         </View>
       </BaseContainer>
-      <Pressable onPress={() => router.push("/note/1")}>
+      <Pressable onPress={() => router.push("/note/list/1")}>
         <BaseContainer
           color={Color.blue100}
           style={{ flexDirection: "row", justifyContent: "space-between" }}
@@ -169,7 +169,7 @@ const GoalDetail = () => {
           {goalData && goalData.todos.not.length > 0 ? (
             <>
               {goalData.todos.not.map((todo) => (
-                <CheckList key={todo.id} label={todo.title} />
+                <CheckList docId={todo.id} key={todo.id} label={todo.title} />
               ))}
             </>
           ) : (
@@ -204,7 +204,12 @@ const GoalDetail = () => {
           {goalData && goalData.todos.done.length > 0 ? (
             <>
               {goalData.todos.done.map((todo) => (
-                <CheckList done={todo.done} key={todo.id} label={todo.title} />
+                <CheckList
+                  docId={todo.id}
+                  done={todo.done}
+                  key={todo.id}
+                  label={todo.title}
+                />
               ))}
             </>
           ) : (

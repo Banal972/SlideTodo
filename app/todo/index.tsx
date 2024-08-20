@@ -44,7 +44,12 @@ const Alltodo = () => {
 
         <View style={styles.checkListContainer}>
           {todos.map((todo) => (
-            <CheckList done={todo.done} key={todo.id} label={todo.title} />
+            <CheckList
+              docId={todo.id}
+              done={todo.done}
+              key={todo.id}
+              label={todo.title}
+            />
           ))}
         </View>
       </View>

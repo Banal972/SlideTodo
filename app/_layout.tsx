@@ -1,7 +1,8 @@
 import SideMenu from "@/components/common/SideMenu";
+import TodoAddModal from "@/components/page/todo/TodoAddModal";
 import Color from "@/constant/color";
 import useNewTodoModalStore from "@/store/useNewTodoModalStore";
-import NewTodo from "app/(todo)/newTodo";
+
 import { Drawer } from "expo-router/drawer";
 
 const RootLayout = () => {
@@ -20,39 +21,33 @@ const RootLayout = () => {
           },
         }}
       >
-        <Drawer.Screen
-          name="dashboard"
-          options={{
-            title: "대시보드",
-          }}
-        />
         <Drawer.Screen name="(auth)" options={{ headerShown: false }} />
         <Drawer.Screen
-          name="(todo)/alltodo"
+          name="todo/index"
           options={{
             title: "",
           }}
         />
         <Drawer.Screen
-          name="(goal)/goal/[slug]"
+          name="goal/[slug]"
           options={{
             title: "목표",
           }}
         />
         <Drawer.Screen
-          name="(goal)/note/[slug]"
+          name="note/list/[slug]"
           options={{
             title: "",
           }}
         />
         <Drawer.Screen
-          name="(goal)/note/post"
+          name="dashboard/index"
           options={{
-            title: "",
+            title: "대시보드",
           }}
         />
       </Drawer>
-      <NewTodo isModal={isModal} />
+      <TodoAddModal isModal={isModal} />
     </>
   );
 };

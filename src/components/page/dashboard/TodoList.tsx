@@ -16,7 +16,7 @@ const TodoList = () => {
           source: require("@/assets/images/dashboard/icon01.png"),
         }}
         title="최근 등록한 일"
-        linkURL="/alltodo"
+        linkURL="/todo"
       />
       {todos.length > 0 ? (
         <View style={styles.todoList}>

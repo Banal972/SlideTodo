@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   todoListCheckbox: {
     borderColor: Color.slate200,
     borderRadius: 6,
+    backgroundColor: "white",
   },
   listText: {
     color: "#1F2937",

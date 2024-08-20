@@ -3,7 +3,7 @@ import Color from "@/constant/color";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { View, Text, Image, Pressable, ScrollView } from "react-native";
 
-const Note = () => {
+const NoteList = () => {
   return (
     <ScrollView>
       <View style={{ gap: 16, padding: 16 }}>
@@ -431,4 +431,4 @@ const Note = () => {
   );
 };
 
-export default Note;
+export default NoteList;
