@@ -2,15 +2,13 @@ import BaseContainer from "@/components/common/Container/BaseContainer";
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle";
 import Color from "@/constant/color";
 import { Link } from "expo-router";
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { View, Text, StyleSheet } from "react-native";
 import CheckList from "@/components/common/CheckList";
 import Process from "@/components/page/goal/Process";
-import useNewTodoModalStore from "@/store/useNewTodoModalStore";
 import useGetGoal from "@/hooks/goal/useGetGoal";
+import AddToDoBtn from "@/components/common/Button/AddToDoBtn";
 
 const GoalList = () => {
-  const { open: newTodoOpenHandler } = useNewTodoModalStore();
   const { goals } = useGetGoal();
 
   return (
@@ -27,15 +25,10 @@ const GoalList = () => {
         goals.map((goal) => (
           <View key={goal.id} style={styles.goalListCotanier}>
             <View style={styles.goalListFlex}>
-              <Link href={"/goal/1"} style={styles.goalListTitle}>
+              <Link href={`/goal/${goal.id}`} style={styles.goalListTitle}>
                 {goal.title}
               </Link>
-              <Pressable onPress={newTodoOpenHandler}>
-                <View style={styles.goalListLinkFlex}>
-                  <Ionicons name="add" size={24} color={Color.blue500} />
-                  <Text style={styles.goalListLink}>할일 추가</Text>
-                </View>
-              </Pressable>
+              <AddToDoBtn />
             </View>
 
             <Process />
@@ -106,11 +99,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 4,
     alignItems: "center",
-  },
-  goalListLink: {
-    color: Color.blue500,
-    fontSize: 12,
-    fontWeight: "600",
   },
   goalViewTitle: {
     fontSize: 14,

@@ -1,14 +1,91 @@
 import { View, Text, Image, Pressable } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BaseContainer from "@/components/common/Container/BaseContainer";
 import Color from "@/constant/color";
 import Process from "@/components/page/goal/Process";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import CheckList from "@/components/common/CheckList";
+import useGetUser from "@/hooks/useGetUser";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "firebaseConfig";
+import { goalType } from "@/types/goal";
+import AddToDoBtn from "@/components/common/Button/AddToDoBtn";
 
 const GoalDetail = () => {
+  const { slug } = useLocalSearchParams();
   const router = useRouter();
+  const [goalData, setGoalData] = useState<goalType | null>(null);
+  const { user } = useGetUser();
+
+  useEffect(() => {
+    const fetch = async () => {
+      const documentId = slug as string;
+      const docRef = doc(db, "goals", documentId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const { title, createDate } = docSnap.data();
+
+        const todosDoneQuery = query(
+          collection(db, "todos"),
+          where("goal_ID", "==", docSnap.id),
+          where("done", "==", true),
+          orderBy("createDate", "desc")
+        );
+
+        const todosNotDoneQuery = query(
+          collection(db, "todos"),
+          where("goal_ID", "==", docSnap.id),
+          where("done", "==", false),
+          orderBy("createDate", "desc")
+        );
+
+        const [todoDoneSnapShot, todoNotDoneSnapShot] = await Promise.all([
+          getDocs(todosDoneQuery),
+          getDocs(todosNotDoneQuery),
+        ]);
+
+        const goal = {
+          title: title,
+          todos: {
+            done: todoDoneSnapShot.docs.map((doc) => {
+              const { title, createDate, notes, done } = doc.data();
+              return {
+                title,
+                createDate,
+                done,
+                id: doc.id,
+              };
+            }),
+            not: todoNotDoneSnapShot.docs.map((doc) => {
+              const { title, createDate, notes, done } = doc.data();
+              return {
+                title,
+                createDate,
+                done,
+                id: doc.id,
+              };
+            }),
+          },
+          createDate: createDate,
+          id: docSnap.id,
+        };
+        setGoalData(goal);
+      } else {
+        setGoalData(null);
+      }
+    };
+    fetch();
+  }, [slug, user]);
 
   return (
     <View style={{ padding: 16, gap: 16 }}>
@@ -36,7 +113,7 @@ const GoalDetail = () => {
             <Text
               style={{ fontSize: 16, fontWeight: "600", color: Color.slate800 }}
             >
-              자바스크립트로 웹 서비스 만들기
+              {goalData?.title}
             </Text>
           </View>
           <Pressable>
@@ -86,20 +163,28 @@ const GoalDetail = () => {
           >
             To do
           </Text>
-          <Pressable>
-            <Text
-              style={{ color: Color.blue500, fontSize: 14, fontWeight: "600" }}
-            >
-              + 할일 추가
-            </Text>
-          </Pressable>
+          <AddToDoBtn />
         </View>
         <View style={{ gap: 8, marginTop: 16 }}>
-          <CheckList label="자바스크립트 기초 1" />
-          <CheckList label="자바스크립트 기초 2" />
-          <CheckList label="자바스크립트 기초 3" />
-          <CheckList label="자바스크립트 기초 4" />
-          <CheckList label="자바스크립트 기초 5" />
+          {goalData && goalData.todos.not.length > 0 ? (
+            <>
+              {goalData.todos.not.map((todo) => (
+                <CheckList key={todo.id} label={todo.title} />
+              ))}
+            </>
+          ) : (
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 14,
+                color: Color.slate500,
+                paddingTop: 30,
+                paddingBottom: 60,
+              }}
+            >
+              최근에 등록한 할 일이 없어요
+            </Text>
+          )}
         </View>
       </BaseContainer>
       <BaseContainer color={Color.slate200}>
@@ -116,11 +201,25 @@ const GoalDetail = () => {
           </Text>
         </View>
         <View style={{ gap: 8, marginTop: 16 }}>
-          <CheckList label="자바스크립트 기초 1" />
-          <CheckList label="자바스크립트 기초 2" />
-          <CheckList label="자바스크립트 기초 3" />
-          <CheckList label="자바스크립트 기초 4" />
-          <CheckList label="자바스크립트 기초 5" />
+          {goalData && goalData.todos.done.length > 0 ? (
+            <>
+              {goalData.todos.done.map((todo) => (
+                <CheckList done={todo.done} key={todo.id} label={todo.title} />
+              ))}
+            </>
+          ) : (
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 14,
+                color: Color.slate500,
+                paddingTop: 30,
+                paddingBottom: 60,
+              }}
+            >
+              등록한 목표가 없어요
+            </Text>
+          )}
         </View>
       </BaseContainer>
     </View>

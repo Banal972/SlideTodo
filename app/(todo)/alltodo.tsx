@@ -1,12 +1,11 @@
+import AddToDoBtn from "@/components/common/Button/AddToDoBtn";
 import CheckList from "@/components/common/CheckList";
 import Color from "@/constant/color";
 import { todoType } from "@/constant/type";
 import useGetTodo from "@/hooks/todo/useGetTodo";
-import useNewTodoModalStore from "@/store/useNewTodoModalStore";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
 const Alltodo = () => {
-  const { open: openModalHanlder } = useNewTodoModalStore();
   const { type, setType, todos } = useGetTodo({});
 
   const typePressHanlder = (key: string) => {
@@ -17,9 +16,7 @@ const Alltodo = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>모든 할 일({todos.length})</Text>
-        <Pressable onPress={openModalHanlder}>
-          <Text style={styles.titleLink}>+ 할일 추가</Text>
-        </Pressable>
+        <AddToDoBtn />
       </View>
 
       <View style={styles.todoContainer}>
@@ -69,11 +66,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: Color.slate900,
-  },
-  titleLink: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: Color.blue500,
   },
   todoContainer: {
     backgroundColor: "#ffffff",
