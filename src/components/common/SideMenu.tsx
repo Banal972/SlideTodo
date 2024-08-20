@@ -1,4 +1,5 @@
 import Color from "@/constant/color";
+import useNewTodoModalStore from "@/store/useNewTodoModalStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types";
 import { Link } from "expo-router";
@@ -12,6 +13,7 @@ import {
 } from "react-native";
 
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
+  const { open: newModalOpenHandler } = useNewTodoModalStore();
   return (
     <SafeAreaView
       style={{
@@ -123,6 +125,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
 
           <Pressable
             style={[styles.listBtn, { backgroundColor: Color.blue500 }]}
+            onPress={newModalOpenHandler}
           >
             <Text style={[styles.listBtnText, { color: "white" }]}>
               + 새 할 일

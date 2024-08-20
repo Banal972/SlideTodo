@@ -1,17 +1,13 @@
 import CheckList from "@/components/common/CheckList";
 import Color from "@/constant/color";
-import NewTodo from "app/(todo)/newTodo";
-import { Link } from "expo-router";
+import useNewTodoModalStore from "@/store/useNewTodoModalStore";
 import { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
 const Alltodo = () => {
-  const [isModal, setIsModal] = useState(false);
+  const { newPostIsModal: isModal, open: openModalHanlder } =
+    useNewTodoModalStore();
   const [type, setType] = useState("");
-
-  const isModalCloseHandler = () => {
-    setIsModal(false);
-  };
 
   const typePressHanlder = (type: string) => {
     setType(type);
@@ -21,7 +17,7 @@ const Alltodo = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>모든 할 일(6)</Text>
-        <Pressable onPress={() => setIsModal(true)}>
+        <Pressable onPress={openModalHanlder}>
           <Text style={styles.titleLink}>+ 할일 추가</Text>
         </Pressable>
       </View>
@@ -82,7 +78,6 @@ const Alltodo = () => {
           <CheckList label="자바스크립트 기초 챕터4 듣기" />
         </View>
       </View>
-      <NewTodo isModal={isModal} isModalCloseHandler={isModalCloseHandler} />
     </View>
   );
 };

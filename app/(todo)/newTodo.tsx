@@ -15,14 +15,10 @@ import Button from "@/components/common/Button";
 import { Picker } from "@react-native-picker/picker";
 import Color from "@/constant/color";
 import Checkbox from "expo-checkbox";
+import useNewTodoModalStore from "@/store/useNewTodoModalStore";
 
-const NewTodo = ({
-  isModal,
-  isModalCloseHandler,
-}: {
-  isModal: boolean;
-  isModalCloseHandler: () => void;
-}) => {
+const NewTodo = ({ isModal }: { isModal: boolean }) => {
+  const { close: isModalCloseHandler } = useNewTodoModalStore();
   const [selectedLanguage, setSelectedLanguage] = useState();
   return (
     <Modal
