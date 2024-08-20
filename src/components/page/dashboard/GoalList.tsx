@@ -7,6 +7,7 @@ import CheckList from "@/components/common/CheckList";
 import Process from "@/components/page/goal/Process";
 import useGetGoal from "@/hooks/goal/useGetGoal";
 import AddToDoBtn from "@/components/common/Button/AddToDoBtn";
+import NullText from "@/components/common/NullText";
 
 const GoalList = () => {
   const { goals } = useGetGoal();
@@ -33,45 +34,44 @@ const GoalList = () => {
 
             <Process />
 
-            {goal.todos.not.length > 0 && (
-              <View style={{ marginTop: 16 }}>
-                <Text style={styles.goalViewTitle}>To do</Text>
+            <View style={{ marginTop: 16 }}>
+              <Text style={styles.goalViewTitle}>To do</Text>
+              {goal.todos.not.length > 0 ? (
                 <View style={styles.goalView}>
                   {goal.todos.not.map((todo) => (
-                    <CheckList key={todo.id} label={todo.title} />
+                    <CheckList
+                      docId={todo.id}
+                      key={todo.id}
+                      label={todo.title}
+                    />
                   ))}
                 </View>
-              </View>
-            )}
+              ) : (
+                <NullText>최근에 등록한 할 일이 없어요</NullText>
+              )}
+            </View>
 
-            {goal.todos.done.length > 0 && (
-              <View style={{ marginTop: 24 }}>
-                <Text style={styles.goalViewTitle}>Done</Text>
+            <View style={{ marginTop: 24 }}>
+              <Text style={styles.goalViewTitle}>Done</Text>
+              {goal.todos.done.length > 0 ? (
                 <View style={styles.goalView}>
                   {goal.todos.done.map((todo) => (
                     <CheckList
+                      docId={todo.id}
                       done={todo.done}
                       key={todo.id}
                       label={todo.title}
                     />
                   ))}
                 </View>
-              </View>
-            )}
+              ) : (
+                <NullText>최근에 등록한 할 일이 없어요</NullText>
+              )}
+            </View>
           </View>
         ))
       ) : (
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 14,
-            color: Color.slate500,
-            paddingTop: 30,
-            paddingBottom: 60,
-          }}
-        >
-          등록한 목표가 없어요
-        </Text>
+        <NullText>등록한 목표가 없어요</NullText>
       )}
     </BaseContainer>
   );

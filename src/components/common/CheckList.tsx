@@ -1,24 +1,46 @@
 import Color from "@/constant/color";
 import Checkbox from "expo-checkbox";
-import { View, Text, StyleSheet } from "react-native";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "firebaseConfig";
+import { useState } from "react";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
-const CheckList = ({ done, label }: { done?: boolean; label: string }) => {
+const CheckList = ({
+  done,
+  label,
+  docId,
+}: {
+  done?: boolean;
+  label: string;
+  docId: string;
+}) => {
+  const [isChecked, setIsChecked] = useState(done);
+
+  const checkPressHanlder = async () => {
+    try {
+      setDoc(doc(db, "todos", docId), { done: !isChecked }, { merge: true });
+      setIsChecked(!isChecked);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <View style={styles.listFlex}>
+    <Pressable onPress={checkPressHanlder} style={styles.listFlex}>
       <Checkbox
-        value={done}
-        color={done ? Color.blue500 : undefined}
+        value={isChecked}
+        color={isChecked ? Color.blue500 : undefined}
         style={styles.todoListCheckbox}
       />
       <Text
         style={[
           styles.listText,
-          done && { textDecorationLine: "line-through" },
+          isChecked && { textDecorationLine: "line-through" },
         ]}
       >
         {label}
       </Text>
-    </View>
+    </Pressable>
   );
 };
 
