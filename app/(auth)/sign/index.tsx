@@ -7,7 +7,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import Color from "@/constant/color";
 import { Controller, useForm } from "react-hook-form";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "firebaseConfig";
 
 export default function HomeScreen() {
@@ -16,7 +16,7 @@ export default function HomeScreen() {
   const { control, handleSubmit } = useForm();
 
   const onSubmitHandler = (data: any) => {
-    const { email, password, pwdConfirm } = data;
+    const { name, email, password, pwdConfirm } = data;
 
     if (!email.includes("@") || password !== pwdConfirm) return;
 
@@ -24,7 +24,10 @@ export default function HomeScreen() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
+        updateProfile(user, {
+          displayName: name,
+        });
+        router.push("/");
       })
       .catch((error) => {
         const errorCode = error.code;
