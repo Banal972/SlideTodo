@@ -3,6 +3,7 @@ import TodoAddModal from "@/components/page/todo/TodoAddModal"
 import Color from "@/constant/color"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import { Drawer } from "expo-router/drawer"
+import { StatusBar } from "expo-status-bar"
 
 const RootLayout = () => {
   const { newPostIsModal: isModal } = useNewTodoModalStore()
@@ -47,6 +48,7 @@ const RootLayout = () => {
         />
       </Drawer>
       <TodoAddModal isModal={isModal} />
+      <StatusBar style="dark" />
     </>
   )
 }

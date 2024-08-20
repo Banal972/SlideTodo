@@ -7,6 +7,7 @@ import BaseContainer from "@/components/common/Container/BaseContainer"
 import Process from "@/components/page/goal/Process"
 import Color from "@/constant/color"
 import useGetUser from "@/hooks/useGetUser"
+import useNoteNameStore from "@/store/useNoteStore"
 import { goalType } from "@/types/goal"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useLocalSearchParams, useRouter } from "expo-router"
@@ -14,10 +15,17 @@ import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebas
 import { db } from "firebaseConfig"
 
 const GoalDetail = () => {
+  const { changeName } = useNoteNameStore()
   const { slug } = useLocalSearchParams<{ slug: string }>()
   const router = useRouter()
   const [goalData, setGoalData] = useState<goalType | null>(null)
   const { user } = useGetUser()
+
+  const noteDetailHandler = () => {
+    if (!goalData) return
+    changeName(goalData.title)
+    router.push(`/note/list/${slug}`)
+  }
 
   useEffect(() => {
     const fetch = async () => {
@@ -116,7 +124,7 @@ const GoalDetail = () => {
           <Process />
         </View>
       </BaseContainer>
-      <Pressable onPress={() => router.push("/note/list/1")}>
+      <Pressable onPress={noteDetailHandler}>
         <BaseContainer
           color={Color.blue100}
           style={{ flexDirection: "row", justifyContent: "space-between" }}
