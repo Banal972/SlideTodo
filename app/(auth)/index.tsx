@@ -1,39 +1,41 @@
-import { Link, useRouter } from "expo-router";
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
-import Color from "../../src/constant/color";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { useState } from "react";
-import Label from "@/components/common/Label";
-import Input from "@/components/common/Input";
-import Button from "@/components/common/Button";
-import { useForm, Controller } from "react-hook-form";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "firebaseConfig";
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { Pressable, StyleSheet, Text, View } from "react-native"
+
+import Button from "@/components/common/Button"
+import Input from "@/components/common/Input"
+import Label from "@/components/common/Label"
+import Ionicons from "@expo/vector-icons/Ionicons"
+import { Link, useRouter } from "expo-router"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { auth } from "firebaseConfig"
+
+import Color from "../../src/constant/color"
 
 export default function HomeScreen() {
-  const router = useRouter();
-  const { control, handleSubmit } = useForm();
-  const [pwdInShow, setPwdInShow] = useState(true);
+  const router = useRouter()
+  const { control, handleSubmit } = useForm()
+  const [pwdInShow, setPwdInShow] = useState(true)
 
   const onSubmitHandler = (data: any) => {
-    const { email, password } = data;
+    const { email, password } = data
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         if (userCredential) {
-          router.push("/dashboard");
+          router.push("/dashboard")
         }
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-  };
+        const errorCode = error.code
+        const errorMessage = error.message
+        console.log(errorCode, errorMessage)
+      })
+  }
 
   const showPwdHandler = () => {
-    setPwdInShow(!pwdInShow);
-  };
+    setPwdInShow(!pwdInShow)
+  }
 
   return (
     <>
@@ -95,7 +97,7 @@ export default function HomeScreen() {
         </Link>
       </Text>
     </>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -124,4 +126,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: 2,
   },
-});
+})

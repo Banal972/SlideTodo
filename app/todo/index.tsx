@@ -1,16 +1,17 @@
-import AddToDoBtn from "@/components/common/Button/AddToDoBtn";
-import CheckList from "@/components/common/CheckList";
-import Color from "@/constant/color";
-import { todoType } from "@/constant/type";
-import useGetTodo from "@/hooks/todo/useGetTodo";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native"
+
+import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
+import CheckList from "@/components/common/CheckList"
+import Color from "@/constant/color"
+import { todoType } from "@/constant/type"
+import useGetTodo from "@/hooks/todo/useGetTodo"
 
 const Alltodo = () => {
-  const { type, setType, todos } = useGetTodo({});
+  const { type, setType, todos } = useGetTodo({})
 
   const typePressHanlder = (key: string) => {
-    setType(key);
-  };
+    setType(key)
+  }
 
   return (
     <View style={styles.container}>
@@ -24,18 +25,10 @@ const Alltodo = () => {
           {todoType.map((types) => (
             <Pressable
               key={types.key}
-              style={[
-                styles.tagButton,
-                type === types.key && styles.tagButtonActive,
-              ]}
+              style={[styles.tagButton, type === types.key && styles.tagButtonActive]}
               onPress={() => typePressHanlder(types.key)}
             >
-              <Text
-                style={[
-                  styles.tagButtonText,
-                  type === types.key && { color: "#fff" },
-                ]}
-              >
+              <Text style={[styles.tagButtonText, type === types.key && { color: "#fff" }]}>
                 {types.value}
               </Text>
             </Pressable>
@@ -44,20 +37,15 @@ const Alltodo = () => {
 
         <View style={styles.checkListContainer}>
           {todos.map((todo) => (
-            <CheckList
-              docId={todo.id}
-              done={todo.done}
-              key={todo.id}
-              label={todo.title}
-            />
+            <CheckList docId={todo.id} done={todo.done} key={todo.id} label={todo.title} />
           ))}
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default Alltodo;
+export default Alltodo
 
 const styles = StyleSheet.create({
   container: {
@@ -104,4 +92,4 @@ const styles = StyleSheet.create({
     marginTop: 16,
     gap: 8,
   },
-});
+})

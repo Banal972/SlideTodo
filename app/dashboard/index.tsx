@@ -1,7 +1,8 @@
-import { View, StyleSheet, ScrollView } from "react-native";
-import TodoList from "@/components/page/dashboard/TodoList";
-import GoalList from "@/components/page/dashboard/GoalList";
-import Progress from "@/components/page/dashboard/Progress";
+import { ScrollView, StyleSheet, View } from "react-native"
+
+import GoalList from "@/components/page/dashboard/GoalList"
+import Progress from "@/components/page/dashboard/Progress"
+import TodoList from "@/components/page/dashboard/TodoList"
 
 const Dashboard = () => {
   return (
@@ -12,10 +13,10 @@ const Dashboard = () => {
         <GoalList />
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard
 
 const styles = StyleSheet.create({
   container: {
@@ -23,4 +24,4 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 16,
   },
-});
+})

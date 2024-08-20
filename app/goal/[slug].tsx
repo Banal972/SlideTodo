@@ -1,91 +1,84 @@
-import { View, Text, Image, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
-import BaseContainer from "@/components/common/Container/BaseContainer";
-import Color from "@/constant/color";
-import Process from "@/components/page/goal/Process";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import CheckList from "@/components/common/CheckList";
-import useGetUser from "@/hooks/useGetUser";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-import { db } from "firebaseConfig";
-import { goalType } from "@/types/goal";
-import AddToDoBtn from "@/components/common/Button/AddToDoBtn";
+import React, { useEffect, useState } from "react"
+import { Image, Pressable, Text, View } from "react-native"
+
+import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
+import CheckList from "@/components/common/CheckList"
+import BaseContainer from "@/components/common/Container/BaseContainer"
+import Process from "@/components/page/goal/Process"
+import Color from "@/constant/color"
+import useGetUser from "@/hooks/useGetUser"
+import { goalType } from "@/types/goal"
+import Ionicons from "@expo/vector-icons/Ionicons"
+import { useLocalSearchParams, useRouter } from "expo-router"
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore"
+import { db } from "firebaseConfig"
 
 const GoalDetail = () => {
-  const { slug } = useLocalSearchParams<{ slug: string }>();
-  const router = useRouter();
-  const [goalData, setGoalData] = useState<goalType | null>(null);
-  const { user } = useGetUser();
+  const { slug } = useLocalSearchParams<{ slug: string }>()
+  const router = useRouter()
+  const [goalData, setGoalData] = useState<goalType | null>(null)
+  const { user } = useGetUser()
 
   useEffect(() => {
     const fetch = async () => {
-      const documentId = slug;
-      const docRef = doc(db, "goals", documentId);
-      const docSnap = await getDoc(docRef);
+      const documentId = slug
+      const docRef = doc(db, "goals", documentId)
+      const docSnap = await getDoc(docRef)
 
       if (docSnap.exists()) {
-        const { title, createDate } = docSnap.data();
+        const { title, createDate } = docSnap.data()
 
         const todosDoneQuery = query(
           collection(db, "todos"),
           where("goal_ID", "==", docSnap.id),
           where("done", "==", true),
-          orderBy("createDate", "desc")
-        );
+          orderBy("createDate", "desc"),
+        )
 
         const todosNotDoneQuery = query(
           collection(db, "todos"),
           where("goal_ID", "==", docSnap.id),
           where("done", "==", false),
-          orderBy("createDate", "desc")
-        );
+          orderBy("createDate", "desc"),
+        )
 
         const [todoDoneSnapShot, todoNotDoneSnapShot] = await Promise.all([
           getDocs(todosDoneQuery),
           getDocs(todosNotDoneQuery),
-        ]);
+        ])
 
         const goal = {
           title: title,
           todos: {
             done: todoDoneSnapShot.docs.map((doc) => {
-              const { title, createDate, notes, done } = doc.data();
+              const { title, createDate, notes, done } = doc.data()
               return {
                 title,
                 createDate,
                 done,
                 id: doc.id,
-              };
+              }
             }),
             not: todoNotDoneSnapShot.docs.map((doc) => {
-              const { title, createDate, notes, done } = doc.data();
+              const { title, createDate, notes, done } = doc.data()
               return {
                 title,
                 createDate,
                 done,
                 id: doc.id,
-              };
+              }
             }),
           },
           createDate: createDate,
           id: docSnap.id,
-        };
-        setGoalData(goal);
+        }
+        setGoalData(goal)
       } else {
-        setGoalData(null);
+        setGoalData(null)
       }
-    };
-    fetch();
-  }, [slug, user]);
+    }
+    fetch()
+  }, [slug, user])
 
   return (
     <View style={{ padding: 16, gap: 16 }}>
@@ -110,24 +103,16 @@ const GoalDetail = () => {
             >
               <Image source={require("@/assets/images/goal/icon01.png")} />
             </View>
-            <Text
-              style={{ fontSize: 16, fontWeight: "600", color: Color.slate800 }}
-            >
+            <Text style={{ fontSize: 16, fontWeight: "600", color: Color.slate800 }}>
               {goalData?.title}
             </Text>
           </View>
           <Pressable>
-            <Ionicons
-              name="ellipsis-vertical"
-              size={24}
-              color={Color.slate400}
-            />
+            <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
           </Pressable>
         </View>
         <View style={{ marginTop: 24 }}>
-          <Text style={{ fontSize: 12, fontWeight: "600", color: "#0F172A" }}>
-            진행율
-          </Text>
+          <Text style={{ fontSize: 12, fontWeight: "600", color: "#0F172A" }}>진행율</Text>
           <Process />
         </View>
       </BaseContainer>
@@ -158,11 +143,7 @@ const GoalDetail = () => {
             justifyContent: "space-between",
           }}
         >
-          <Text
-            style={{ fontSize: 18, fontWeight: "bold", color: Color.slate800 }}
-          >
-            To do
-          </Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: Color.slate800 }}>To do</Text>
           <AddToDoBtn />
         </View>
         <View style={{ gap: 8, marginTop: 16 }}>
@@ -194,22 +175,13 @@ const GoalDetail = () => {
             justifyContent: "space-between",
           }}
         >
-          <Text
-            style={{ fontSize: 18, fontWeight: "bold", color: Color.slate800 }}
-          >
-            Done
-          </Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: Color.slate800 }}>Done</Text>
         </View>
         <View style={{ gap: 8, marginTop: 16 }}>
           {goalData && goalData.todos.done.length > 0 ? (
             <>
               {goalData.todos.done.map((todo) => (
-                <CheckList
-                  docId={todo.id}
-                  done={todo.done}
-                  key={todo.id}
-                  label={todo.title}
-                />
+                <CheckList docId={todo.id} done={todo.done} key={todo.id} label={todo.title} />
               ))}
             </>
           ) : (
@@ -228,7 +200,7 @@ const GoalDetail = () => {
         </View>
       </BaseContainer>
     </View>
-  );
-};
+  )
+}
 
-export default GoalDetail;
+export default GoalDetail

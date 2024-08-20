@@ -1,12 +1,13 @@
-import Color from "@/constant/color";
-import { ReactNode } from "react";
-import { Text, StyleSheet } from "react-native";
+import { ReactNode } from "react"
+import { StyleSheet, Text } from "react-native"
+
+import Color from "@/constant/color"
 
 const Label = ({ children }: { children: ReactNode }) => {
-  return <Text style={styles.textInputLabel}>{children}</Text>;
-};
+  return <Text style={styles.textInputLabel}>{children}</Text>
+}
 
-export default Label;
+export default Label
 
 const styles = StyleSheet.create({
   textInputLabel: {
@@ -15,4 +16,4 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Color.slate900,
   },
-});
+})

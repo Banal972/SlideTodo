@@ -1,13 +1,8 @@
-import Octicons from "@expo/vector-icons/Octicons";
-import Color from "@/constant/color";
-import { Link } from "expo-router";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ImageSourcePropType,
-} from "react-native";
+import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native"
+
+import Color from "@/constant/color"
+import Octicons from "@expo/vector-icons/Octicons"
+import { Link } from "expo-router"
 
 const BaseTitle = ({
   baseIcon,
@@ -15,11 +10,11 @@ const BaseTitle = ({
   linkURL,
 }: {
   baseIcon: {
-    color?: string;
-    source?: ImageSourcePropType;
-  };
-  title?: string;
-  linkURL?: string;
+    color?: string
+    source?: ImageSourcePropType
+  }
+  title?: string
+  linkURL?: string
 }) => {
   return (
     <View style={styles.baseGrid}>
@@ -42,10 +37,10 @@ const BaseTitle = ({
         </Link>
       )}
     </View>
-  );
-};
+  )
+}
 
-export default BaseTitle;
+export default BaseTitle
 
 const styles = StyleSheet.create({
   baseContainer: {
@@ -92,4 +87,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-});
+})

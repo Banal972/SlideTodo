@@ -1,52 +1,53 @@
-import Button from "@/components/common/Button";
-import Input from "@/components/common/Input";
-import Label from "@/components/common/Label";
-import { Link, useRouter } from "expo-router";
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { useState } from "react";
-import Color from "@/constant/color";
-import { Controller, useForm } from "react-hook-form";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "firebaseConfig";
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { Pressable, StyleSheet, Text, View } from "react-native"
+
+import Button from "@/components/common/Button"
+import Input from "@/components/common/Input"
+import Label from "@/components/common/Label"
+import Color from "@/constant/color"
+import Ionicons from "@expo/vector-icons/Ionicons"
+import { Link, useRouter } from "expo-router"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { auth } from "firebaseConfig"
 
 export default function HomeScreen() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit } = useForm()
 
   const onSubmitHandler = (data: any) => {
-    const { name, email, password, pwdConfirm } = data;
+    const { name, email, password, pwdConfirm } = data
 
-    if (!email.includes("@") || password !== pwdConfirm) return;
+    if (!email.includes("@") || password !== pwdConfirm) return
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        const user = userCredential.user;
+        const user = userCredential.user
         updateProfile(user, {
           displayName: name,
-        });
-        router.push("/");
+        })
+        router.push("/")
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-  };
+        const errorCode = error.code
+        const errorMessage = error.message
+        console.log(errorCode, errorMessage)
+      })
+  }
 
   const [pwdInShow, setPwdInShow] = useState<{ [key: string]: boolean }>({
     pwd: true,
     confirm: true,
-  });
+  })
 
   const showPwdHandler = (key: string) => {
     setPwdInShow((prev) => ({
       ...prev,
       [key]: !pwdInShow[key],
-    }));
-  };
+    }))
+  }
 
   return (
     <>
@@ -103,10 +104,7 @@ export default function HomeScreen() {
               )}
               name="password"
             />
-            <Pressable
-              style={styles.textInputIcon}
-              onPress={() => showPwdHandler("pwd")}
-            >
+            <Pressable style={styles.textInputIcon} onPress={() => showPwdHandler("pwd")}>
               {pwdInShow.pwd ? (
                 <Ionicons name="eye-off-outline" size={24} color="black" />
               ) : (
@@ -134,10 +132,7 @@ export default function HomeScreen() {
               )}
               name="pwdConfirm"
             />
-            <Pressable
-              style={styles.textInputIcon}
-              onPress={() => showPwdHandler("confirm")}
-            >
+            <Pressable style={styles.textInputIcon} onPress={() => showPwdHandler("confirm")}>
               {pwdInShow.confirm ? (
                 <Ionicons name="eye-off-outline" size={24} color="black" />
               ) : (
@@ -157,7 +152,7 @@ export default function HomeScreen() {
         </Link>{" "}
       </Text>
     </>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -186,4 +181,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: 2,
   },
-});
+})

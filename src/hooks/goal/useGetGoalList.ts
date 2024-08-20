@@ -1,53 +1,47 @@
-import useGetUser from "@/hooks/useGetUser";
-import { goalListType } from "@/types/goal";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  Unsubscribe,
-  where,
-} from "firebase/firestore";
-import { auth, db } from "firebaseConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+
+import useGetUser from "@/hooks/useGetUser"
+import { goalListType } from "@/types/goal"
+import { Unsubscribe, collection, onSnapshot, orderBy, query, where } from "firebase/firestore"
+import { db } from "firebaseConfig"
 
 const useGetGoalList = () => {
-  const [goalLists, setGoalLists] = useState<goalListType[]>([]);
-  const { user } = useGetUser();
+  const [goalLists, setGoalLists] = useState<goalListType[]>([])
+  const { user } = useGetUser()
 
   useEffect(() => {
-    let unsubscribe: Unsubscribe | null = null;
+    let unsubscribe: Unsubscribe | null = null
 
     const fetch = async () => {
-      if (!user) return [];
+      if (!user) return []
 
       const q = query(
         collection(db, "goals"),
         where("uid", "==", user.uid),
-        orderBy("createDate", "desc")
-      );
+        orderBy("createDate", "desc"),
+      )
 
       unsubscribe = await onSnapshot(q, (snapshot) => {
         const goalLists = snapshot.docs.map((doc) => {
-          const { title, createDate } = doc.data();
+          const { title, createDate } = doc.data()
           return {
             title: title,
             createDate: createDate,
             id: doc.id,
-          };
-        });
-        setGoalLists(goalLists);
-      });
-    };
+          }
+        })
+        setGoalLists(goalLists)
+      })
+    }
 
-    fetch();
+    fetch()
 
     return () => {
-      unsubscribe && unsubscribe();
-    };
-  }, [user]);
+      unsubscribe && unsubscribe()
+    }
+  }, [user])
 
-  return { goalLists };
-};
+  return { goalLists }
+}
 
-export default useGetGoalList;
+export default useGetGoalList

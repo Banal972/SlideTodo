@@ -1,32 +1,20 @@
-import {
-  View,
-  Text,
-  Modal,
-  StyleSheet,
-  SafeAreaView,
-  Pressable,
-  ScrollView,
-} from "react-native";
-import React, { useState } from "react";
-import Label from "@/components/common/Label";
-import Input from "@/components/common/Input";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import Button from "@/components/common/Button";
-import { Picker } from "@react-native-picker/picker";
-import Color from "@/constant/color";
-import Checkbox from "expo-checkbox";
-import useNewTodoModalStore from "@/store/useNewTodoModalStore";
+import React, { useState } from "react"
+import { Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
+
+import Button from "@/components/common/Button"
+import Input from "@/components/common/Input"
+import Label from "@/components/common/Label"
+import Color from "@/constant/color"
+import useNewTodoModalStore from "@/store/useNewTodoModalStore"
+import Ionicons from "@expo/vector-icons/Ionicons"
+import { Picker } from "@react-native-picker/picker"
+import Checkbox from "expo-checkbox"
 
 const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
-  const { close: isModalCloseHandler } = useNewTodoModalStore();
-  const [selectedLanguage, setSelectedLanguage] = useState();
+  const { close: isModalCloseHandler } = useNewTodoModalStore()
+  const [selectedLanguage, setSelectedLanguage] = useState()
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isModal}
-      style={{ flex: 1 }}
-    >
+    <Modal animationType="slide" transparent={true} visible={isModal} style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
         <View style={styles.modalContainer}>
           <View
@@ -36,9 +24,7 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
               paddingBottom: 20,
             }}
           >
-            <Text style={{ fontSize: 18, lineHeight: 28, fontWeight: "bold" }}>
-              할 일 생성
-            </Text>
+            <Text style={{ fontSize: 18, lineHeight: 28, fontWeight: "bold" }}>할 일 생성</Text>
             <Pressable onPress={isModalCloseHandler}>
               <Ionicons name="close" size={24} color="black" />
             </Pressable>
@@ -60,9 +46,7 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
               <View style={{ gap: 24 }}>
                 <View>
                   <Label>자료</Label>
-                  <View
-                    style={{ flexDirection: "row", gap: 12, marginTop: 12 }}
-                  >
+                  <View style={{ flexDirection: "row", gap: 12, marginTop: 12 }}>
                     <Pressable
                       style={{
                         alignItems: "center",
@@ -158,9 +142,7 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
                         lineHeight: 20,
                       }}
                       selectedValue={selectedLanguage}
-                      onValueChange={(itemValue, itemIndex) =>
-                        setSelectedLanguage(itemValue)
-                      }
+                      onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
                     >
                       <Picker.Item
                         style={{
@@ -188,10 +170,10 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
         </View>
       </SafeAreaView>
     </Modal>
-  );
-};
+  )
+}
 
-export default TodoAddModal;
+export default TodoAddModal
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -200,4 +182,4 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     flex: 1,
   },
-});
+})

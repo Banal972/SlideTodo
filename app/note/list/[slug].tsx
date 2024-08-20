@@ -1,7 +1,8 @@
-import BaseContainer from "@/components/common/Container/BaseContainer";
-import Color from "@/constant/color";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { View, Text, Image, Pressable, ScrollView } from "react-native";
+import { Image, Pressable, ScrollView, Text, View } from "react-native"
+
+import BaseContainer from "@/components/common/Container/BaseContainer"
+import Color from "@/constant/color"
+import Ionicons from "@expo/vector-icons/Ionicons"
 
 const NoteList = () => {
   return (
@@ -15,9 +16,7 @@ const NoteList = () => {
               alignItems: "center",
             }}
           >
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
-            >
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
               <View
                 style={{
                   width: 40,
@@ -43,9 +42,7 @@ const NoteList = () => {
           </View>
         </BaseContainer>
         <BaseContainer color="white">
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View
               style={{
                 width: 28,
@@ -59,11 +56,7 @@ const NoteList = () => {
               <Image source={require("@/assets/images/goal/flip.png")} />
             </View>
             <Pressable>
-              <Ionicons
-                name="ellipsis-vertical"
-                size={24}
-                color={Color.slate400}
-              />
+              <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
             </Pressable>
           </View>
           <Text
@@ -107,9 +100,7 @@ const NoteList = () => {
           </View>
         </BaseContainer>
         <BaseContainer color="white">
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View
               style={{
                 width: 28,
@@ -123,11 +114,7 @@ const NoteList = () => {
               <Image source={require("@/assets/images/goal/flip.png")} />
             </View>
             <Pressable>
-              <Ionicons
-                name="ellipsis-vertical"
-                size={24}
-                color={Color.slate400}
-              />
+              <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
             </Pressable>
           </View>
           <Text
@@ -171,9 +158,7 @@ const NoteList = () => {
           </View>
         </BaseContainer>
         <BaseContainer color="white">
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View
               style={{
                 width: 28,
@@ -187,11 +172,7 @@ const NoteList = () => {
               <Image source={require("@/assets/images/goal/flip.png")} />
             </View>
             <Pressable>
-              <Ionicons
-                name="ellipsis-vertical"
-                size={24}
-                color={Color.slate400}
-              />
+              <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
             </Pressable>
           </View>
           <Text
@@ -235,9 +216,7 @@ const NoteList = () => {
           </View>
         </BaseContainer>
         <BaseContainer color="white">
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View
               style={{
                 width: 28,
@@ -251,11 +230,7 @@ const NoteList = () => {
               <Image source={require("@/assets/images/goal/flip.png")} />
             </View>
             <Pressable>
-              <Ionicons
-                name="ellipsis-vertical"
-                size={24}
-                color={Color.slate400}
-              />
+              <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
             </Pressable>
           </View>
           <Text
@@ -299,9 +274,7 @@ const NoteList = () => {
           </View>
         </BaseContainer>
         <BaseContainer color="white">
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View
               style={{
                 width: 28,
@@ -315,11 +288,7 @@ const NoteList = () => {
               <Image source={require("@/assets/images/goal/flip.png")} />
             </View>
             <Pressable>
-              <Ionicons
-                name="ellipsis-vertical"
-                size={24}
-                color={Color.slate400}
-              />
+              <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
             </Pressable>
           </View>
           <Text
@@ -363,9 +332,7 @@ const NoteList = () => {
           </View>
         </BaseContainer>
         <BaseContainer color="white">
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View
               style={{
                 width: 28,
@@ -379,11 +346,7 @@ const NoteList = () => {
               <Image source={require("@/assets/images/goal/flip.png")} />
             </View>
             <Pressable>
-              <Ionicons
-                name="ellipsis-vertical"
-                size={24}
-                color={Color.slate400}
-              />
+              <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
             </Pressable>
           </View>
           <Text
@@ -428,7 +391,7 @@ const NoteList = () => {
         </BaseContainer>
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
-export default NoteList;
+export default NoteList

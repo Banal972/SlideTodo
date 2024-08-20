@@ -1,16 +1,17 @@
-import BaseContainer from "@/components/common/Container/BaseContainer";
-import BaseTitle from "@/components/page/dashboard/common/BaseTitle";
-import Color from "@/constant/color";
-import { Link } from "expo-router";
-import { View, Text, StyleSheet } from "react-native";
-import CheckList from "@/components/common/CheckList";
-import Process from "@/components/page/goal/Process";
-import useGetGoal from "@/hooks/goal/useGetGoal";
-import AddToDoBtn from "@/components/common/Button/AddToDoBtn";
-import NullText from "@/components/common/NullText";
+import { StyleSheet, Text, View } from "react-native"
+
+import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
+import CheckList from "@/components/common/CheckList"
+import BaseContainer from "@/components/common/Container/BaseContainer"
+import NullText from "@/components/common/NullText"
+import BaseTitle from "@/components/page/dashboard/common/BaseTitle"
+import Process from "@/components/page/goal/Process"
+import Color from "@/constant/color"
+import useGetGoal from "@/hooks/goal/useGetGoal"
+import { Link } from "expo-router"
 
 const GoalList = () => {
-  const { goals } = useGetGoal();
+  const { goals } = useGetGoal()
 
   return (
     <BaseContainer color="white" style={{ gap: 16 }}>
@@ -39,11 +40,7 @@ const GoalList = () => {
               {goal.todos.not.length > 0 ? (
                 <View style={styles.goalView}>
                   {goal.todos.not.map((todo) => (
-                    <CheckList
-                      docId={todo.id}
-                      key={todo.id}
-                      label={todo.title}
-                    />
+                    <CheckList docId={todo.id} key={todo.id} label={todo.title} />
                   ))}
                 </View>
               ) : (
@@ -56,12 +53,7 @@ const GoalList = () => {
               {goal.todos.done.length > 0 ? (
                 <View style={styles.goalView}>
                   {goal.todos.done.map((todo) => (
-                    <CheckList
-                      docId={todo.id}
-                      done={todo.done}
-                      key={todo.id}
-                      label={todo.title}
-                    />
+                    <CheckList docId={todo.id} done={todo.done} key={todo.id} label={todo.title} />
                   ))}
                 </View>
               ) : (
@@ -74,10 +66,10 @@ const GoalList = () => {
         <NullText>등록한 목표가 없어요</NullText>
       )}
     </BaseContainer>
-  );
-};
+  )
+}
 
-export default GoalList;
+export default GoalList
 
 const styles = StyleSheet.create({
   goalListCotanier: {
@@ -110,4 +102,4 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 12,
   },
-});
+})

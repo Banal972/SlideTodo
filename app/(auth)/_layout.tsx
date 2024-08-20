@@ -1,5 +1,6 @@
-import { Slot } from "expo-router";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native"
+
+import { Slot } from "expo-router"
 
 const AuthLayout = () => {
   return (
@@ -14,10 +15,10 @@ const AuthLayout = () => {
       </View>
       <Slot />
     </View>
-  );
-};
+  )
+}
 
-export default AuthLayout;
+export default AuthLayout
 
 const styles = StyleSheet.create({
   logo: {
@@ -32,4 +33,4 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 16,
   },
-});
+})

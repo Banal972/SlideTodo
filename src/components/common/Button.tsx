@@ -1,22 +1,23 @@
-import Color from "@/constant/color";
 import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
   GestureResponderEvent,
-} from "react-native";
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from "react-native"
+
+import Color from "@/constant/color"
 
 const Button = ({
   style,
   label,
   onPress,
 }: {
-  style?: StyleProp<ViewStyle>;
-  label: string;
-  onPress?: (event: GestureResponderEvent) => void;
+  style?: StyleProp<ViewStyle>
+  label: string
+  onPress?: (event: GestureResponderEvent) => void
 }) => {
   return (
     <Pressable onPress={onPress}>
@@ -24,10 +25,10 @@ const Button = ({
         <Text style={styles.buttonText}>{label}</Text>
       </View>
     </Pressable>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button
 
 const styles = StyleSheet.create({
   button: {
@@ -43,4 +44,4 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: "white",
   },
-});
+})

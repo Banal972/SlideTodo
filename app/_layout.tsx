@@ -1,12 +1,11 @@
-import SideMenu from "@/components/common/SideMenu";
-import TodoAddModal from "@/components/page/todo/TodoAddModal";
-import Color from "@/constant/color";
-import useNewTodoModalStore from "@/store/useNewTodoModalStore";
-
-import { Drawer } from "expo-router/drawer";
+import SideMenu from "@/components/common/SideMenu"
+import TodoAddModal from "@/components/page/todo/TodoAddModal"
+import Color from "@/constant/color"
+import useNewTodoModalStore from "@/store/useNewTodoModalStore"
+import { Drawer } from "expo-router/drawer"
 
 const RootLayout = () => {
-  const { newPostIsModal: isModal } = useNewTodoModalStore();
+  const { newPostIsModal: isModal } = useNewTodoModalStore()
 
   return (
     <>
@@ -49,7 +48,7 @@ const RootLayout = () => {
       </Drawer>
       <TodoAddModal isModal={isModal} />
     </>
-  );
-};
+  )
+}
 
-export default RootLayout;
+export default RootLayout

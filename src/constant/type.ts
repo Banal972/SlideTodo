@@ -11,4 +11,4 @@ export const todoType = [
     key: "done",
     value: "Done",
   },
-];
+]

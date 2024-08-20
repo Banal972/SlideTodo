@@ -1,6 +1,7 @@
-import Color from "@/constant/color";
-import { ReactNode } from "react";
-import { Text } from "react-native";
+import { ReactNode } from "react"
+import { Text } from "react-native"
+
+import Color from "@/constant/color"
 
 const NullText = ({ children }: { children: ReactNode }) => {
   return (
@@ -15,7 +16,7 @@ const NullText = ({ children }: { children: ReactNode }) => {
     >
       {children}
     </Text>
-  );
-};
+  )
+}
 
-export default NullText;
+export default NullText

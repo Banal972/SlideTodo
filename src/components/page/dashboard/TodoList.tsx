@@ -1,12 +1,13 @@
-import { View, StyleSheet, Text } from "react-native";
-import BaseContainer from "@/components/common/Container/BaseContainer";
-import BaseTitle from "@/components/page/dashboard/common/BaseTitle";
-import CheckList from "@/components/common/CheckList";
-import useGetTodo from "@/hooks/todo/useGetTodo";
-import NullText from "@/components/common/NullText";
+import { StyleSheet, View } from "react-native"
+
+import CheckList from "@/components/common/CheckList"
+import BaseContainer from "@/components/common/Container/BaseContainer"
+import NullText from "@/components/common/NullText"
+import BaseTitle from "@/components/page/dashboard/common/BaseTitle"
+import useGetTodo from "@/hooks/todo/useGetTodo"
 
 const TodoList = () => {
-  const { todos } = useGetTodo({});
+  const { todos } = useGetTodo({})
 
   return (
     <BaseContainer color="white">
@@ -21,26 +22,21 @@ const TodoList = () => {
       {todos.length > 0 ? (
         <View style={styles.todoList}>
           {todos.map((todo) => (
-            <CheckList
-              docId={todo.id}
-              done={todo.done}
-              key={todo.id}
-              label={todo.title}
-            />
+            <CheckList docId={todo.id} done={todo.done} key={todo.id} label={todo.title} />
           ))}
         </View>
       ) : (
         <NullText>최근에 등록한 할 일이 없어요</NullText>
       )}
     </BaseContainer>
-  );
-};
+  )
+}
 
-export default TodoList;
+export default TodoList
 
 const styles = StyleSheet.create({
   todoList: {
     marginTop: 16,
     gap: 8,
   },
-});
+})

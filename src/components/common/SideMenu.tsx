@@ -1,16 +1,5 @@
-import Input from "@/components/common/Input";
-import Color from "@/constant/color";
-import useGetGoalList from "@/hooks/goal/useGetGoalList";
-import useGetUser from "@/hooks/useGetUser";
-import useNewTodoModalStore from "@/store/useNewTodoModalStore";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types";
-import { Link, useRouter } from "expo-router";
-import { signOut } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
-import { auth, db } from "firebaseConfig";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
 import {
   Alert,
   Image,
@@ -20,24 +9,36 @@ import {
   StyleSheet,
   Text,
   View,
-} from "react-native";
+} from "react-native"
+
+import Input from "@/components/common/Input"
+import Color from "@/constant/color"
+import useGetGoalList from "@/hooks/goal/useGetGoalList"
+import useGetUser from "@/hooks/useGetUser"
+import useNewTodoModalStore from "@/store/useNewTodoModalStore"
+import Ionicons from "@expo/vector-icons/Ionicons"
+import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types"
+import { Link, useRouter } from "expo-router"
+import { signOut } from "firebase/auth"
+import { addDoc, collection } from "firebase/firestore"
+import { auth, db } from "firebaseConfig"
 
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
-  const router = useRouter();
-  const { control, handleSubmit, setValue } = useForm();
-  const { user } = useGetUser();
-  const { open: newModalOpenHandler } = useNewTodoModalStore();
-  const { goalLists } = useGetGoalList();
-  const [isGoalInput, setIsGoalInput] = useState(false);
+  const router = useRouter()
+  const { control, handleSubmit, setValue } = useForm()
+  const { user } = useGetUser()
+  const { open: newModalOpenHandler } = useNewTodoModalStore()
+  const { goalLists } = useGetGoalList()
+  const [isGoalInput, setIsGoalInput] = useState(false)
 
   const isGoalHandler = () => {
-    setIsGoalInput(!isGoalInput);
-  };
+    setIsGoalInput(!isGoalInput)
+  }
 
   const addGoalHanlder = async (data: any) => {
-    const { goal } = data;
+    const { goal } = data
 
-    if (!user || !goal) return;
+    if (!user || !goal) return
 
     try {
       await addDoc(collection(db, "goals"), {
@@ -45,13 +46,13 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
         title: goal,
         todos: [],
         createDate: new Date(),
-      });
-      setValue("goal", "");
-      setIsGoalInput(false);
+      })
+      setValue("goal", "")
+      setIsGoalInput(false)
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-  };
+  }
 
   const logoutHandler = () => {
     Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
@@ -60,18 +61,18 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
         onPress: () => {
           signOut(auth)
             .then(() => {
-              router.push("/");
+              router.push("/")
             })
             .catch((error) => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         },
       },
       {
         text: "아니요",
       },
-    ]);
-  };
+    ])
+  }
 
   return (
     <SafeAreaView
@@ -96,7 +97,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
           <Image source={require("@/assets/images/sideMenu/logo.png")} />
           <Pressable
             onPress={() => {
-              navigation.closeDrawer();
+              navigation.closeDrawer()
             }}
           >
             <Image source={require("@/assets/images/sideMenu/fold.png")} />
@@ -189,9 +190,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             style={[styles.listBtn, { backgroundColor: Color.blue500 }]}
             onPress={newModalOpenHandler}
           >
-            <Text style={[styles.listBtnText, { color: "white" }]}>
-              + 새 할 일
-            </Text>
+            <Text style={[styles.listBtnText, { color: "white" }]}>+ 새 할 일</Text>
           </Pressable>
         </View>
         <View
@@ -265,11 +264,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             }}
           >
             {goalLists.map((goalList) => (
-              <Link
-                key={goalList.id}
-                style={styles.listTitle}
-                href={`/goal/${goalList.id}`}
-              >
+              <Link key={goalList.id} style={styles.listTitle} href={`/goal/${goalList.id}`}>
                 · {goalList.title}
               </Link>
             ))}
@@ -277,10 +272,10 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
         </View>
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-export default SideMenu;
+export default SideMenu
 
 const styles = StyleSheet.create({
   listBtnContainer: {
@@ -303,4 +298,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
   },
-});
+})

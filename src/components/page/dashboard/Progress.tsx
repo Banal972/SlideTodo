@@ -1,6 +1,7 @@
-import { View, Text, ImageBackground, Image, StyleSheet } from "react-native";
-import React from "react";
-import Color from "@/constant/color";
+import React from "react"
+import { Image, ImageBackground, StyleSheet, Text, View } from "react-native"
+
+import Color from "@/constant/color"
 
 const Progress = () => {
   return (
@@ -21,10 +22,10 @@ const Progress = () => {
         </View>
       </View>
     </ImageBackground>
-  );
-};
+  )
+}
 
-export default Progress;
+export default Progress
 
 const styles = StyleSheet.create({
   background: {
@@ -64,4 +65,4 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "white",
   },
-});
+})

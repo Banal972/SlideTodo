@@ -1,29 +1,30 @@
-import getAllTodo from "@/api/todo/getAllTodo";
-import { todoType } from "@/types/todo";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+
+import getAllTodo from "@/api/todo/getAllTodo"
+import { todoType } from "@/types/todo"
 
 const useGetTodo = ({ lmt }: { lmt?: number }) => {
-  const [type, setType] = useState("all");
-  const [todos, setTodos] = useState<todoType[]>([]);
+  const [type, setType] = useState("all")
+  const [todos, setTodos] = useState<todoType[]>([])
 
   useEffect(() => {
     const fetch = async () => {
       switch (type) {
         case "all":
-          setTodos(await getAllTodo({}));
-          break;
+          setTodos(await getAllTodo({}))
+          break
         case "todo":
-          setTodos(await getAllTodo({ type: "todo" }));
-          break;
+          setTodos(await getAllTodo({ type: "todo" }))
+          break
         case "done":
-          setTodos(await getAllTodo({ type: "done" }));
-          break;
+          setTodos(await getAllTodo({ type: "done" }))
+          break
       }
-    };
-    fetch();
-  }, [type]);
+    }
+    fetch()
+  }, [type])
 
-  return { todos, type, setType };
-};
+  return { todos, type, setType }
+}
 
-export default useGetTodo;
+export default useGetTodo

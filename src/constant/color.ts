@@ -23,6 +23,6 @@ const Color = {
   blue950: "#172554",
   orange100: "#FFEDD5",
   orange500: "#F97316",
-};
+}
 
-export default Color;
+export default Color

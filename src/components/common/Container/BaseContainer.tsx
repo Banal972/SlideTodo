@@ -1,23 +1,19 @@
-import { View, StyleSheet, ViewStyle, StyleProp } from "react-native";
-import { ReactNode } from "react";
+import { ReactNode } from "react"
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native"
 
 const BaseContainer = ({
   children,
   color,
   style,
 }: {
-  children?: ReactNode;
-  color?: string;
-  style?: StyleProp<ViewStyle>;
+  children?: ReactNode
+  color?: string
+  style?: StyleProp<ViewStyle>
 }) => {
-  return (
-    <View style={[{ backgroundColor: color }, styles.baseContainer, style]}>
-      {children}
-    </View>
-  );
-};
+  return <View style={[{ backgroundColor: color }, styles.baseContainer, style]}>{children}</View>
+}
 
-export default BaseContainer;
+export default BaseContainer
 
 const styles = StyleSheet.create({
   baseContainer: {
@@ -25,4 +21,4 @@ const styles = StyleSheet.create({
     padding: 16,
     overflow: "hidden",
   },
-});
+})

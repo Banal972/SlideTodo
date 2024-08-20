@@ -1,29 +1,22 @@
-import Color from "@/constant/color";
-import Checkbox from "expo-checkbox";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "firebaseConfig";
-import { useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { useState } from "react"
+import { Pressable, StyleSheet, Text, View } from "react-native"
 
-const CheckList = ({
-  done,
-  label,
-  docId,
-}: {
-  done?: boolean;
-  label: string;
-  docId: string;
-}) => {
-  const [isChecked, setIsChecked] = useState(done);
+import Color from "@/constant/color"
+import Checkbox from "expo-checkbox"
+import { doc, setDoc } from "firebase/firestore"
+import { db } from "firebaseConfig"
+
+const CheckList = ({ done, label, docId }: { done?: boolean; label: string; docId: string }) => {
+  const [isChecked, setIsChecked] = useState(done)
 
   const checkPressHanlder = async () => {
     try {
-      setDoc(doc(db, "todos", docId), { done: !isChecked }, { merge: true });
-      setIsChecked(!isChecked);
+      setDoc(doc(db, "todos", docId), { done: !isChecked }, { merge: true })
+      setIsChecked(!isChecked)
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-  };
+  }
 
   return (
     <Pressable onPress={checkPressHanlder} style={styles.listFlex}>
@@ -32,17 +25,12 @@ const CheckList = ({
         color={isChecked ? Color.blue500 : undefined}
         style={styles.todoListCheckbox}
       />
-      <Text
-        style={[
-          styles.listText,
-          isChecked && { textDecorationLine: "line-through" },
-        ]}
-      >
+      <Text style={[styles.listText, isChecked && { textDecorationLine: "line-through" }]}>
         {label}
       </Text>
     </Pressable>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   listFlex: {
@@ -59,6 +47,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-});
+})
 
-export default CheckList;
+export default CheckList

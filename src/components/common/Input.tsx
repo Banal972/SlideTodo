@@ -1,4 +1,3 @@
-import Color from "@/constant/color";
 import {
   NativeSyntheticEvent,
   ReturnKeyTypeOptions,
@@ -6,7 +5,9 @@ import {
   TextInput,
   TextInputFocusEventData,
   TextInputSubmitEditingEventData,
-} from "react-native";
+} from "react-native"
+
+import Color from "@/constant/color"
 
 const Input = ({
   placeholder,
@@ -17,15 +18,13 @@ const Input = ({
   returnKeyType,
   onSubmitEditing,
 }: {
-  onBlur?: (event: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-  onChangeText?: (text: string) => void;
-  value?: string;
-  placeholder: string;
-  secureTextEntry?: boolean;
-  returnKeyType?: ReturnKeyTypeOptions | undefined;
-  onSubmitEditing?: (
-    e: NativeSyntheticEvent<TextInputSubmitEditingEventData>
-  ) => void;
+  onBlur?: (event: NativeSyntheticEvent<TextInputFocusEventData>) => void
+  onChangeText?: (text: string) => void
+  value?: string
+  placeholder: string
+  secureTextEntry?: boolean
+  returnKeyType?: ReturnKeyTypeOptions | undefined
+  onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void
 }) => {
   return (
     <TextInput
@@ -38,10 +37,10 @@ const Input = ({
       onSubmitEditing={onSubmitEditing}
       returnKeyType={returnKeyType}
     />
-  );
-};
+  )
+}
 
-export default Input;
+export default Input
 
 const styles = StyleSheet.create({
   textInput: {
@@ -53,4 +52,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 12,
   },
-});
+})

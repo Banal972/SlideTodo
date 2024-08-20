@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet } from "react-native";
-import React from "react";
-import Color from "@/constant/color";
+import React from "react"
+import { StyleSheet, Text, View } from "react-native"
+
+import Color from "@/constant/color"
 
 const Process = () => {
   return (
@@ -10,10 +11,10 @@ const Process = () => {
       </View>
       <Text style={styles.processPercent}>64%</Text>
     </View>
-  );
-};
+  )
+}
 
-export default Process;
+export default Process
 
 const styles = StyleSheet.create({
   processContainer: {
@@ -47,4 +48,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
   },
-});
+})
