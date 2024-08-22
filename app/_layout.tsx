@@ -41,7 +41,7 @@ const RootLayout = () => {
           }}
         />
         <Drawer.Screen
-          name="note/post/[slug]"
+          name="note/post/[...slug]"
           options={{
             title: "",
           }}
