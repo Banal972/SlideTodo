@@ -1,12 +1,15 @@
 import SideMenu from "@/components/common/SideMenu"
+import NoteDetailModal from "@/components/page/note/DetailModal"
 import TodoAddModal from "@/components/page/todo/TodoAddModal"
 import Color from "@/constant/color"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
+import useNoteDetailModalStore from "@/store/useNoteDetailModalStore"
 import { Drawer } from "expo-router/drawer"
 import { StatusBar } from "expo-status-bar"
 
 const RootLayout = () => {
   const { newPostIsModal: isModal } = useNewTodoModalStore()
+  const { isModal: noteIsModal } = useNoteDetailModalStore()
 
   return (
     <>
@@ -54,6 +57,7 @@ const RootLayout = () => {
         />
       </Drawer>
       <TodoAddModal isModal={isModal} />
+      <NoteDetailModal isModal={noteIsModal} />
       <StatusBar style="dark" />
     </>
   )
