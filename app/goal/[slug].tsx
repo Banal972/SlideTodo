@@ -1,94 +1,28 @@
-import React, { useEffect, useState } from "react"
 import { Image, Pressable, Text, View } from "react-native"
 
 import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
 import CheckList from "@/components/common/CheckList"
 import BaseContainer from "@/components/common/Container/BaseContainer"
+import NullText from "@/components/common/NullText"
 import Process from "@/components/page/goal/Process"
 import Color from "@/constant/color"
-import useGetUser from "@/hooks/useGetUser"
+import useGetGoalDetail from "@/hooks/goal/useGetGoalDetail"
 import useNoteNameStore from "@/store/useNoteStore"
-import { goalType } from "@/types/goal"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useLocalSearchParams, useRouter } from "expo-router"
-import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore"
-import { db } from "firebaseConfig"
 
 const GoalDetail = () => {
   const { changeName } = useNoteNameStore()
   const { slug } = useLocalSearchParams<{ slug: string }>()
   const router = useRouter()
-  const [goalData, setGoalData] = useState<goalType | null>(null)
-  const { user } = useGetUser()
+
+  const { goalData } = useGetGoalDetail({ slug })
 
   const noteDetailHandler = () => {
     if (!goalData) return
     changeName(goalData.title)
     router.push(`/note/list/${slug}`)
   }
-
-  useEffect(() => {
-    const fetch = async () => {
-      const documentId = slug
-      const docRef = doc(db, "goals", documentId)
-      const docSnap = await getDoc(docRef)
-
-      if (docSnap.exists()) {
-        const { title, createDate } = docSnap.data()
-
-        const todosDoneQuery = query(
-          collection(db, "todos"),
-          where("goal_ID", "==", docSnap.id),
-          where("done", "==", true),
-          orderBy("createDate", "desc"),
-        )
-
-        const todosNotDoneQuery = query(
-          collection(db, "todos"),
-          where("goal_ID", "==", docSnap.id),
-          where("done", "==", false),
-          orderBy("createDate", "desc"),
-        )
-
-        const [todoDoneSnapShot, todoNotDoneSnapShot] = await Promise.all([
-          getDocs(todosDoneQuery),
-          getDocs(todosNotDoneQuery),
-        ])
-
-        const goal = {
-          title: title,
-          todos: {
-            done: todoDoneSnapShot.docs.map((doc) => {
-              const { title, createDate, goal_ID, done } = doc.data()
-              return {
-                title,
-                createDate,
-                done,
-                goal_ID,
-                id: doc.id,
-              }
-            }),
-            not: todoNotDoneSnapShot.docs.map((doc) => {
-              const { title, createDate, goal_ID, done } = doc.data()
-              return {
-                title,
-                createDate,
-                done,
-                goal_ID,
-                id: doc.id,
-              }
-            }),
-          },
-          createDate: createDate,
-          id: docSnap.id,
-        }
-        setGoalData(goal)
-      } else {
-        setGoalData(null)
-      }
-    }
-    fetch()
-  }, [slug, user])
 
   return (
     <View style={{ padding: 16, gap: 16 }}>
@@ -169,17 +103,7 @@ const GoalDetail = () => {
               ))}
             </>
           ) : (
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 14,
-                color: Color.slate500,
-                paddingTop: 30,
-                paddingBottom: 60,
-              }}
-            >
-              최근에 등록한 할 일이 없어요
-            </Text>
+            <NullText>최근에 등록한 할 일이 없어요</NullText>
           )}
         </View>
       </BaseContainer>
@@ -206,17 +130,7 @@ const GoalDetail = () => {
               ))}
             </>
           ) : (
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 14,
-                color: Color.slate500,
-                paddingTop: 30,
-                paddingBottom: 60,
-              }}
-            >
-              등록한 목표가 없어요
-            </Text>
+            <NullText>등록한 목표가 없어요</NullText>
           )}
         </View>
       </BaseContainer>

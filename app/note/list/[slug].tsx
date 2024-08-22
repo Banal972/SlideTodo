@@ -1,87 +1,20 @@
-import { useEffect, useState } from "react"
 import { Image, Pressable, ScrollView, Text, View } from "react-native"
 
 import BaseContainer from "@/components/common/Container/BaseContainer"
 import Color from "@/constant/color"
-import useGetUser from "@/hooks/useGetUser"
+import useGetNoteList from "@/hooks/note/useGetNoteList"
 import useNoteDetailModalStore, { openType } from "@/store/useNoteDetailModalStore"
 import useNoteNameStore from "@/store/useNoteStore"
-import { noteType } from "@/types/note"
 import Ionicons from "@expo/vector-icons/Ionicons"
-import dayjs from "dayjs"
 import { useLocalSearchParams } from "expo-router"
-import {
-  Unsubscribe,
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore"
-import { db } from "firebaseConfig"
 
 const NoteList = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>()
   const { name } = useNoteNameStore()
-  const { user } = useGetUser()
-  const [noteList, setNoteList] = useState<noteType[]>([])
+  const { noteList } = useGetNoteList({ slug })
   const { open } = useNoteDetailModalStore()
 
-  useEffect(() => {
-    let unsubscribe: Unsubscribe | null = null
-
-    const fetch = async () => {
-      if (!user) return []
-
-      const q = query(
-        collection(db, "notes"),
-        where("goal_ID", "==", slug),
-        orderBy("createDate", "desc"),
-      )
-
-      // const querySnapShot = await getDocs(q)
-
-      unsubscribe = await onSnapshot(q, async (snapshot) => {
-        const noteListPromises = snapshot.docs.map(async (docx) => {
-          const { title, content, createDate, todo_ID } = docx.data()
-
-          const docSnap = await getDoc(doc(db, "todos", todo_ID))
-          if (docSnap.exists()) {
-            const docData = docSnap.data()
-
-            return {
-              title,
-              content,
-              todoTitle: docData.title,
-              todoCreateDate: dayjs.unix(docData.createDate.seconds).format("YYYY.MM.DD"),
-              createDate,
-              id: docx.id,
-            }
-          }
-
-          return {
-            title,
-            content,
-            todoTitle: "",
-            todoCreateDate: "",
-            createDate,
-            id: docx.id,
-          }
-        })
-
-        const noteList = await Promise.all(noteListPromises)
-        setNoteList(noteList)
-      })
-    }
-
-    fetch()
-  }, [slug, user])
-
   const detailHandler = ({ goalTitle, todoTitle, id, date }: openType) => {
-    const dateString = date
-
     open({ goalTitle, todoTitle, id, date })
   }
 
