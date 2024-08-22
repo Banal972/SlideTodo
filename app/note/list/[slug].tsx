@@ -10,7 +10,16 @@ import { noteType } from "@/types/note"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import dayjs from "dayjs"
 import { useLocalSearchParams } from "expo-router"
-import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore"
+import {
+  Unsubscribe,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore"
 import { db } from "firebaseConfig"
 
 const NoteList = () => {
@@ -21,6 +30,8 @@ const NoteList = () => {
   const { open } = useNoteDetailModalStore()
 
   useEffect(() => {
+    let unsubscribe: Unsubscribe | null = null
+
     const fetch = async () => {
       if (!user) return []
 
@@ -30,37 +41,39 @@ const NoteList = () => {
         orderBy("createDate", "desc"),
       )
 
-      const querySnapShot = await getDocs(q)
+      // const querySnapShot = await getDocs(q)
 
-      const noteListPromises = querySnapShot.docs.map(async (docx) => {
-        const { title, content, createDate, todo_ID } = docx.data()
+      unsubscribe = await onSnapshot(q, async (snapshot) => {
+        const noteListPromises = snapshot.docs.map(async (docx) => {
+          const { title, content, createDate, todo_ID } = docx.data()
 
-        const docSnap = await getDoc(doc(db, "todos", todo_ID))
-        if (docSnap.exists()) {
-          const docData = docSnap.data()
+          const docSnap = await getDoc(doc(db, "todos", todo_ID))
+          if (docSnap.exists()) {
+            const docData = docSnap.data()
+
+            return {
+              title,
+              content,
+              todoTitle: docData.title,
+              todoCreateDate: dayjs.unix(docData.createDate.seconds).format("YYYY.MM.DD"),
+              createDate,
+              id: docx.id,
+            }
+          }
 
           return {
             title,
             content,
-            todoTitle: docData.title,
-            todoCreateDate: dayjs.unix(docData.createDate.seconds).format("YYYY.MM.DD"),
+            todoTitle: "",
+            todoCreateDate: "",
             createDate,
             id: docx.id,
           }
-        }
+        })
 
-        return {
-          title,
-          content,
-          todoTitle: "",
-          todoCreateDate: "",
-          createDate,
-          id: docx.id,
-        }
+        const noteList = await Promise.all(noteListPromises)
+        setNoteList(noteList)
       })
-
-      const noteList = await Promise.all(noteListPromises)
-      setNoteList(noteList)
     }
 
     fetch()
