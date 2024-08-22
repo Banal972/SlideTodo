@@ -1,4 +1,4 @@
-import { Image, Pressable, ScrollView, Text, View } from "react-native"
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
 
 import BaseContainer from "@/components/common/Container/BaseContainer"
 import Color from "@/constant/color"
@@ -19,8 +19,8 @@ const NoteList = () => {
   }
 
   return (
-    <ScrollView>
-      <View style={{ gap: 16, padding: 16 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={{ gap: 16, padding: 16, flex: 1 }}>
         <BaseContainer color="white">
           <View
             style={{
@@ -55,81 +55,99 @@ const NoteList = () => {
           </View>
         </BaseContainer>
 
-        {noteList.map((note) => (
-          <Pressable
-            key={note.id}
-            onPress={() =>
-              detailHandler({
-                goalTitle: name,
-                todoTitle: note.todoTitle,
-                id: note.id,
-                date: note.todoCreateDate,
-              })
-            }
-          >
-            <BaseContainer color="white">
-              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <View
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 8,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: Color.blue100,
-                  }}
-                >
-                  <Image source={require("@/assets/images/goal/flip.png")} />
+        {noteList.length > 0 ? (
+          noteList.map((note) => (
+            <Pressable
+              key={note.id}
+              onPress={() =>
+                detailHandler({
+                  goalTitle: name,
+                  todoTitle: note.todoTitle,
+                  id: note.id,
+                  date: note.todoCreateDate,
+                })
+              }
+            >
+              <BaseContainer color="white">
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                  <View
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 8,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: Color.blue100,
+                    }}
+                  >
+                    <Image source={require("@/assets/images/goal/flip.png")} />
+                  </View>
+                  <Pressable>
+                    <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
+                  </Pressable>
                 </View>
-                <Pressable>
-                  <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
-                </Pressable>
-              </View>
-              <Text
-                style={{
-                  marginTop: 16,
-                  fontSize: 18,
-                  fontWeight: "500",
-                  color: Color.slate800,
-                }}
-              >
-                {note.title}
-              </Text>
-              <View
-                style={{
-                  marginVertical: 12,
-                  height: 1,
-                  width: "100%",
-                  backgroundColor: Color.slate200,
-                }}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 8,
-                  alignItems: "center",
-                }}
-              >
                 <Text
                   style={{
-                    backgroundColor: Color.slate100,
-                    paddingHorizontal: 3,
-                    paddingVertical: 2,
-                    borderRadius: 4,
-                    fontSize: 12,
+                    marginTop: 16,
+                    fontSize: 18,
                     fontWeight: "500",
+                    color: Color.slate800,
                   }}
                 >
-                  To do
+                  {note.title}
                 </Text>
-                <Text style={{ fontSize: 12, color: Color.slate700 }}>{note.todoTitle}</Text>
-              </View>
-            </BaseContainer>
-          </Pressable>
-        ))}
+                <View
+                  style={{
+                    marginVertical: 12,
+                    height: 1,
+                    width: "100%",
+                    backgroundColor: Color.slate200,
+                  }}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 8,
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      backgroundColor: Color.slate100,
+                      paddingHorizontal: 3,
+                      paddingVertical: 2,
+                      borderRadius: 4,
+                      fontSize: 12,
+                      fontWeight: "500",
+                    }}
+                  >
+                    To do
+                  </Text>
+                  <Text style={{ fontSize: 12, color: Color.slate700 }}>{note.todoTitle}</Text>
+                </View>
+              </BaseContainer>
+            </Pressable>
+          ))
+        ) : (
+          <View style={styles.nullTextContainer}>
+            <Text style={styles.nullText}>아직 등록된 노트가 없어요</Text>
+          </View>
+        )}
       </View>
     </ScrollView>
   )
 }
 
 export default NoteList
+
+const styles = StyleSheet.create({
+  nullTextContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  nullText: {
+    color: Color.slate500,
+    fontSize: 14,
+  },
+})

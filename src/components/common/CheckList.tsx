@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
@@ -22,7 +22,7 @@ const CheckList = ({
   const router = useRouter()
   const { changeName } = useNotePostStore()
 
-  const [isChecked, setIsChecked] = useState(done)
+  const [isChecked, setIsChecked] = useState(false)
 
   const checkPressHanlder = async () => {
     try {
@@ -37,6 +37,11 @@ const CheckList = ({
     changeName({ todoName: label })
     router.push(`/note/post/${goal_ID}/${docId}`)
   }
+
+  useEffect(() => {
+    if (!done) return
+    setIsChecked(done)
+  }, [done])
 
   return (
     <View style={styles.listFlex}>

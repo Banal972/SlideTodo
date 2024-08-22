@@ -120,16 +120,22 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
               gap: 8,
             }}
           >
-            <ImageBackground src={user?.photoURL || ""} resizeMode="cover">
-              <View
-                style={{
-                  width: 42,
-                  height: 42,
-                  borderRadius: 6,
-                  backgroundColor: Color.blue50,
-                }}
-              ></View>
-            </ImageBackground>
+            <View
+              style={{
+                width: 42,
+                height: 42,
+                borderRadius: 6,
+                backgroundColor: Color.blue50,
+                position: "relative",
+              }}
+            >
+              <ImageBackground
+                source={require("@/assets/images/userImage.png")}
+                style={{ width: "100%", height: "100%" }}
+                resizeMode="cover"
+              />
+            </View>
+
             <View>
               <Text
                 style={{

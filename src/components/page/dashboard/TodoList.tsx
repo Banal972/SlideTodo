@@ -7,8 +7,7 @@ import BaseTitle from "@/components/page/dashboard/common/BaseTitle"
 import useGetTodo from "@/hooks/todo/useGetTodo"
 
 const TodoList = () => {
-  const { todos } = useGetTodo({})
-
+  const { todos } = useGetTodo({ lmt: 10 })
   return (
     <BaseContainer color="white">
       <BaseTitle

@@ -1,8 +1,17 @@
+import { useEffect } from "react"
 import { Image, StyleSheet, View } from "react-native"
 
-import { Slot } from "expo-router"
+import useGetUser from "@/hooks/useGetUser"
+import { Slot, useRouter } from "expo-router"
 
 const AuthLayout = () => {
+  const { user } = useGetUser()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (user) router.push("/dashboard")
+  }, [user])
+
   return (
     <View style={styles.container}>
       <View

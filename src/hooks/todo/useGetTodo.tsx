@@ -11,13 +11,13 @@ const useGetTodo = ({ lmt }: { lmt?: number }) => {
     const fetch = async () => {
       switch (type) {
         case "all":
-          setTodos(await getAllTodo({}))
+          setTodos(await getAllTodo({ lmt }))
           break
         case "todo":
-          setTodos(await getAllTodo({ type: "todo" }))
+          setTodos(await getAllTodo({ type: "todo", lmt }))
           break
         case "done":
-          setTodos(await getAllTodo({ type: "done" }))
+          setTodos(await getAllTodo({ type: "done", lmt }))
           break
       }
     }
