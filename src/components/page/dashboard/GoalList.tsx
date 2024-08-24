@@ -1,47 +1,15 @@
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 
 import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
-import CheckList from "@/components/common/CheckList"
 import BaseContainer from "@/components/common/Container/BaseContainer"
 import NullText from "@/components/common/NullText"
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle"
 import Process from "@/components/page/goal/Process"
+import TodoDoneList from "@/components/page/goal/TodoDoneList"
+import TodoList from "@/components/page/goal/TodoList"
 import Color from "@/constant/color"
 import { useGetGoalList } from "@/hooks/goal/useGetGoalList"
-import { useGetTodos } from "@/hooks/todo/useGetTodos"
 import { Link } from "expo-router"
-
-const TodoList = ({ id }: { id: number }) => {
-  const { data } = useGetTodos({ goalId: id, done: false })
-
-  if (!data) return null
-
-  return data.todos.length > 0 ? (
-    <View style={styles.goalView}>
-      {data.todos.map((todo) => (
-        <CheckList key={todo.id} label={todo.title} done={todo.done} />
-      ))}
-    </View>
-  ) : (
-    <NullText>최근에 등록한 할 일이 없어요</NullText>
-  )
-}
-
-const TodoDoneList = ({ id }: { id: number }) => {
-  const { data } = useGetTodos({ goalId: id, done: true })
-
-  if (!data) return null
-
-  return data.todos.length > 0 ? (
-    <View style={styles.goalView}>
-      {data.todos.map((todo) => (
-        <CheckList key={todo.id} label={todo.title} done={todo.done} />
-      ))}
-    </View>
-  ) : (
-    <NullText>최근에 등록한 할 일이 없어요</NullText>
-  )
-}
 
 const GoalList = () => {
   const { goalLists } = useGetGoalList({ cursor: 1 })
@@ -113,10 +81,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     fontWeight: "600",
-  },
-  goalView: {
-    flexDirection: "column",
-    gap: 8,
-    marginTop: 12,
   },
 })

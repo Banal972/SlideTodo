@@ -1,14 +1,14 @@
 import { Image, Pressable, Text, View } from "react-native"
 
 import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
-import CheckList from "@/components/common/CheckList"
 import BaseContainer from "@/components/common/Container/BaseContainer"
-import NullText from "@/components/common/NullText"
 import Process from "@/components/page/goal/Process"
+import TodoDoneList from "@/components/page/goal/TodoDoneList"
+import TodoList from "@/components/page/goal/TodoList"
 import Color from "@/constant/color"
 import { useGetGoalDetail } from "@/hooks/goal/useGetGoalDetail"
 import Ionicons from "@expo/vector-icons/Ionicons"
-import { useLocalSearchParams, useRouter } from "expo-router"
+import { Link, useLocalSearchParams, useRouter } from "expo-router"
 
 const GoalDetail = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>()
@@ -16,11 +16,6 @@ const GoalDetail = () => {
   const { data } = useGetGoalDetail({ goalId: slug })
 
   const router = useRouter()
-
-  /* const noteDetailHandler = () => {
-    if (!data) return
-    router.push(`/note/list/${slug}`)
-  } */
 
   return (
     <View style={{ padding: 16, gap: 16 }}>
@@ -58,11 +53,12 @@ const GoalDetail = () => {
           <Process />
         </View>
       </BaseContainer>
-      <Pressable>
-        <BaseContainer
-          color={Color.blue100}
-          style={{ flexDirection: "row", justifyContent: "space-between" }}
-        >
+
+      <BaseContainer
+        color={Color.blue100}
+        style={{ flexDirection: "row", justifyContent: "space-between" }}
+      >
+        <Link href={`/note/list/${slug}`}>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
             <Image source={require("@/assets/images/goal/note.png")} />
             <Text
@@ -76,9 +72,10 @@ const GoalDetail = () => {
             </Text>
           </View>
           <Ionicons name="chevron-forward" size={24} color={Color.slate600} />
-        </BaseContainer>
-      </Pressable>
-      {/* <BaseContainer color="white">
+        </Link>
+      </BaseContainer>
+
+      <BaseContainer color="white">
         <View
           style={{
             flexDirection: "row",
@@ -89,22 +86,10 @@ const GoalDetail = () => {
           <AddToDoBtn />
         </View>
         <View style={{ gap: 8, marginTop: 16 }}>
-          {goalData && goalData.todos.not.length > 0 ? (
-            <>
-              {goalData.todos.not.map((todo) => (
-                <CheckList
-                  goal_ID={todo.goal_ID}
-                  docId={todo.id}
-                  key={todo.id}
-                  label={todo.title}
-                />
-              ))}
-            </>
-          ) : (
-            <NullText>최근에 등록한 할 일이 없어요</NullText>
-          )}
+          <TodoList id={Number(slug)} />
         </View>
       </BaseContainer>
+
       <BaseContainer color={Color.slate200}>
         <View
           style={{
@@ -115,23 +100,9 @@ const GoalDetail = () => {
           <Text style={{ fontSize: 18, fontWeight: "bold", color: Color.slate800 }}>Done</Text>
         </View>
         <View style={{ gap: 8, marginTop: 16 }}>
-          {goalData && goalData.todos.done.length > 0 ? (
-            <>
-              {goalData.todos.done.map((todo) => (
-                <CheckList
-                  goal_ID={todo.goal_ID}
-                  docId={todo.id}
-                  done={todo.done}
-                  key={todo.id}
-                  label={todo.title}
-                />
-              ))}
-            </>
-          ) : (
-            <NullText>등록한 목표가 없어요</NullText>
-          )}
+          <TodoDoneList id={Number(slug)} />
         </View>
-      </BaseContainer> */}
+      </BaseContainer>
     </View>
   )
 }

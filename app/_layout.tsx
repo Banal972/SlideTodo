@@ -48,6 +48,8 @@ export default function RootLayout() {
         />
         <Drawer.Screen name="dashboard/index" />
         <Drawer.Screen name="alltodo/index" />
+        <Drawer.Screen name="goal/[slug]" />
+        <Drawer.Screen name="note/list/[slug]" />
       </Drawer>
     </QueryClientProvider>
   )
