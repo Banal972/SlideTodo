@@ -23,7 +23,7 @@ interface goalListRequest {
 }
 
 export const useGetGoalList = ({ cursor, size, sortOrder }: goalListRequest) => {
-  const { data: goalLists, isLoading } = useQuery({
+  const { data: goalLists, isLoading } = useQuery<goalListType>({
     queryKey: ["goalList"],
     queryFn: async () => {
       try {
@@ -37,6 +37,9 @@ export const useGetGoalList = ({ cursor, size, sortOrder }: goalListRequest) => 
       }
     },
   })
+
+  console.log(goalLists)
+
   return {
     goalLists,
     isLoading,

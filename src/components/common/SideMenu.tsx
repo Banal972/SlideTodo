@@ -25,10 +25,10 @@ import { Link, useRouter } from "expo-router"
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   const router = useRouter()
   const { user } = useGetUser()
-  const { control, handleSubmit, setValue } = useForm()
+  const { control, handleSubmit } = useForm()
   const { open: newModalOpenHandler } = useNewTodoModalStore()
   const [isGoalInput, setIsGoalInput] = useState(false)
-  const { goalLists, isLoading } = useGetGoalList({ cursor: 1 })
+  const { goalLists } = useGetGoalList({ cursor: 1 })
 
   const { goalPostMutation } = PostGoalLists()
 
@@ -232,7 +232,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             </View>
           )}
 
-          <View
+          {/* <View
             style={{
               marginTop: 20,
               gap: 20,
@@ -244,7 +244,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
                   · {goalList.title}
                 </Link>
               ))}
-          </View>
+          </View> */}
         </View>
       </View>
     </SafeAreaView>

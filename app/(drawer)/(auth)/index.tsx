@@ -11,7 +11,7 @@ import Ionicons from "@expo/vector-icons/Ionicons"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Link, useRouter } from "expo-router"
 
-import Color from "../../src/constant/color"
+import Color from "../../../src/constant/color"
 
 export default function HomeScreen() {
   const router = useRouter()

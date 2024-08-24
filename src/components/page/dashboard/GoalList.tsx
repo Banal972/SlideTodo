@@ -7,9 +7,12 @@ import NullText from "@/components/common/NullText"
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle"
 import Process from "@/components/page/goal/Process"
 import Color from "@/constant/color"
+import { useGetGoalList } from "@/hooks/useGetGoalList"
 import { Link } from "expo-router"
 
 const GoalList = () => {
+  const { goalLists } = useGetGoalList({ cursor: 1 })
+
   return (
     <BaseContainer color="white" style={{ gap: 16 }}>
       <BaseTitle
@@ -20,8 +23,8 @@ const GoalList = () => {
         title="목표 별 할 일"
       />
 
-      {/* {goals.length > 0 ? (
-        goals.map((goal) => (
+      {goalLists && goalLists.goals.length > 0 ? (
+        goalLists.goals.map((goal) => (
           <View key={goal.id} style={styles.goalListCotanier}>
             <View style={styles.goalListFlex}>
               <Link href={`/goal/${goal.id}`} style={styles.goalListTitle}>
@@ -32,7 +35,7 @@ const GoalList = () => {
 
             <Process />
 
-            <View style={{ marginTop: 16 }}>
+            {/* <View style={{ marginTop: 16 }}>
               <Text style={styles.goalViewTitle}>To do</Text>
               {goal.todos.not.length > 0 ? (
                 <View style={styles.goalView}>
@@ -67,12 +70,12 @@ const GoalList = () => {
               ) : (
                 <NullText>최근에 등록한 할 일이 없어요</NullText>
               )}
-            </View>
+            </View> */}
           </View>
         ))
       ) : (
         <NullText>등록한 목표가 없어요</NullText>
-      )} */}
+      )}
     </BaseContainer>
   )
 }
