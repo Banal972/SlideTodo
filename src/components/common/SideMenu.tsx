@@ -243,7 +243,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             {goalLists &&
               goalLists.goals.map((goalList) => (
                 <Text key={goalList.id} style={styles.listTitle}>
-                  · {goalList.title}
+                  <Link href={`/goal/${goalList.id}`}>· {goalList.title}</Link>
                 </Text>
               ))}
           </View>
