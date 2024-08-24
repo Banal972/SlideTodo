@@ -20,6 +20,7 @@ import useUser from "@/hooks/user/useUser"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types"
+import { Link, useRouter } from "expo-router"
 
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   const { user } = useUser()
@@ -27,6 +28,8 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   const { open: newModalOpenHandler } = useNewTodoModalStore()
   const [isGoalInput, setIsGoalInput] = useState(false)
   const { goalLists } = useGetGoalList({ cursor: 1 })
+
+  const router = useRouter()
 
   // const { goalPostMutation } = PostGoalLists()
 
@@ -40,7 +43,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
         text: "네",
         onPress: () => {
           // logout()
-          navigation.navigate("Index")
+          router.push("/")
         },
       },
       {
@@ -167,12 +170,12 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             paddingVertical: 12,
           }}
         >
-          <Pressable onPress={() => navigation.navigate("Dashboard")}>
+          <Link href={"/dashboard"}>
             <View style={styles.listBtnContainer}>
               <Ionicons name="home" size={24} color="black" />
               <Text>대시보드</Text>
             </View>
-          </Pressable>
+          </Link>
 
           <SmallBtn onPress={newModalOpenHandler} backgroundColor={Color.blue500} color={"#fff"}>
             + 새 할 일

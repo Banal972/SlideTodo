@@ -9,6 +9,7 @@ import Process from "@/components/page/goal/Process"
 import Color from "@/constant/color"
 import { useGetGoalList } from "@/hooks/goal/useGetGoalList"
 import { useGetTodos } from "@/hooks/todo/useGetTodos"
+import { Link } from "expo-router"
 
 const TodoList = ({ id }: { id: number }) => {
   const { data } = useGetTodos({ goalId: id, done: false })
@@ -59,10 +60,9 @@ const GoalList = () => {
         goalLists.goals.map((goal) => (
           <View key={goal.id} style={styles.goalListCotanier}>
             <View style={styles.goalListFlex}>
-              {/* href={`/goal/${goal.id}`} */}
-              <Pressable>
+              <Link href={`/goal/${goal.id}`}>
                 <Text style={styles.goalListTitle}>{goal.title}</Text>
-              </Pressable>
+              </Link>
               <AddToDoBtn />
             </View>
 
