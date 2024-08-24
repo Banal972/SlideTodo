@@ -4,14 +4,19 @@ import BaseContainer from "@/components/common/Container/BaseContainer"
 import Color from "@/constant/color"
 import { useGetGoalDetail } from "@/hooks/goal/useGetGoalDetail"
 import { useGetNoteList } from "@/hooks/note/useGetNoteList"
+import useNoteDetailModalStore from "@/store/useNoteDetailModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useLocalSearchParams } from "expo-router"
 
 const NoteList = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>()
-
   const { data: detail } = useGetGoalDetail({ goalId: slug })
   const { data } = useGetNoteList({ goalId: Number(slug) })
+  const { open } = useNoteDetailModalStore()
+
+  const openNoteDetail = (id: number) => {
+    open({ noteId: id })
+  }
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -52,7 +57,7 @@ const NoteList = () => {
 
         {data && data.notes.length > 0 ? (
           data.notes.map((note) => (
-            <Pressable key={note.id}>
+            <Pressable key={note.id} onPress={() => openNoteDetail(note.id)}>
               <BaseContainer color="white">
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                   <View

@@ -1,42 +1,19 @@
-import { useEffect, useState } from "react"
 import { Image, Modal, Pressable, SafeAreaView, Text, View } from "react-native"
 
 import Color from "@/constant/color"
+import { useGetNoteDetail } from "@/hooks/note/useGetNoteDetail"
 import useNoteDetailModalStore from "@/store/useNoteDetailModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
-import { doc, getDoc } from "firebase/firestore"
-import { db } from "firebaseConfig"
-
-interface noteType {
-  title: string
-  content: string
-}
+import dayjs from "dayjs"
 
 const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
   const { data, close } = useNoteDetailModalStore()
 
-  const { id, goalTitle, todoTitle, date } = data
-
-  const [noteData, setNoteData] = useState<noteType | null>(null)
+  const { data: noteDetail } = useGetNoteDetail({ noteId: data.noteId })
 
   const modalClose = () => {
     close()
   }
-
-  useEffect(() => {
-    if (!id) return
-
-    const fetch = async () => {
-      const docSnap = await getDoc(doc(db, "notes", id))
-
-      if (docSnap.exists()) {
-        const { title, content } = docSnap.data()
-        setNoteData({ title, content })
-      }
-    }
-
-    fetch()
-  }, [id])
 
   return (
     <Modal animationType="slide" transparent visible={isModal} style={{ flex: 1 }}>
@@ -77,7 +54,7 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
                 color: Color.slate800,
               }}
             >
-              {goalTitle}
+              {noteDetail?.goal.title}
             </Text>
           </View>
 
@@ -109,7 +86,7 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
                   To do
                 </Text>
               </View>
-              <Text style={{ fontSize: 14, color: Color.slate700 }}>{todoTitle}</Text>
+              <Text style={{ fontSize: 14, color: Color.slate700 }}>{noteDetail?.todo.title}</Text>
             </View>
             <Text
               style={{
@@ -117,7 +94,7 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
                 fontSize: 12,
               }}
             >
-              {date}
+              {dayjs(noteDetail?.createdAt).format("YYYY.MM.DD")}
             </Text>
           </View>
 
@@ -142,7 +119,7 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
                   color: Color.slate800,
                 }}
               >
-                {noteData?.title}
+                {noteDetail?.title}
               </Text>
             </View>
             <View
@@ -156,7 +133,7 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
                   fontSize: 16,
                 }}
               >
-                {noteData?.content}
+                {noteDetail?.content}
               </Text>
             </View>
           </View>

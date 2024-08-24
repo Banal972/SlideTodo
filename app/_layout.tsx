@@ -1,5 +1,7 @@
 import SideMenu from "@/components/common/SideMenu"
+import NoteDetailModal from "@/components/page/note/DetailModal"
 import Color from "@/constant/color"
+import useNoteDetailModalStore from "@/store/useNoteDetailModalStore"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Drawer } from "expo-router/drawer"
 
@@ -23,6 +25,8 @@ const CustomDrawerContent = ({ navigation, state }: any) => {
 }
 
 export default function RootLayout() {
+  const { isModal } = useNoteDetailModalStore()
+
   return (
     <QueryClientProvider client={queryClient}>
       <Drawer
@@ -51,6 +55,7 @@ export default function RootLayout() {
         <Drawer.Screen name="goal/[slug]" />
         <Drawer.Screen name="note/list/[slug]" />
       </Drawer>
+      <NoteDetailModal isModal={isModal} />
     </QueryClientProvider>
   )
 }
