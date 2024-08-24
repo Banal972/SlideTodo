@@ -3,13 +3,13 @@ import { StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
 
-const Process = () => {
+const Process = ({ progress }: { progress: number }) => {
   return (
     <View style={styles.processContainer}>
       <View style={styles.processBox}>
-        <View style={styles.processLine} />
+        <View style={[styles.processLine]} />
       </View>
-      <Text style={styles.processPercent}>64%</Text>
+      <Text style={styles.processPercent}>{progress}%</Text>
     </View>
   )
 }
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   processLine: {
     position: "absolute",
-    width: "50%",
+    width: "0%",
     height: "100%",
     borderRadius: 6,
     top: 0,

@@ -7,6 +7,7 @@ import TodoDoneList from "@/components/page/goal/TodoDoneList"
 import TodoList from "@/components/page/goal/TodoList"
 import Color from "@/constant/color"
 import { useGetGoalDetail } from "@/hooks/goal/useGetGoalDetail"
+import { useTodoProgress } from "@/hooks/todo/useTodoProgress"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Link, useLocalSearchParams, useRouter } from "expo-router"
 
@@ -14,6 +15,7 @@ const GoalDetail = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>()
 
   const { data } = useGetGoalDetail({ goalId: slug })
+  const { data: progress } = useTodoProgress({ goalId: slug })
 
   const router = useRouter()
 
@@ -50,7 +52,7 @@ const GoalDetail = () => {
         </View>
         <View style={{ marginTop: 24 }}>
           <Text style={{ fontSize: 12, fontWeight: "600", color: "#0F172A" }}>진행율</Text>
-          <Process />
+          {progress && <Process progress={progress.progress} />}
         </View>
       </BaseContainer>
 

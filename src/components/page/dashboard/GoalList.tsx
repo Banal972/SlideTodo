@@ -9,7 +9,14 @@ import TodoDoneList from "@/components/page/goal/TodoDoneList"
 import TodoList from "@/components/page/goal/TodoList"
 import Color from "@/constant/color"
 import { useGetGoalList } from "@/hooks/goal/useGetGoalList"
+import { useTodoProgress } from "@/hooks/todo/useTodoProgress"
 import { Link } from "expo-router"
+
+const GoalProcess = ({ id }: { id: number }) => {
+  const { data: progress } = useTodoProgress({ goalId: String(id) })
+
+  return progress ? <Process progress={progress.progress} /> : null
+}
 
 const GoalList = () => {
   const { goalLists } = useGetGoalList({ cursor: 1 })
@@ -34,7 +41,7 @@ const GoalList = () => {
               <AddToDoBtn />
             </View>
 
-            <Process />
+            <GoalProcess id={goal.id} />
 
             <View style={{ marginTop: 16 }}>
               <Text style={styles.goalViewTitle}>To do</Text>
