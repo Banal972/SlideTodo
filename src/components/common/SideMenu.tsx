@@ -14,23 +14,21 @@ import {
 import SmallBtn from "@/components/common/Button/SmallBtn"
 import Input from "@/components/common/Input"
 import Color from "@/constant/color"
-import useGetGoalList from "@/hooks/goal/useGetGoalList"
+import useGetGoalList from "@/hooks/useGetGoalList"
 import useGetUser from "@/hooks/useGetUser"
+import axiosInstance from "@/libs/axiosInstance"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types"
 import { Link, useRouter } from "expo-router"
-import { signOut } from "firebase/auth"
-import { addDoc, collection } from "firebase/firestore"
-import { auth, db } from "firebaseConfig"
 
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   const router = useRouter()
-  const { control, handleSubmit, setValue } = useForm()
   const { user } = useGetUser()
+  const { control, handleSubmit, setValue } = useForm()
   const { open: newModalOpenHandler } = useNewTodoModalStore()
-  const { goalLists } = useGetGoalList()
   const [isGoalInput, setIsGoalInput] = useState(false)
+  const { goalLists } = useGetGoalList({ cursor: 0 })
 
   const isGoalHandler = () => {
     setIsGoalInput(!isGoalInput)
@@ -42,20 +40,18 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
     if (!user || !goal) return
 
     try {
-      await addDoc(collection(db, "goals"), {
-        uid: user.uid,
+      await axiosInstance.post("/goals", {
         title: goal,
-        todos: [],
-        createDate: new Date(),
       })
-      setValue("goal", "")
-      setIsGoalInput(false)
-    } catch (e) {
-      console.log(e)
+    } catch (e: any) {
+      const { message } = e.response.data
+      Alert.alert("등록 실패", message)
     }
   }
 
-  const logoutHandler = () => {
+  /*   */
+
+  /* const logoutHandler = () => {
     Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
       {
         text: "네",
@@ -73,7 +69,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
         text: "아니요",
       },
     ])
-  }
+  } */
 
   return (
     <SafeAreaView
@@ -145,7 +141,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
                   fontWeight: "600",
                 }}
               >
-                {user?.displayName}
+                {user?.name}
               </Text>
               <Text
                 style={{
@@ -160,7 +156,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
               </Text>
             </View>
           </View>
-          <Pressable onPress={logoutHandler}>
+          <Pressable>
             <Text
               style={{
                 color: Color.slate400,
@@ -256,11 +252,12 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
               gap: 20,
             }}
           >
-            {goalLists.map((goalList) => (
-              <Link key={goalList.id} style={styles.listTitle} href={`/goal/${goalList.id}`}>
-                · {goalList.title}
-              </Link>
-            ))}
+            {goalLists &&
+              goalLists.goals.map((goalList) => (
+                <Link key={goalList.id} style={styles.listTitle} href={`/goal/${goalList.id}`}>
+                  · {goalList.title}
+                </Link>
+              ))}
           </View>
         </View>
       </View>

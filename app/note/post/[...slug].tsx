@@ -44,7 +44,7 @@ const NotePost = () => {
   const titleWatch = watch("title")
   const contentWatch = watch("content")
 
-  const onSubmit = handleSubmit(async (data) => {
+  /* const onSubmit = handleSubmit(async (data) => {
     const { title, content } = data
 
     if (!goalId || !todoId) return Alert.alert("알수없는 오류")
@@ -66,7 +66,7 @@ const NotePost = () => {
     } catch (e) {
       console.log(e)
     }
-  })
+  }) */
 
   return (
     <View
@@ -100,7 +100,7 @@ const NotePost = () => {
             <Text style={{ color: Color.blue500, fontSize: 14, fontWeight: 600 }}>임시 저장</Text>
           </Pressable>
           <Pressable
-            onPress={onSubmit}
+            // onPress={onSubmit}
             style={{
               width: 84,
               height: 36,

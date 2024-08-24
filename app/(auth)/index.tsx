@@ -1,14 +1,13 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native"
 
+import login from "@/api/auth/login"
 import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Link, useRouter } from "expo-router"
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "firebaseConfig"
 
 import Color from "../../src/constant/color"
 
@@ -17,20 +16,23 @@ export default function HomeScreen() {
   const { control, handleSubmit } = useForm()
   const [pwdInShow, setPwdInShow] = useState(true)
 
-  const onSubmitHandler = (data: any) => {
-    const { email, password } = data
+  const onSubmitHandler = async (data: any) => {
+    const { email } = data
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        if (userCredential) {
-          router.push("/dashboard")
-        }
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        console.log(errorCode, errorMessage)
-      })
+    if (
+      !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(
+        email,
+      )
+    )
+      Alert.alert("로그인 실패", "이메일 형식으로 작성해 주세요")
+
+    try {
+      await login(data)
+      router.push("/dashboard")
+    } catch (error: any) {
+      const { message } = error.response.data
+      Alert.alert("로그인 실패", message)
+    }
   }
 
   const showPwdHandler = () => {

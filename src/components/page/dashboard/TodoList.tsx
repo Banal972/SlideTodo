@@ -4,10 +4,8 @@ import CheckList from "@/components/common/CheckList"
 import BaseContainer from "@/components/common/Container/BaseContainer"
 import NullText from "@/components/common/NullText"
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle"
-import useGetTodo from "@/hooks/todo/useGetTodo"
 
 const TodoList = () => {
-  const { todos } = useGetTodo({ lmt: 10 })
   return (
     <BaseContainer color="white">
       <BaseTitle
@@ -18,7 +16,7 @@ const TodoList = () => {
         title="최근 등록한 일"
         linkURL="/todo"
       />
-      {todos.length > 0 ? (
+      {/* {todos.length > 0 ? (
         <View style={styles.todoList}>
           {todos.map((todo) => (
             <CheckList
@@ -32,7 +30,7 @@ const TodoList = () => {
         </View>
       ) : (
         <NullText>최근에 등록한 할 일이 없어요</NullText>
-      )}
+      )} */}
     </BaseContainer>
   )
 }

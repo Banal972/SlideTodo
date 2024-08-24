@@ -2,7 +2,6 @@ import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-nati
 
 import BaseContainer from "@/components/common/Container/BaseContainer"
 import Color from "@/constant/color"
-import useGetNoteList from "@/hooks/note/useGetNoteList"
 import useNoteDetailModalStore, { openType } from "@/store/useNoteDetailModalStore"
 import useNoteNameStore from "@/store/useNoteStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
@@ -11,7 +10,6 @@ import { useLocalSearchParams } from "expo-router"
 const NoteList = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>()
   const { name } = useNoteNameStore()
-  const { noteList } = useGetNoteList({ slug })
   const { open } = useNoteDetailModalStore()
 
   const detailHandler = ({ goalTitle, todoTitle, id, date }: openType) => {
@@ -55,7 +53,7 @@ const NoteList = () => {
           </View>
         </BaseContainer>
 
-        {noteList.length > 0 ? (
+        {/* {noteList.length > 0 ? (
           noteList.map((note) => (
             <Pressable
               key={note.id}
@@ -132,7 +130,7 @@ const NoteList = () => {
           <View style={styles.nullTextContainer}>
             <Text style={styles.nullText}>아직 등록된 노트가 없어요</Text>
           </View>
-        )}
+        )} */}
       </View>
     </ScrollView>
   )

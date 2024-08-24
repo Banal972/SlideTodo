@@ -4,25 +4,22 @@ import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
 import CheckList from "@/components/common/CheckList"
 import Color from "@/constant/color"
 import { todoType } from "@/constant/type"
-import useGetTodo from "@/hooks/todo/useGetTodo"
 
 const Alltodo = () => {
-  const { type, setType, todos } = useGetTodo({})
-
-  const typePressHanlder = (key: string) => {
+  /* const typePressHanlder = (key: string) => {
     setType(key)
-  }
+  } */
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>모든 할 일({todos.length})</Text>
+        {/* <Text style={styles.title}>모든 할 일({todos.length})</Text> */}
         <AddToDoBtn />
       </View>
 
       <View style={styles.todoContainer}>
         <View style={styles.tagContainer}>
-          {todoType.map((types) => (
+          {/* {todoType.map((types) => (
             <Pressable
               key={types.key}
               style={[styles.tagButton, type === types.key && styles.tagButtonActive]}
@@ -32,10 +29,10 @@ const Alltodo = () => {
                 {types.value}
               </Text>
             </Pressable>
-          ))}
+          ))} */}
         </View>
 
-        <View style={styles.checkListContainer}>
+        {/* <View style={styles.checkListContainer}>
           {todos.map((todo) => (
             <CheckList
               docId={todo.id}
@@ -45,7 +42,7 @@ const Alltodo = () => {
               label={todo.title}
             />
           ))}
-        </View>
+        </View> */}
       </View>
     </View>
   )

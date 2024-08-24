@@ -1,27 +1,31 @@
 import { useEffect, useState } from "react"
+import { Alert } from "react-native"
 
-import { onAuthStateChanged } from "firebase/auth"
-import { auth } from "firebaseConfig"
+import axiosInstance from "@/libs/axiosInstance"
 
 interface UserType {
-  displayName: string | null
-  email: string | null
-  uid: string
-  photoURL: string | null
+  id: number
+  email: string
+  name: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 const useGetUser = () => {
   const [user, setUser] = useState<UserType | null>(null)
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const { displayName, email, uid, photoURL } = user
-        setUser({ displayName, email, uid, photoURL })
-      } else {
-        setUser(null)
+    const fetch = async () => {
+      try {
+        const response = await axiosInstance.get("/user")
+        setUser(response.data)
+      } catch (e: any) {
+        const { message } = e.response.data
+        Alert.alert("에러", message)
       }
-    })
+    }
+
+    fetch()
   }, [])
 
   return { user }

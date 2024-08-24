@@ -6,7 +6,6 @@ import BaseContainer from "@/components/common/Container/BaseContainer"
 import NullText from "@/components/common/NullText"
 import Process from "@/components/page/goal/Process"
 import Color from "@/constant/color"
-import useGetGoalDetail from "@/hooks/goal/useGetGoalDetail"
 import useNoteNameStore from "@/store/useNoteStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useLocalSearchParams, useRouter } from "expo-router"
@@ -16,7 +15,9 @@ const GoalDetail = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>()
   const router = useRouter()
 
-  const { goalData } = useGetGoalDetail({ slug })
+  const goalData = {
+    title: "",
+  }
 
   const noteDetailHandler = () => {
     if (!goalData) return
@@ -90,7 +91,7 @@ const GoalDetail = () => {
           <Text style={{ fontSize: 18, fontWeight: "bold", color: Color.slate800 }}>To do</Text>
           <AddToDoBtn />
         </View>
-        <View style={{ gap: 8, marginTop: 16 }}>
+        {/* <View style={{ gap: 8, marginTop: 16 }}>
           {goalData && goalData.todos.not.length > 0 ? (
             <>
               {goalData.todos.not.map((todo) => (
@@ -105,7 +106,7 @@ const GoalDetail = () => {
           ) : (
             <NullText>최근에 등록한 할 일이 없어요</NullText>
           )}
-        </View>
+        </View> */}
       </BaseContainer>
       <BaseContainer color={Color.slate200}>
         <View
@@ -116,7 +117,7 @@ const GoalDetail = () => {
         >
           <Text style={{ fontSize: 18, fontWeight: "bold", color: Color.slate800 }}>Done</Text>
         </View>
-        <View style={{ gap: 8, marginTop: 16 }}>
+        {/* <View style={{ gap: 8, marginTop: 16 }}>
           {goalData && goalData.todos.done.length > 0 ? (
             <>
               {goalData.todos.done.map((todo) => (
@@ -132,7 +133,7 @@ const GoalDetail = () => {
           ) : (
             <NullText>등록한 목표가 없어요</NullText>
           )}
-        </View>
+        </View> */}
       </BaseContainer>
     </View>
   )

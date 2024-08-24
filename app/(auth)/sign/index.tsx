@@ -1,40 +1,47 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native"
 
+import signup from "@/api/auth/signup"
 import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
 import Color from "@/constant/color"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Link, useRouter } from "expo-router"
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
-import { auth } from "firebaseConfig"
 
 export default function HomeScreen() {
   const router = useRouter()
 
   const { control, handleSubmit } = useForm()
 
-  const onSubmitHandler = (data: any) => {
-    const { name, email, password, pwdConfirm } = data
+  const onSubmitHandler = async (data: any) => {
+    const { email, password, pwdConfirm } = data
 
-    if (!email.includes("@") || password !== pwdConfirm) return
+    if (
+      !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(
+        email,
+      )
+    )
+      Alert.alert("회원가입 실패", "이메일 형식으로 작성해 주세요")
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user
-        updateProfile(user, {
-          displayName: name,
-        })
-        router.push("/")
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        console.log(errorCode, errorMessage)
-      })
+    if (password !== pwdConfirm) return Alert.alert("회원가입 실패", "서로 비밀번호가 다릅니다.")
+
+    try {
+      await signup(data)
+      Alert.alert("성공", "회원가입에 성공 하였습니다.", [
+        {
+          text: "확인",
+          onPress: () => {
+            router.push("/")
+          },
+          style: "default",
+        },
+      ])
+    } catch (error: any) {
+      const { message } = error.response.data
+      Alert.alert("회원가입 실패", message)
+    }
   }
 
   const [pwdInShow, setPwdInShow] = useState<{ [key: string]: boolean }>({
