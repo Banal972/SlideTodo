@@ -1,17 +1,7 @@
-import { useEffect } from "react"
+import { ReactNode } from "react"
 import { Image, StyleSheet, View } from "react-native"
 
-import useGetUser from "@/hooks/useGetUser"
-import { Slot, useRouter } from "expo-router"
-
-const AuthLayout = () => {
-  const { user } = useGetUser()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (user) router.push("/dashboard")
-  }, [user])
-
+const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
     <View style={styles.container}>
       <View
@@ -22,7 +12,7 @@ const AuthLayout = () => {
       >
         <Image source={require("@/assets/images/logo.png")} />
       </View>
-      <Slot />
+      {children}
     </View>
   )
 }

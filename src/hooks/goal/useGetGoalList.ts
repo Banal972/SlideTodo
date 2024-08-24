@@ -1,5 +1,5 @@
 import axiosInstance from "@/libs/axiosInstance"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 
 export interface goalListType {
   nextCursor: number
@@ -37,33 +37,8 @@ export const useGetGoalList = ({ cursor, size, sortOrder }: goalListRequest) => 
       }
     },
   })
-
-  console.log(goalLists)
-
   return {
     goalLists,
     isLoading,
   }
-}
-
-export const PostGoalLists = () => {
-  const queryClient = useQueryClient()
-
-  const { mutate: goalPostMutation } = useMutation({
-    mutationFn: (data: any) => {
-      console.log(data)
-      const { goal } = data
-      return axiosInstance.post("/goals", {
-        title: goal,
-      })
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["goalList"] })
-    },
-    onError: (error) => {
-      console.log(error)
-    },
-  })
-
-  return { goalPostMutation }
 }

@@ -11,26 +11,24 @@ import {
   View,
 } from "react-native"
 
-import logout from "@/api/auth/logout"
 import SmallBtn from "@/components/common/Button/SmallBtn"
 import Input from "@/components/common/Input"
 import Color from "@/constant/color"
-import { PostGoalLists, useGetGoalList } from "@/hooks/useGetGoalList"
-import useGetUser from "@/hooks/useGetUser"
+import { PostGoalLists } from "@/hooks/goal/PostGoalLists"
+import { useGetGoalList } from "@/hooks/goal/useGetGoalList"
+import useUser from "@/hooks/user/useUser"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types"
-import { Link, useRouter } from "expo-router"
 
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
-  const router = useRouter()
-  const { user } = useGetUser()
-  const { control, handleSubmit } = useForm()
+  const { user } = useUser()
+  const { control, handleSubmit, setValue } = useForm()
   const { open: newModalOpenHandler } = useNewTodoModalStore()
   const [isGoalInput, setIsGoalInput] = useState(false)
   const { goalLists } = useGetGoalList({ cursor: 1 })
 
-  const { goalPostMutation } = PostGoalLists()
+  // const { goalPostMutation } = PostGoalLists()
 
   const isGoalHandler = () => {
     setIsGoalInput(!isGoalInput)
@@ -41,8 +39,8 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
       {
         text: "네",
         onPress: () => {
-          logout()
-          router.push("/")
+          // logout()
+          navigation.navigate("Index")
         },
       },
       {
@@ -52,7 +50,8 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   }
 
   const onAddGoalSubmit = (data: any) => {
-    goalPostMutation(data)
+    // goalPostMutation(data)
+    setValue("goal", "")
     setIsGoalInput(false)
   }
 
@@ -168,12 +167,12 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             paddingVertical: 12,
           }}
         >
-          <Link href={"/dashboard"}>
+          <Pressable onPress={() => navigation.navigate("Dashboard")}>
             <View style={styles.listBtnContainer}>
               <Ionicons name="home" size={24} color="black" />
               <Text>대시보드</Text>
             </View>
-          </Link>
+          </Pressable>
 
           <SmallBtn onPress={newModalOpenHandler} backgroundColor={Color.blue500} color={"#fff"}>
             + 새 할 일
@@ -232,19 +231,19 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             </View>
           )}
 
-          {/* <View
+          <View
             style={{
               marginTop: 20,
               gap: 20,
             }}
           >
             {goalLists &&
-              goalLists.goals.map((goalList: any) => (
-                <Link key={goalList.id} style={styles.listTitle} href={`/goal/${goalList.id}`}>
+              goalLists.goals.map((goalList) => (
+                <Text key={goalList.id} style={styles.listTitle}>
                   · {goalList.title}
-                </Link>
+                </Text>
               ))}
-          </View> */}
+          </View>
         </View>
       </View>
     </SafeAreaView>

@@ -2,17 +2,14 @@ import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native"
 
-import signup from "@/api/auth/signup"
 import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
 import Color from "@/constant/color"
+import AuthLayout from "@/screens/Auth/AuthLayout"
 import Ionicons from "@expo/vector-icons/Ionicons"
-import { Link, useRouter } from "expo-router"
 
-export default function HomeScreen() {
-  const router = useRouter()
-
+export default function SignScreen({ navigation }: any) {
   const { control, handleSubmit } = useForm()
 
   const onSubmitHandler = async (data: any) => {
@@ -27,13 +24,13 @@ export default function HomeScreen() {
 
     if (password !== pwdConfirm) return Alert.alert("회원가입 실패", "서로 비밀번호가 다릅니다.")
 
-    try {
+    /* try {
       await signup(data)
       Alert.alert("성공", "회원가입에 성공 하였습니다.", [
         {
           text: "확인",
           onPress: () => {
-            router.push("/")
+            navigation.navigate("Index")
           },
           style: "default",
         },
@@ -41,7 +38,7 @@ export default function HomeScreen() {
     } catch (error: any) {
       const { message } = error.response.data
       Alert.alert("회원가입 실패", message)
-    }
+    } */
   }
 
   const [pwdInShow, setPwdInShow] = useState<{ [key: string]: boolean }>({
@@ -57,7 +54,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <>
+    <AuthLayout>
       <View style={styles.inputContainer}>
         <View>
           <Label>이름</Label>
@@ -152,13 +149,21 @@ export default function HomeScreen() {
 
       <Button label="회원가입" onPress={handleSubmit(onSubmitHandler)} />
 
-      <Text style={styles.sign}>
-        이미 회원이신가요?{" "}
-        <Link style={styles.signLink} href={"/"}>
-          로그인
-        </Link>{" "}
-      </Text>
-    </>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginTop: 40,
+          justifyContent: "center",
+          gap: 4,
+        }}
+      >
+        <Text style={styles.sign}>이미 회원이신가요?</Text>
+        <Pressable onPress={() => navigation.navigate("Index")}>
+          <Text style={styles.signLink}>로그인</Text>
+        </Pressable>
+      </View>
+    </AuthLayout>
   )
 }
 
@@ -176,7 +181,6 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   sign: {
-    marginTop: 40,
     textAlign: "center",
     color: Color.slate800,
     fontSize: 14,
@@ -186,6 +190,5 @@ const styles = StyleSheet.create({
     color: "#3182F6",
     fontWeight: "medium",
     fontSize: 14,
-    paddingBottom: 2,
   },
 })

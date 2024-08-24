@@ -1,8 +1,8 @@
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native"
+import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
 import Octicons from "@expo/vector-icons/Octicons"
-import { Link } from "expo-router"
+import { useNavigation } from "@react-navigation/native"
 
 const BaseTitle = ({
   baseIcon,
@@ -16,6 +16,8 @@ const BaseTitle = ({
   title?: string
   linkURL?: string
 }) => {
+  const navigation = useNavigation()
+
   return (
     <View style={styles.baseGrid}>
       <View style={styles.baseTitleGrid}>
@@ -29,12 +31,17 @@ const BaseTitle = ({
         <Text style={styles.baseTitle}>{title}</Text>
       </View>
       {linkURL && (
-        <Link href={linkURL}>
+        <Pressable
+          onPress={() => {
+            if (!linkURL) return
+            ;(navigation.navigate as any)(linkURL)
+          }}
+        >
           <View style={styles.baseLinkContainer}>
             <Text style={styles.baseLink}>모두 보기</Text>
             <Octicons name="chevron-right" size={24} color="#4B5563" />
           </View>
-        </Link>
+        </Pressable>
       )}
     </View>
   )

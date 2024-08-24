@@ -4,38 +4,24 @@ import { Pressable, StyleSheet, Text, View } from "react-native"
 import Color from "@/constant/color"
 import useNotePostStore from "@/store/useNotePostStore"
 import Checkbox from "expo-checkbox"
-import { useRouter } from "expo-router"
-import { doc, setDoc } from "firebase/firestore"
-import { db } from "firebaseConfig"
 
-const CheckList = ({
-  done,
-  label,
-  docId,
-  goal_ID,
-}: {
-  done?: boolean
-  label: string
-  docId: string
-  goal_ID: string
-}) => {
-  const router = useRouter()
+const CheckList = ({ done, label }: { done?: boolean; label: string }) => {
   const { changeName } = useNotePostStore()
 
   const [isChecked, setIsChecked] = useState(false)
 
   const checkPressHanlder = async () => {
-    try {
+    /* try {
       setDoc(doc(db, "todos", docId), { done: !isChecked }, { merge: true })
       setIsChecked(!isChecked)
     } catch (e) {
       console.log(e)
-    }
+    } */
   }
 
   const onPressHandler = () => {
     changeName({ todoName: label })
-    router.push(`/note/post/${goal_ID}/${docId}`)
+    // router.push(`/note/post/${goal_ID}/${docId}`)
   }
 
   useEffect(() => {

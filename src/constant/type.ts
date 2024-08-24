@@ -1,14 +1,14 @@
 export const todoType = [
   {
-    key: "all",
+    key: null,
     value: "All",
   },
   {
-    key: "todo",
+    key: false,
     value: "To do",
   },
   {
-    key: "done",
+    key: true,
     value: "Done",
   },
 ]

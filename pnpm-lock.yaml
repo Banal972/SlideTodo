@@ -23,6 +23,9 @@ importers:
       '@react-navigation/drawer':
         specifier: ^6.7.2
         version: 6.7.2(oosfrfcdllt4bkkasn5m6m2vby)
+      '@react-navigation/native':
+        specifier: ^6.1.18
+        version: 6.1.18(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)
       '@tanstack/react-query':
         specifier: ^5.52.1
         version: 5.52.1(react@18.2.0)

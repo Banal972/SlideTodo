@@ -1,54 +1,50 @@
+import { useState } from "react"
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
 import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
 import CheckList from "@/components/common/CheckList"
 import Color from "@/constant/color"
 import { todoType } from "@/constant/type"
+import { useGetTodos } from "@/hooks/todo/useGetTodos"
 
-const Alltodo = () => {
-  /* const typePressHanlder = (key: string) => {
-    setType(key)
-  } */
+const AllTodoScreen = () => {
+  const [type, setType] = useState<boolean | null>(null)
+  const { data } = useGetTodos({ done: type })
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        {/* <Text style={styles.title}>모든 할 일({todos.length})</Text> */}
+        <Text style={styles.title}>모든 할 일({data?.todos.length || 0})</Text>
         <AddToDoBtn />
       </View>
 
       <View style={styles.todoContainer}>
         <View style={styles.tagContainer}>
-          {/* {todoType.map((types) => (
+          {todoType.map((types, index) => (
             <Pressable
-              key={types.key}
+              key={index + 1}
               style={[styles.tagButton, type === types.key && styles.tagButtonActive]}
-              onPress={() => typePressHanlder(types.key)}
+              onPress={() => setType(types.key)}
             >
               <Text style={[styles.tagButtonText, type === types.key && { color: "#fff" }]}>
                 {types.value}
               </Text>
             </Pressable>
-          ))} */}
+          ))}
         </View>
 
-        {/* <View style={styles.checkListContainer}>
-          {todos.map((todo) => (
-            <CheckList
-              docId={todo.id}
-              goal_ID={todo.goal_ID}
-              done={todo.done}
-              key={todo.id}
-              label={todo.title}
-            />
-          ))}
-        </View> */}
+        <View style={styles.checkListContainer}>
+          {data &&
+            data.todos.map((todo) => (
+              <CheckList done={todo.done} key={todo.id} label={todo.title} />
+            ))}
+        </View>
       </View>
     </View>
   )
 }
 
-export default Alltodo
+export default AllTodoScreen
 
 const styles = StyleSheet.create({
   container: {

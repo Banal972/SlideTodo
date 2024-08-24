@@ -5,16 +5,14 @@ import { Alert, Pressable, StyleSheet, Text, View } from "react-native"
 import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
+import Color from "@/constant/color"
 import axiosInstance from "@/libs/axiosInstance"
 import { saveStore } from "@/libs/secureStore"
+import AuthLayout from "@/screens/Auth/AuthLayout"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Link, useRouter } from "expo-router"
 
-import Color from "../../../src/constant/color"
-
-export default function HomeScreen() {
-  const router = useRouter()
+export default function LoginScreen({ navigation }: any) {
   const { control, handleSubmit } = useForm()
   const [pwdInShow, setPwdInShow] = useState(true)
 
@@ -41,7 +39,7 @@ export default function HomeScreen() {
       const { accessToken } = res.data
       saveStore("accessToken", accessToken)
       queryClient.invalidateQueries({ queryKey: ["user"] })
-      router.push("/dashboard")
+      navigation.navigate("Dashboard")
     },
     onError: (error: any) => {
       const { message } = error.response.data
@@ -58,7 +56,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <>
+    <AuthLayout>
       <View style={styles.inputContainer}>
         <View>
           <Label>아이디</Label>
@@ -110,13 +108,21 @@ export default function HomeScreen() {
 
       <Button label="로그인" onPress={handleSubmit(onSumbit)} />
 
-      <Text style={styles.sign}>
-        투두 리스트가 처음이신가요?{" "}
-        <Link style={styles.signLink} href={"/sign"}>
-          회원가입
-        </Link>
-      </Text>
-    </>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginTop: 40,
+          justifyContent: "center",
+          gap: 4,
+        }}
+      >
+        <Text style={styles.sign}>투두 리스트가 처음이신가요? </Text>
+        <Pressable onPress={() => navigation.navigate("Signup")}>
+          <Text style={styles.signLink}>회원가입</Text>
+        </Pressable>
+      </View>
+    </AuthLayout>
   )
 }
 
@@ -134,8 +140,6 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   sign: {
-    marginTop: 40,
-    textAlign: "center",
     color: Color.slate800,
     fontSize: 14,
     fontWeight: "medium",
@@ -144,6 +148,5 @@ const styles = StyleSheet.create({
     color: "#3182F6",
     fontWeight: "medium",
     fontSize: 14,
-    paddingBottom: 2,
   },
 })

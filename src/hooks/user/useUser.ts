@@ -11,7 +11,7 @@ interface UserType {
   updatedAt: Date
 }
 
-const useGetUser = () => {
+const useUser = () => {
   const { data: user, isLoading } = useQuery<UserType>({
     queryKey: ["user"],
     queryFn: async () => {
@@ -28,4 +28,4 @@ const useGetUser = () => {
   return { user, isLoading }
 }
 
-export default useGetUser
+export default useUser

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native"
+import { Pressable, StyleSheet, Text, View } from "react-native"
 
 import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
 import CheckList from "@/components/common/CheckList"
@@ -7,8 +7,40 @@ import NullText from "@/components/common/NullText"
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle"
 import Process from "@/components/page/goal/Process"
 import Color from "@/constant/color"
-import { useGetGoalList } from "@/hooks/useGetGoalList"
-import { Link } from "expo-router"
+import { useGetGoalList } from "@/hooks/goal/useGetGoalList"
+import { useGetTodos } from "@/hooks/todo/useGetTodos"
+
+const TodoList = ({ id }: { id: number }) => {
+  const { data } = useGetTodos({ goalId: id, done: false })
+
+  if (!data) return null
+
+  return data.todos.length > 0 ? (
+    <View style={styles.goalView}>
+      {data.todos.map((todo) => (
+        <CheckList key={todo.id} label={todo.title} done={todo.done} />
+      ))}
+    </View>
+  ) : (
+    <NullText>최근에 등록한 할 일이 없어요</NullText>
+  )
+}
+
+const TodoDoneList = ({ id }: { id: number }) => {
+  const { data } = useGetTodos({ goalId: id, done: true })
+
+  if (!data) return null
+
+  return data.todos.length > 0 ? (
+    <View style={styles.goalView}>
+      {data.todos.map((todo) => (
+        <CheckList key={todo.id} label={todo.title} done={todo.done} />
+      ))}
+    </View>
+  ) : (
+    <NullText>최근에 등록한 할 일이 없어요</NullText>
+  )
+}
 
 const GoalList = () => {
   const { goalLists } = useGetGoalList({ cursor: 1 })
@@ -27,50 +59,24 @@ const GoalList = () => {
         goalLists.goals.map((goal) => (
           <View key={goal.id} style={styles.goalListCotanier}>
             <View style={styles.goalListFlex}>
-              <Link href={`/goal/${goal.id}`} style={styles.goalListTitle}>
-                {goal.title}
-              </Link>
+              {/* href={`/goal/${goal.id}`} */}
+              <Pressable>
+                <Text style={styles.goalListTitle}>{goal.title}</Text>
+              </Pressable>
               <AddToDoBtn />
             </View>
 
             <Process />
 
-            {/* <View style={{ marginTop: 16 }}>
+            <View style={{ marginTop: 16 }}>
               <Text style={styles.goalViewTitle}>To do</Text>
-              {goal.todos.not.length > 0 ? (
-                <View style={styles.goalView}>
-                  {goal.todos.not.map((todo) => (
-                    <CheckList
-                      goal_ID={todo.goal_ID}
-                      docId={todo.id}
-                      key={todo.id}
-                      label={todo.title}
-                    />
-                  ))}
-                </View>
-              ) : (
-                <NullText>최근에 등록한 할 일이 없어요</NullText>
-              )}
+              <TodoList id={goal.id} />
             </View>
 
             <View style={{ marginTop: 24 }}>
               <Text style={styles.goalViewTitle}>Done</Text>
-              {goal.todos.done.length > 0 ? (
-                <View style={styles.goalView}>
-                  {goal.todos.done.map((todo) => (
-                    <CheckList
-                      goal_ID={todo.goal_ID}
-                      docId={todo.id}
-                      done={todo.done}
-                      key={todo.id}
-                      label={todo.title}
-                    />
-                  ))}
-                </View>
-              ) : (
-                <NullText>최근에 등록한 할 일이 없어요</NullText>
-              )}
-            </View> */}
+              <TodoDoneList id={goal.id} />
+            </View>
           </View>
         ))
       ) : (
