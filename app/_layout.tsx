@@ -4,15 +4,18 @@ import TodoAddModal from "@/components/page/todo/TodoAddModal"
 import Color from "@/constant/color"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import useNoteDetailModalStore from "@/store/useNoteDetailModalStore"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Drawer } from "expo-router/drawer"
 import { StatusBar } from "expo-status-bar"
+
+const queryClient = new QueryClient()
 
 const RootLayout = () => {
   const { newPostIsModal: isModal } = useNewTodoModalStore()
   const { isModal: noteIsModal } = useNoteDetailModalStore()
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Drawer
         drawerContent={({ navigation }) => <SideMenu navigation={navigation} />}
         screenOptions={{
@@ -59,7 +62,7 @@ const RootLayout = () => {
       <TodoAddModal isModal={isModal} />
       <NoteDetailModal isModal={noteIsModal} />
       <StatusBar style="dark" />
-    </>
+    </QueryClientProvider>
   )
 }
 

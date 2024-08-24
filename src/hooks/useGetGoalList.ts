@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
-
 import axiosInstance from "@/libs/axiosInstance"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 export interface goalListType {
   nextCursor: number
@@ -23,22 +22,45 @@ interface goalListRequest {
   sortOrder?: "oldest" | "newest"
 }
 
-const useGetGoalList = ({ cursor, size, sortOrder }: goalListRequest) => {
-  const [goalLists, setGoalLists] = useState<goalListType | null>(null)
-
-  useEffect(() => {
-    const fetch = async () => {
-      const res = await axiosInstance.get("/goals", {
-        params: { cursor, size, sortOrder: sortOrder || "oldest" },
-      })
-
-      setGoalLists(res.data)
-    }
-
-    fetch()
-  }, [])
-
-  return { goalLists }
+export const useGetGoalList = ({ cursor, size, sortOrder }: goalListRequest) => {
+  const { data: goalLists, isLoading } = useQuery({
+    queryKey: ["goalList"],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get("/goals", {
+          params: { cursor, size, sortOrder: sortOrder || "oldest" },
+        })
+        return response.data
+      } catch (e: any) {
+        const { message } = e.response.data
+        throw new Error(message)
+      }
+    },
+  })
+  return {
+    goalLists,
+    isLoading,
+  }
 }
 
-export default useGetGoalList
+export const PostGoalLists = () => {
+  const queryClient = useQueryClient()
+
+  const { mutate: goalPostMutation } = useMutation({
+    mutationFn: (data: any) => {
+      console.log(data)
+      const { goal } = data
+      return axiosInstance.post("/goals", {
+        title: goal,
+      })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["goalList"] })
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  return { goalPostMutation }
+}

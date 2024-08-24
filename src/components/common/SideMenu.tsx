@@ -14,9 +14,8 @@ import {
 import SmallBtn from "@/components/common/Button/SmallBtn"
 import Input from "@/components/common/Input"
 import Color from "@/constant/color"
-import useGetGoalList from "@/hooks/useGetGoalList"
+import { PostGoalLists, useGetGoalList } from "@/hooks/useGetGoalList"
 import useGetUser from "@/hooks/useGetUser"
-import axiosInstance from "@/libs/axiosInstance"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types"
@@ -28,28 +27,13 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   const { control, handleSubmit, setValue } = useForm()
   const { open: newModalOpenHandler } = useNewTodoModalStore()
   const [isGoalInput, setIsGoalInput] = useState(false)
-  const { goalLists } = useGetGoalList({ cursor: 0 })
+  const { goalLists, isLoading } = useGetGoalList({ cursor: 1 })
+
+  const { goalPostMutation } = PostGoalLists()
 
   const isGoalHandler = () => {
     setIsGoalInput(!isGoalInput)
   }
-
-  const addGoalHanlder = async (data: any) => {
-    const { goal } = data
-
-    if (!user || !goal) return
-
-    try {
-      await axiosInstance.post("/goals", {
-        title: goal,
-      })
-    } catch (e: any) {
-      const { message } = e.response.data
-      Alert.alert("등록 실패", message)
-    }
-  }
-
-  /*   */
 
   /* const logoutHandler = () => {
     Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
@@ -69,7 +53,13 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
         text: "아니요",
       },
     ])
+      
   } */
+
+  const onAddGoalSubmit = (data: any) => {
+    goalPostMutation(data)
+    setIsGoalInput(false)
+  }
 
   return (
     <SafeAreaView
@@ -238,7 +228,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
                     onBlur={onBlur}
                     value={value}
                     placeholder="목표를 입력해주세요"
-                    onSubmitEditing={handleSubmit(addGoalHanlder)}
+                    onSubmitEditing={handleSubmit(onAddGoalSubmit)}
                     returnKeyType="done"
                   />
                 )}
@@ -253,7 +243,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             }}
           >
             {goalLists &&
-              goalLists.goals.map((goalList) => (
+              goalLists.goals.map((goalList: any) => (
                 <Link key={goalList.id} style={styles.listTitle} href={`/goal/${goalList.id}`}>
                   · {goalList.title}
                 </Link>
