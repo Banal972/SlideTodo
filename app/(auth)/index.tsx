@@ -2,11 +2,13 @@ import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native"
 
-import login from "@/api/auth/login"
 import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
+import axiosInstance from "@/libs/axiosInstance"
+import { saveStore } from "@/libs/secureStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Link, useRouter } from "expo-router"
 
 import Color from "../../src/constant/color"
@@ -16,23 +18,39 @@ export default function HomeScreen() {
   const { control, handleSubmit } = useForm()
   const [pwdInShow, setPwdInShow] = useState(true)
 
-  const onSubmitHandler = async (data: any) => {
-    const { email } = data
+  const queryClient = useQueryClient()
 
-    if (
-      !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(
+  const { mutate } = useMutation({
+    mutationFn: async (data: any) => {
+      const { email, password } = data
+
+      if (
+        !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(
+          email,
+        )
+      ) {
+        Alert.alert("로그인 실패", "이메일 형식으로 작성해 주세요")
+      }
+
+      return axiosInstance.post(`/auth/login`, {
         email,
-      )
-    )
-      Alert.alert("로그인 실패", "이메일 형식으로 작성해 주세요")
-
-    try {
-      await login(data)
+        password,
+      })
+    },
+    onSuccess: (res) => {
+      const { accessToken } = res.data
+      saveStore("accessToken", accessToken)
+      queryClient.invalidateQueries({ queryKey: ["user"] })
       router.push("/dashboard")
-    } catch (error: any) {
+    },
+    onError: (error: any) => {
       const { message } = error.response.data
       Alert.alert("로그인 실패", message)
-    }
+    },
+  })
+
+  const onSumbit = (data: any) => {
+    mutate(data)
   }
 
   const showPwdHandler = () => {
@@ -90,7 +108,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <Button label="로그인" onPress={handleSubmit(onSubmitHandler)} />
+      <Button label="로그인" onPress={handleSubmit(onSumbit)} />
 
       <Text style={styles.sign}>
         투두 리스트가 처음이신가요?{" "}

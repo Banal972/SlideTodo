@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
 import { Alert } from "react-native"
 
 import axiosInstance from "@/libs/axiosInstance"
+import { useQuery } from "@tanstack/react-query"
 
 interface UserType {
   id: number
@@ -12,23 +12,20 @@ interface UserType {
 }
 
 const useGetUser = () => {
-  const [user, setUser] = useState<UserType | null>(null)
-
-  useEffect(() => {
-    const fetch = async () => {
+  const { data: user, isLoading } = useQuery<UserType>({
+    queryKey: ["user"],
+    queryFn: async () => {
       try {
         const response = await axiosInstance.get("/user")
-        setUser(response.data)
+        return response.data
       } catch (e: any) {
         const { message } = e.response.data
         Alert.alert("에러", message)
       }
-    }
+    },
+  })
 
-    fetch()
-  }, [])
-
-  return { user }
+  return { user, isLoading }
 }
 
 export default useGetUser

@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native"
 
+import logout from "@/api/auth/logout"
 import SmallBtn from "@/components/common/Button/SmallBtn"
 import Input from "@/components/common/Input"
 import Color from "@/constant/color"
@@ -35,26 +36,20 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
     setIsGoalInput(!isGoalInput)
   }
 
-  /* const logoutHandler = () => {
+  const logoutHandler = () => {
     Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
       {
         text: "네",
         onPress: () => {
-          signOut(auth)
-            .then(() => {
-              router.push("/")
-            })
-            .catch((error) => {
-              console.log(error)
-            })
+          logout()
+          router.push("/")
         },
       },
       {
         text: "아니요",
       },
     ])
-      
-  } */
+  }
 
   const onAddGoalSubmit = (data: any) => {
     goalPostMutation(data)
@@ -153,6 +148,7 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
                 fontSize: 16,
                 fontWeight: "500",
               }}
+              onPress={logoutHandler}
             >
               로그아웃
             </Text>
