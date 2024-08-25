@@ -34,10 +34,7 @@ const AllTodoPage = () => {
         </View>
 
         <View style={styles.checkListContainer}>
-          {data &&
-            data.todos.map((todo) => (
-              <CheckList done={todo.done} key={todo.id} label={todo.title} />
-            ))}
+          {data && data.todos.map((todo) => <CheckList key={todo.id} data={todo} />)}
         </View>
       </View>
     </View>

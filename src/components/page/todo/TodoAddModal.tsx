@@ -14,6 +14,7 @@ import {
 import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
+import Seleted from "@/components/page/todo/TodoAddModal/Atom/Seleted"
 import Color from "@/constant/color"
 import { useGetGoalList } from "@/hooks/goal/useGetGoalList"
 import axiosInstance from "@/libs/axiosInstance"
@@ -21,17 +22,15 @@ import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Picker } from "@react-native-picker/picker"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import Checkbox from "expo-checkbox"
 
 const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
-  const { close: isModalCloseHandler } = useNewTodoModalStore()
-  const [selectedGoal, setSelectedGoal] = useState()
-
-  const { control, handleSubmit } = useForm()
-
-  const { goalLists } = useGetGoalList({ cursor: 1 })
-
   const queryClient = useQueryClient()
+  const { close: isModalCloseHandler } = useNewTodoModalStore()
+  const { goalLists } = useGetGoalList({ cursor: 1 })
+  const { control, handleSubmit } = useForm()
+  const [selectedGoal, setSelectedGoal] = useState()
+  const [linkState, setLinkState] = useState(false)
+  const [fileState, setFileState] = useState(false)
 
   const { mutate } = useMutation({
     mutationFn: (data: any) => {
@@ -52,8 +51,9 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
         },
       ])
     },
-    onError: (error) => {
-      console.log(error)
+    onError: (error: any) => {
+      const { message } = error.response.data
+      Alert.alert("실패", message)
     },
   })
 
@@ -97,6 +97,7 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
                 )}
               />
             </View>
+
             <View
               style={{
                 flexDirection: "column",
@@ -110,83 +111,57 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
                 <View>
                   <Label>자료</Label>
                   <View style={{ flexDirection: "row", gap: 12, marginTop: 12 }}>
-                    <Pressable
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "row",
-                        gap: 4,
-                        paddingHorizontal: 8,
-                        height: 40,
-                        borderRadius: 8,
-                        backgroundColor: Color.slate100,
-                      }}
-                    >
-                      <Checkbox
-                        style={{
-                          borderColor: Color.slate200,
-                          width: 18,
-                          height: 18,
-                          borderRadius: 6,
-                          backgroundColor: "#fff",
-                        }}
-                      />
-                      <Text
-                        style={{
-                          color: Color.slate800,
-                          fontWeight: "500",
-                          fontSize: 16,
-                        }}
-                      >
-                        파일 업로드
-                      </Text>
-                    </Pressable>
-                    <Pressable
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "row",
-                        gap: 4,
-                        paddingHorizontal: 8,
-                        height: 40,
-                        borderRadius: 8,
-                        backgroundColor: Color.slate100,
-                      }}
-                    >
-                      <Checkbox
-                        style={{
-                          borderColor: Color.slate200,
-                          width: 18,
-                          height: 18,
-                          borderRadius: 6,
-                          backgroundColor: "#fff",
-                        }}
-                      />
-                      <Text
-                        style={{
-                          color: Color.slate800,
-                          fontWeight: "500",
-                          fontSize: 16,
-                        }}
-                      >
-                        링크 첨부
-                      </Text>
-                    </Pressable>
+                    <Seleted state={fileState} setState={setFileState} label="파일 업로드" />
+                    <Seleted state={linkState} setState={setLinkState} label="링크 첨부" />
                   </View>
-                  <Pressable
-                    style={{
-                      marginTop: 12,
-                      height: 184,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: Color.slate50,
-                    }}
-                  >
-                    <Text style={{ color: Color.slate400, fontSize: 16 }}>
-                      파일을 업로드해주세요
-                    </Text>
-                  </Pressable>
+
+                  {linkState && (
+                    <View>
+                      <Controller
+                        control={control}
+                        name="linkUrl"
+                        render={({ field: { onChange, onBlur, value } }) => (
+                          <Input
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            placeholder="링크 주소를 입력해주세요"
+                          />
+                        )}
+                      />
+                    </View>
+                  )}
+
+                  {fileState && (
+                    <Pressable
+                      style={{
+                        marginTop: 12,
+                        height: 184,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: Color.slate50,
+                      }}
+                      onPress={() => {
+                        Alert.alert("미구현", "아직 미구현 상태 입니다.")
+                      }}
+                    >
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          gap: 5,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Ionicons name="add" size={24} color={Color.slate400} />
+                        <Text style={{ color: Color.slate400, fontSize: 16 }}>
+                          파일을 업로드해주세요
+                        </Text>
+                      </View>
+                    </Pressable>
+                  )}
                 </View>
+
                 <View>
                   <Label>목표</Label>
                   <View
@@ -205,7 +180,7 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
                         lineHeight: 20,
                       }}
                       selectedValue={selectedGoal}
-                      onValueChange={(itemValue, itemIndex) => setSelectedGoal(itemValue)}
+                      onValueChange={(itemValue) => setSelectedGoal(itemValue)}
                     >
                       {goalLists?.goals.map((goal) => (
                         <Picker.Item
