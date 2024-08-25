@@ -5,6 +5,7 @@ import { Todo } from "@/hooks/todo/useGetTodos"
 import axiosInstance from "@/libs/axiosInstance"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Checkbox from "expo-checkbox"
+import { Link } from "expo-router"
 
 const CheckList = ({ data }: { data: Todo }) => {
   const queryClient = useQueryClient()
@@ -39,8 +40,6 @@ const CheckList = ({ data }: { data: Todo }) => {
     })
   }
 
-  const onPressHandler = () => {}
-
   return (
     <View style={styles.listFlex}>
       <View style={{ flexDirection: "row", gap: 8 }}>
@@ -50,11 +49,11 @@ const CheckList = ({ data }: { data: Todo }) => {
           style={styles.todoListCheckbox}
           onValueChange={checkPressHanlder}
         />
-        <Pressable onPress={onPressHandler}>
+        <Link href={`/note/post/${data.id}`}>
           <Text style={[styles.listText, data.done && { textDecorationLine: "line-through" }]}>
             {data.title}
           </Text>
-        </Pressable>
+        </Link>
       </View>
 
       <View style={{ flexDirection: "row", gap: 10 }}>

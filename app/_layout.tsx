@@ -54,7 +54,9 @@ export default function RootLayout() {
         <Drawer.Screen name="alltodo/index" />
         <Drawer.Screen name="goal/[slug]" />
         <Drawer.Screen name="note/list/[slug]" />
+        <Drawer.Screen name="note/post/[...slug]" />
       </Drawer>
+
       <NoteDetailModal isModal={isModal} />
       <TodoAddModal isModal={addIsModal} />
     </QueryClientProvider>
