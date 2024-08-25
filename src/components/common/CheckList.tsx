@@ -1,45 +1,56 @@
-import { useEffect, useState } from "react"
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
-import useNotePostStore from "@/store/useNotePostStore"
+import { Todo } from "@/hooks/todo/useGetTodos"
+import axiosInstance from "@/libs/axiosInstance"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Checkbox from "expo-checkbox"
 
-const CheckList = ({ done, label }: { done?: boolean; label: string }) => {
-  const { changeName } = useNotePostStore()
+const CheckList = ({ data }: { data: Todo }) => {
+  const queryClient = useQueryClient()
 
-  const [isChecked, setIsChecked] = useState(false)
+  const { mutate } = useMutation({
+    mutationFn: async (update: {
+      title: string
+      fileUrl: string
+      linkUrl: string
+      goalId: number
+      done: boolean
+    }) => {
+      const response = await axiosInstance.patch(`/todos/${data.id}`, update)
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] })
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
 
-  const checkPressHanlder = async () => {
-    /* try {
-      setDoc(doc(db, "todos", docId), { done: !isChecked }, { merge: true })
-      setIsChecked(!isChecked)
-    } catch (e) {
-      console.log(e)
-    } */
+  const checkPressHanlder = () => {
+    mutate({
+      title: data.title,
+      fileUrl: data.fileUrl,
+      linkUrl: data.linkUrl,
+      goalId: data.goal.id,
+      done: !data.done,
+    })
   }
 
-  const onPressHandler = () => {
-    changeName({ todoName: label })
-    // router.push(`/note/post/${goal_ID}/${docId}`)
-  }
-
-  useEffect(() => {
-    if (!done) return
-    setIsChecked(done)
-  }, [done])
+  const onPressHandler = () => {}
 
   return (
     <View style={styles.listFlex}>
       <Checkbox
-        value={isChecked}
-        color={isChecked ? Color.blue500 : undefined}
+        value={data.done}
+        color={data.done ? Color.blue500 : undefined}
         style={styles.todoListCheckbox}
         onValueChange={checkPressHanlder}
       />
       <Pressable onPress={onPressHandler}>
-        <Text style={[styles.listText, isChecked && { textDecorationLine: "line-through" }]}>
-          {label}
+        <Text style={[styles.listText, data.done && { textDecorationLine: "line-through" }]}>
+          {data.title}
         </Text>
       </Pressable>
     </View>

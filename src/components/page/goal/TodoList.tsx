@@ -12,7 +12,7 @@ const TodoList = ({ id }: { id: number }) => {
   return data.todos.length > 0 ? (
     <View style={styles.goalView}>
       {data.todos.map((todo) => (
-        <CheckList key={todo.id} label={todo.title} done={todo.done} />
+        <CheckList data={todo} key={todo.id} />
       ))}
     </View>
   ) : (
