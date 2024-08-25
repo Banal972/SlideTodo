@@ -21,6 +21,7 @@ import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types"
 import { Link, useRouter } from "expo-router"
+import * as SecureStore from "expo-secure-store"
 
 const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   const { user } = useUser()
@@ -41,8 +42,8 @@ const SideMenu = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
     Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
       {
         text: "네",
-        onPress: () => {
-          // logout()
+        onPress: async () => {
+          SecureStore.setItem("accessToken", "")
           router.push("/")
         },
       },

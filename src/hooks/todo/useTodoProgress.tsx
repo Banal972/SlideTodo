@@ -2,7 +2,7 @@ import axiosInstance from "@/libs/axiosInstance"
 import { useQuery } from "@tanstack/react-query"
 
 interface useTodoProgressType {
-  goalId: string
+  goalId?: string
 }
 interface useTodoProgressDataType {
   progress: number

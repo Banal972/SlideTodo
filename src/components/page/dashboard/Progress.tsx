@@ -2,8 +2,11 @@ import React from "react"
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
+import { useTodoProgress } from "@/hooks/todo/useTodoProgress"
 
 const Progress = () => {
+  const { data: progress } = useTodoProgress({})
+
   return (
     <ImageBackground
       source={require("@/assets/images/dashboard/progressBg.png")}
@@ -17,7 +20,7 @@ const Progress = () => {
         </View>
         <Text style={styles.smallText}>내 진행 상황</Text>
         <View style={styles.progressContainer}>
-          <Text style={styles.progressNumber}>74</Text>
+          <Text style={styles.progressNumber}>{progress?.progress}</Text>
           <Text style={styles.percent}>%</Text>
         </View>
       </View>

@@ -1,15 +1,15 @@
 import { create } from "zustand"
 
 interface Store {
-  newPostIsModal: boolean
+  isModal: boolean
   open: () => void
   close: () => void
 }
 
 const useNewTodoModalStore = create<Store>((set) => ({
-  newPostIsModal: false,
-  open: () => set(() => ({ newPostIsModal: true })),
-  close: () => set(() => ({ newPostIsModal: false })),
+  isModal: false,
+  open: () => set(() => ({ isModal: true })),
+  close: () => set(() => ({ isModal: false })),
 }))
 
 export default useNewTodoModalStore

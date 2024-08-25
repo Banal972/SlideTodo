@@ -1,18 +1,70 @@
 import React, { useState } from "react"
-import { Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
+import { Controller, useForm } from "react-hook-form"
+import {
+  Alert,
+  Modal,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native"
 
 import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
 import Color from "@/constant/color"
+import { useGetGoalList } from "@/hooks/goal/useGetGoalList"
+import axiosInstance from "@/libs/axiosInstance"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Picker } from "@react-native-picker/picker"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Checkbox from "expo-checkbox"
 
 const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
   const { close: isModalCloseHandler } = useNewTodoModalStore()
-  const [selectedLanguage, setSelectedLanguage] = useState()
+  const [selectedGoal, setSelectedGoal] = useState()
+
+  const { control, handleSubmit } = useForm()
+
+  const { goalLists } = useGetGoalList({ cursor: 1 })
+
+  const queryClient = useQueryClient()
+
+  const { mutate } = useMutation({
+    mutationFn: (data: any) => {
+      const { title, fileUrl, linkUrl, goalId } = data
+      return axiosInstance.post("/todos", {
+        title: title,
+        fileUrl: fileUrl,
+        linkUrl: linkUrl,
+        goalId: goalId,
+      })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] })
+      Alert.alert("투두", "작성 하였습니다.", [
+        {
+          text: "확인",
+          onPress: () => isModalCloseHandler(),
+        },
+      ])
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  const onSubmit = (data: any) => {
+    const datas = {
+      ...data,
+      goalId: selectedGoal,
+    }
+    mutate(datas)
+  }
+
   return (
     <Modal animationType="slide" transparent={true} visible={isModal} style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -32,7 +84,18 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
           <ScrollView style={{ flex: 1 }}>
             <View>
               <Label>제목</Label>
-              <Input placeholder="할 일의 제목을 적어주세요." />
+              <Controller
+                control={control}
+                name="title"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Input
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    placeholder="할 일의 제목을 적어주세요."
+                  />
+                )}
+              />
             </View>
             <View
               style={{
@@ -141,30 +204,25 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
                         fontSize: 14,
                         lineHeight: 20,
                       }}
-                      selectedValue={selectedLanguage}
-                      onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
+                      selectedValue={selectedGoal}
+                      onValueChange={(itemValue, itemIndex) => setSelectedGoal(itemValue)}
                     >
-                      <Picker.Item
-                        style={{
-                          fontSize: 14,
-                          lineHeight: 20,
-                        }}
-                        label="목표를 선택해주세요."
-                        value="목표를 선택해주세요."
-                      />
-                      <Picker.Item
-                        style={{
-                          fontSize: 14,
-                          lineHeight: 20,
-                        }}
-                        label="목표를 선택해주세요.2"
-                        value="목표를 선택해주세요.2"
-                      />
+                      {goalLists?.goals.map((goal) => (
+                        <Picker.Item
+                          key={goal.id}
+                          style={{
+                            fontSize: 14,
+                            lineHeight: 20,
+                          }}
+                          label={goal.title}
+                          value={goal.id}
+                        />
+                      ))}
                     </Picker>
                   </View>
                 </View>
               </View>
-              <Button label="확인" />
+              <Button label="확인" onPress={handleSubmit(onSubmit)} />
             </View>
           </ScrollView>
         </View>

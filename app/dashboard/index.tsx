@@ -9,7 +9,7 @@ const DashboardPage = () => {
     <ScrollView>
       <View style={styles.container}>
         <TodoList />
-        {/* <Progress /> */}
+        <Progress />
         <GoalList />
       </View>
     </ScrollView>

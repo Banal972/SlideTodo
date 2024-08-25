@@ -6,8 +6,10 @@ import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
 import Color from "@/constant/color"
+import axiosInstance from "@/libs/axiosInstance"
 import AuthLayout from "@/screens/Auth/AuthLayout"
 import Ionicons from "@expo/vector-icons/Ionicons"
+import { Link } from "expo-router"
 
 export default function SignPage({ navigation }: any) {
   const { control, handleSubmit } = useForm()
@@ -24,8 +26,20 @@ export default function SignPage({ navigation }: any) {
 
     if (password !== pwdConfirm) return Alert.alert("회원가입 실패", "서로 비밀번호가 다릅니다.")
 
-    /* try {
-      await signup(data)
+    try {
+      await axiosInstance.post(
+        "/user",
+        {
+          email,
+          name,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      )
       Alert.alert("성공", "회원가입에 성공 하였습니다.", [
         {
           text: "확인",
@@ -38,7 +52,7 @@ export default function SignPage({ navigation }: any) {
     } catch (error: any) {
       const { message } = error.response.data
       Alert.alert("회원가입 실패", message)
-    } */
+    }
   }
 
   const [pwdInShow, setPwdInShow] = useState<{ [key: string]: boolean }>({
@@ -159,9 +173,9 @@ export default function SignPage({ navigation }: any) {
         }}
       >
         <Text style={styles.sign}>이미 회원이신가요?</Text>
-        <Pressable onPress={() => navigation.navigate("Index")}>
-          <Text style={styles.signLink}>로그인</Text>
-        </Pressable>
+        <Link href={"/"} style={styles.signLink}>
+          로그인
+        </Link>
       </View>
     </AuthLayout>
   )
