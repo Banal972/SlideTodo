@@ -1,58 +1,29 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Alert, Pressable, StyleSheet, Text, View } from "react-native"
+import { Pressable, StyleSheet, View } from "react-native"
 
 import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
-import Color from "@/constant/color"
-import axiosInstance from "@/libs/axiosInstance"
-import { saveStore } from "@/libs/secureStore"
+import BottomLink from "@/components/page/auth/BottomLink"
+import useLoginMutation from "@/hooks/auth/useLoginMutation"
 import AuthLayout from "@/screens/Auth/AuthLayout"
+import { LoginFormValue } from "@/types/auth"
 import Ionicons from "@expo/vector-icons/Ionicons"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Link, useRouter } from "expo-router"
+import { useQueryClient } from "@tanstack/react-query"
+import { useRouter } from "expo-router"
 
 export default function LoginPage() {
+  const queryClient = useQueryClient()
   const router = useRouter()
 
-  const { control, handleSubmit } = useForm()
+  const { control, handleSubmit } = useForm<LoginFormValue>()
   const [pwdInShow, setPwdInShow] = useState(true)
 
-  const queryClient = useQueryClient()
-
-  const { mutate } = useMutation({
-    mutationFn: async (data: any) => {
-      const { email, password } = data
-
-      if (
-        !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(
-          email,
-        )
-      ) {
-        Alert.alert("로그인 실패", "이메일 형식으로 작성해 주세요")
-      }
-
-      return axiosInstance.post(`/auth/login`, {
-        email,
-        password,
-      })
-    },
-    onSuccess: (res) => {
-      const { accessToken } = res.data
-      saveStore("accessToken", accessToken)
-      queryClient.invalidateQueries({ queryKey: ["user"] })
-      router.push("dashboard")
-    },
-    onError: (error: any) => {
-      const { message } = error.response.data
-      Alert.alert("로그인 실패", message)
-    },
-  })
-
-  const onSumbit = (data: any) => {
+  const { mutate } = useLoginMutation(queryClient, router)
+  const onSumbit = handleSubmit((data) => {
     mutate(data)
-  }
+  })
 
   const showPwdHandler = () => {
     setPwdInShow(!pwdInShow)
@@ -109,22 +80,9 @@ export default function LoginPage() {
         </View>
       </View>
 
-      <Button label="로그인" onPress={handleSubmit(onSumbit)} />
+      <Button label="로그인" onPress={onSumbit} />
 
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginTop: 40,
-          justifyContent: "center",
-          gap: 4,
-        }}
-      >
-        <Text style={styles.sign}>투두 리스트가 처음이신가요? </Text>
-        <Link href={"/signup"}>
-          <Text style={styles.signLink}>회원가입</Text>
-        </Link>
-      </View>
+      <BottomLink label="투두 리스트가 처음이신가요? " linkHref="/signup" linkLabel="회원가입" />
     </AuthLayout>
   )
 }
@@ -141,15 +99,5 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     position: "relative",
-  },
-  sign: {
-    color: Color.slate800,
-    fontSize: 14,
-    fontWeight: "medium",
-  },
-  signLink: {
-    color: "#3182F6",
-    fontWeight: "medium",
-    fontSize: 14,
   },
 })

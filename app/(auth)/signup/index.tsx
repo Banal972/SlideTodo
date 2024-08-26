@@ -1,61 +1,22 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Alert, Pressable, StyleSheet, Text, View } from "react-native"
+import { Pressable, StyleSheet, View } from "react-native"
 
 import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
-import Color from "@/constant/color"
-import axiosInstance from "@/libs/axiosInstance"
+import BottomLink from "@/components/page/auth/BottomLink"
+import useSignMutation from "@/hooks/auth/useSignMutation"
 import AuthLayout from "@/screens/Auth/AuthLayout"
+import { SignFormValue, pwdInShowState } from "@/types/auth"
 import Ionicons from "@expo/vector-icons/Ionicons"
-import { Link } from "expo-router"
+import { useRouter } from "expo-router"
 
-export default function SignPage({ navigation }: any) {
-  const { control, handleSubmit } = useForm()
-
-  const onSubmitHandler = async (data: any) => {
-    const { email, password, pwdConfirm } = data
-
-    if (
-      !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(
-        email,
-      )
-    )
-      Alert.alert("회원가입 실패", "이메일 형식으로 작성해 주세요")
-
-    if (password !== pwdConfirm) return Alert.alert("회원가입 실패", "서로 비밀번호가 다릅니다.")
-
-    try {
-      await axiosInstance.post(
-        "/user",
-        {
-          email,
-          name,
-          password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      )
-      Alert.alert("성공", "회원가입에 성공 하였습니다.", [
-        {
-          text: "확인",
-          onPress: () => {
-            navigation.navigate("Index")
-          },
-          style: "default",
-        },
-      ])
-    } catch (error: any) {
-      const { message } = error.response.data
-      Alert.alert("회원가입 실패", message)
-    }
-  }
-
-  const [pwdInShow, setPwdInShow] = useState<{ [key: string]: boolean }>({
+export default function SignPage() {
+  const router = useRouter()
+  const { control, handleSubmit } = useForm<SignFormValue>()
+  const { mutate } = useSignMutation(router)
+  const [pwdInShow, setPwdInShow] = useState<pwdInShowState>({
     pwd: true,
     confirm: true,
   })
@@ -66,6 +27,10 @@ export default function SignPage({ navigation }: any) {
       [key]: !pwdInShow[key],
     }))
   }
+
+  const onSubmitHandler = handleSubmit((data) => {
+    mutate(data)
+  })
 
   return (
     <AuthLayout>
@@ -161,22 +126,9 @@ export default function SignPage({ navigation }: any) {
         </View>
       </View>
 
-      <Button label="회원가입" onPress={handleSubmit(onSubmitHandler)} />
+      <Button label="회원가입" onPress={onSubmitHandler} />
 
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginTop: 40,
-          justifyContent: "center",
-          gap: 4,
-        }}
-      >
-        <Text style={styles.sign}>이미 회원이신가요?</Text>
-        <Link href={"/"} style={styles.signLink}>
-          로그인
-        </Link>
-      </View>
+      <BottomLink label="이미 회원이신가요?" linkHref="/" linkLabel="로그인" />
     </AuthLayout>
   )
 }
@@ -193,16 +145,5 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     position: "relative",
-  },
-  sign: {
-    textAlign: "center",
-    color: Color.slate800,
-    fontSize: 14,
-    fontWeight: "medium",
-  },
-  signLink: {
-    color: "#3182F6",
-    fontWeight: "medium",
-    fontSize: 14,
   },
 })
