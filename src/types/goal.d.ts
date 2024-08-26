@@ -1,14 +1,24 @@
-import { todoType } from "@/types/todo"
-
 export interface goalListType {
-  title: any
-  createDate: any
-  id: string
+  nextCursor: number
+  totalCount: number
+  goals: GoalType[]
 }
 
-export interface goalType extends goalListType {
-  todos: {
-    done: todoType[]
-    not: todoType[]
-  }
+export interface GoalType {
+  updatedAt: string
+  createdAt: string
+  title: string
+  id: number
+  userId: number
+  teamId: string
+}
+
+export interface goalListParams {
+  cursor: number
+  size?: number
+  sortOrder?: "oldest" | "newest"
+}
+
+export interface PostGoalType {
+  goal: string
 }

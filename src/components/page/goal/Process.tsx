@@ -1,4 +1,3 @@
-import React from "react"
 import { StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
@@ -9,7 +8,7 @@ const Process = ({ progress }: { progress: number }) => {
       <View style={styles.processBox}>
         <View style={[styles.processLine]} />
       </View>
-      <Text style={styles.processPercent}>{progress}%</Text>
+      <Text style={styles.processPercent}>{progress || 0}%</Text>
     </View>
   )
 }

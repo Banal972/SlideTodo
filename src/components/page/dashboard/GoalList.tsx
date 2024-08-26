@@ -3,20 +3,13 @@ import { StyleSheet, Text, View } from "react-native"
 import AddToDoBtn from "@/components/common/Button/AddToDoBtn"
 import BaseContainer from "@/components/common/Container/BaseContainer"
 import NullText from "@/components/common/NullText"
+import GoalProcess from "@/components/page/dashboard/GoalProcess"
 import BaseTitle from "@/components/page/dashboard/common/BaseTitle"
-import Process from "@/components/page/goal/Process"
 import TodoDoneList from "@/components/page/goal/TodoDoneList"
 import TodoList from "@/components/page/goal/TodoList"
 import Color from "@/constant/color"
 import { useGetGoalList } from "@/hooks/goal/useGetGoalList"
-import { useTodoProgress } from "@/hooks/todo/useTodoProgress"
 import { Link } from "expo-router"
-
-const GoalProcess = ({ id }: { id: number }) => {
-  const { data: progress } = useTodoProgress({ goalId: String(id) })
-
-  return progress ? <Process progress={progress.progress} /> : null
-}
 
 const GoalList = () => {
   const { goalLists } = useGetGoalList({ cursor: 1 })

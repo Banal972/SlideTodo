@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import {
   Alert,
@@ -17,53 +17,31 @@ import Label from "@/components/common/Label"
 import Seleted from "@/components/page/todo/TodoAddModal/Atom/Seleted"
 import Color from "@/constant/color"
 import { useGetGoalList } from "@/hooks/goal/useGetGoalList"
-import axiosInstance from "@/libs/axiosInstance"
+import usePostTodo from "@/hooks/todo/usePostTodo"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
+import { TodoPostValue } from "@/types/todo"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Picker } from "@react-native-picker/picker"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 
 const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
   const queryClient = useQueryClient()
   const { close: isModalCloseHandler } = useNewTodoModalStore()
+  const { control, handleSubmit } = useForm<TodoPostValue>()
   const { goalLists } = useGetGoalList({ cursor: 1 })
-  const { control, handleSubmit } = useForm()
   const [selectedGoal, setSelectedGoal] = useState()
   const [linkState, setLinkState] = useState(false)
   const [fileState, setFileState] = useState(false)
 
-  const { mutate } = useMutation({
-    mutationFn: (data: any) => {
-      const { title, fileUrl, linkUrl, goalId } = data
-      return axiosInstance.post("/todos", {
-        title: title,
-        fileUrl: fileUrl,
-        linkUrl: linkUrl,
-        goalId: goalId,
-      })
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] })
-      Alert.alert("투두", "작성 하였습니다.", [
-        {
-          text: "확인",
-          onPress: () => isModalCloseHandler(),
-        },
-      ])
-    },
-    onError: (error: any) => {
-      const { message } = error.response.data
-      Alert.alert("실패", message)
-    },
-  })
+  const { mutate } = usePostTodo(queryClient, isModalCloseHandler)
 
-  const onSubmit = (data: any) => {
+  const onSubmit = handleSubmit((data) => {
     const datas = {
       ...data,
       goalId: selectedGoal,
     }
     mutate(datas)
-  }
+  })
 
   return (
     <Modal animationType="slide" transparent={true} visible={isModal} style={{ flex: 1 }}>
@@ -197,7 +175,7 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
                   </View>
                 </View>
               </View>
-              <Button label="확인" onPress={handleSubmit(onSubmit)} />
+              <Button label="확인" onPress={onSubmit} />
             </View>
           </ScrollView>
         </View>

@@ -1,28 +1,8 @@
 import axiosInstance from "@/libs/axiosInstance"
+import { goalListParams, goalListType } from "@/types/goal"
 import { useQuery } from "@tanstack/react-query"
 
-export interface goalListType {
-  nextCursor: number
-  totalCount: number
-  goals: Goal[]
-}
-
-export interface Goal {
-  updatedAt: string
-  createdAt: string
-  title: string
-  id: number
-  userId: number
-  teamId: string
-}
-
-interface goalListRequest {
-  cursor: number
-  size?: number
-  sortOrder?: "oldest" | "newest"
-}
-
-export const useGetGoalList = ({ cursor, size, sortOrder }: goalListRequest) => {
+export const useGetGoalList = ({ cursor, size, sortOrder }: goalListParams) => {
   const { data: goalLists, isLoading } = useQuery<goalListType>({
     queryKey: ["goalList"],
     queryFn: async () => {

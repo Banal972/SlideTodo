@@ -1,40 +1,9 @@
 import axiosInstance from "@/libs/axiosInstance"
+import { TodosData, TodosParamsType } from "@/types/todo"
 import { useQuery } from "@tanstack/react-query"
 
-export interface Root {
-  totalCount: number
-  nextCursor: number
-  todos: Todo[]
-}
-
-export interface Todo {
-  noteId: number
-  done: boolean
-  linkUrl: string
-  fileUrl: string
-  title: string
-  id: number
-  goal: Goal
-  userId: number
-  teamId: string
-  updatedAt: string
-  createdAt: string
-}
-
-export interface Goal {
-  id: number
-  title: string
-}
-
-interface TodosType {
-  goalId?: number
-  done?: boolean | null
-  cursor?: number
-  size?: number
-}
-
-export const useGetTodos = ({ goalId, done, cursor, size }: TodosType) => {
-  const { data, isLoading } = useQuery<Root>({
+export const useGetTodos = ({ goalId, done, cursor, size }: TodosParamsType) => {
+  const { data, isLoading } = useQuery<TodosData>({
     queryKey: ["todos", { goalId, done, cursor, size }],
     queryFn: async () => {
       try {

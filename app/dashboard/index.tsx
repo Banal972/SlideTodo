@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { ScrollView, StyleSheet, View } from "react-native"
 
 import GoalList from "@/components/page/dashboard/GoalList"
 import Progress from "@/components/page/dashboard/Progress"

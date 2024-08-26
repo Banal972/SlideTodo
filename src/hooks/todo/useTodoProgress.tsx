@@ -1,12 +1,6 @@
 import axiosInstance from "@/libs/axiosInstance"
+import { useTodoProgressDataType, useTodoProgressType } from "@/types/todo"
 import { useQuery } from "@tanstack/react-query"
-
-interface useTodoProgressType {
-  goalId?: string
-}
-interface useTodoProgressDataType {
-  progress: number
-}
 
 export const useTodoProgress = ({ goalId }: useTodoProgressType) => {
   const { data, isLoading } = useQuery<useTodoProgressDataType>({
