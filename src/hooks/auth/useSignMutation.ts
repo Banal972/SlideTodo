@@ -1,5 +1,6 @@
 import { Alert } from "react-native"
 
+import ROUTE from "@/constant/route"
 import axiosInstance from "@/libs/axiosInstance"
 import { useMutation } from "@tanstack/react-query"
 import { Router } from "expo-router"
@@ -13,10 +14,13 @@ const useSignMutation = (router: Router) => {
         !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(
           email,
         )
-      )
-        Alert.alert("회원가입 실패", "이메일 형식으로 작성해 주세요")
+      ) {
+        throw new Error("이메일 형식으로 작성해 주세요")
+      }
 
-      if (password !== pwdConfirm) return Alert.alert("회원가입 실패", "서로 비밀번호가 다릅니다.")
+      if (password !== pwdConfirm) {
+        throw new Error("서로 비밀번호가 다릅니다.")
+      }
 
       return axiosInstance.post(
         "/user",
@@ -37,7 +41,7 @@ const useSignMutation = (router: Router) => {
         {
           text: "확인",
           onPress: () => {
-            router.push("/")
+            router.push(ROUTE.singnIn)
           },
           style: "default",
         },

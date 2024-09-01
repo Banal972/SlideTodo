@@ -1,14 +1,7 @@
+import { useCallback, useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
-import {
-  Image,
-  Keyboard,
-  Pressable,
-  Text,
-  TextInput,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native"
-import { ScrollView } from "react-native-gesture-handler"
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
+import { RichEditor, RichToolbar } from "react-native-pell-rich-editor"
 
 import Color from "@/constant/color"
 import usePostNote from "@/hooks/note/usePostNote"
@@ -24,6 +17,8 @@ type FormData = {
 const NotePostPage = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
+  const richText = useRef<RichEditor>(null)
+  const scrollRef = useRef<ScrollView>(null)
 
   const { slug } = useLocalSearchParams<{ slug: string }>()
 
@@ -33,6 +28,11 @@ const NotePostPage = () => {
 
   const { data } = usePostNoteStore()
   const { mutate } = usePostNote(queryClient, router)
+
+  const handleCursorPosition = useCallback((scrollY: number) => {
+    // Positioning scroll bar
+    scrollRef.current!.scrollTo({ y: scrollY - 30, animated: true })
+  }, [])
 
   const onSubmit = handleSubmit((data) => {
     mutate({
@@ -194,7 +194,7 @@ const NotePostPage = () => {
             공백포함 : 총 {contentWatch ? contentWatch.length : 0}자 | 공백제외 : 총{" "}
             {contentWatch ? contentWatch.replace(/\s/g, "").length : 0}자
           </Text>
-          <Controller
+          {/* <Controller
             name="content"
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -209,11 +209,18 @@ const NotePostPage = () => {
                 }}
                 multiline
                 editable
-                placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
                 placeholderTextColor={Color.slate400}
               />
             )}
-          />
+          /> */}
+          <ScrollView ref={scrollRef} keyboardDismissMode={"none"}>
+            <RichEditor
+              placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
+              ref={richText}
+              useContainer={true}
+              onCursorPosition={handleCursorPosition}
+            />
+          </ScrollView>
         </View>
 
         <View
@@ -224,10 +231,18 @@ const NotePostPage = () => {
             height: 44,
             width: "100%",
           }}
-        />
+        >
+          <RichToolbar editor={richText} style={styles.richBar} />
+        </View>
       </View>
     </View>
   )
 }
 
 export default NotePostPage
+
+const styles = StyleSheet.create({
+  richBar: {
+    backgroundColor: "transparent",
+  },
+})

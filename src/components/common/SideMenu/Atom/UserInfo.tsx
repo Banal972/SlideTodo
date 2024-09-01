@@ -1,23 +1,26 @@
-import React from "react"
 import { Alert, Image, ImageBackground, Pressable, Text, View } from "react-native"
 
 import Color from "@/constant/color"
+import ROUTE from "@/constant/route"
 import useUser from "@/hooks/user/useUser"
+import { saveStore } from "@/libs/secureStore"
+import useUserStore from "@/store/useUserStore"
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types"
 import { useRouter } from "expo-router"
-import * as SecureStore from "expo-secure-store"
 
 const UserInfo = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   const { user } = useUser()
   const router = useRouter()
+  const { signOut } = useUserStore()
 
   const logoutHandler = () => {
     Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
       {
         text: "네",
         onPress: async () => {
-          SecureStore.setItem("accessToken", "")
-          router.push("/")
+          await saveStore("accessToken", "")
+          signOut()
+          router.push(ROUTE.singnIn)
         },
       },
       {

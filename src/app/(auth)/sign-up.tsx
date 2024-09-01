@@ -6,13 +6,13 @@ import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
 import BottomLink from "@/components/page/auth/BottomLink"
+import ROUTE from "@/constant/route"
 import useSignMutation from "@/hooks/auth/useSignMutation"
-import AuthLayout from "@/screens/Auth/AuthLayout"
 import { SignFormValue, pwdInShowState } from "@/types/auth"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useRouter } from "expo-router"
 
-export default function SignPage() {
+const SignUpPage = () => {
   const router = useRouter()
   const { control, handleSubmit } = useForm<SignFormValue>()
   const { mutate } = useSignMutation(router)
@@ -33,7 +33,7 @@ export default function SignPage() {
   })
 
   return (
-    <AuthLayout>
+    <>
       <View style={styles.inputContainer}>
         <View>
           <Label>이름</Label>
@@ -128,10 +128,12 @@ export default function SignPage() {
 
       <Button label="회원가입" onPress={onSubmitHandler} />
 
-      <BottomLink label="이미 회원이신가요?" linkHref="/" linkLabel="로그인" />
-    </AuthLayout>
+      <BottomLink label="이미 회원이신가요?" linkHref={ROUTE.singnIn} linkLabel="로그인" />
+    </>
   )
 }
+
+export default SignUpPage
 
 const styles = StyleSheet.create({
   inputContainer: {

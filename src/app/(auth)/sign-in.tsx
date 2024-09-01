@@ -6,14 +6,14 @@ import Button from "@/components/common/Button"
 import Input from "@/components/common/Input"
 import Label from "@/components/common/Label"
 import BottomLink from "@/components/page/auth/BottomLink"
+import ROUTE from "@/constant/route"
 import useLoginMutation from "@/hooks/auth/useLoginMutation"
-import AuthLayout from "@/screens/Auth/AuthLayout"
 import { LoginFormValue } from "@/types/auth"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "expo-router"
 
-export default function LoginPage() {
+const SignInPage = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
 
@@ -28,7 +28,7 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthLayout>
+    <>
       <View style={styles.inputContainer}>
         <View>
           <Label>아이디</Label>
@@ -80,10 +80,16 @@ export default function LoginPage() {
 
       <Button label="로그인" onPress={onSumbit} />
 
-      <BottomLink label="투두 리스트가 처음이신가요? " linkHref="/signup" linkLabel="회원가입" />
-    </AuthLayout>
+      <BottomLink
+        label="투두 리스트가 처음이신가요? "
+        linkHref={ROUTE.singnUp}
+        linkLabel="회원가입"
+      />
+    </>
   )
 }
+
+export default SignInPage
 
 const styles = StyleSheet.create({
   inputContainer: {

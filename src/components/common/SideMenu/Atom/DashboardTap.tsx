@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native"
 
 import SmallBtn from "@/components/common/Button/SmallBtn"
 import Color from "@/constant/color"
+import ROUTE from "@/constant/route"
 import useNewTodoModalStore from "@/store/useNewTodoModalStore"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Link } from "expo-router"
@@ -21,7 +22,7 @@ const DashboardTap = () => {
         paddingVertical: 12,
       }}
     >
-      <Link href={"/dashboard"}>
+      <Link href={ROUTE.dashboard}>
         <View style={styles.listBtnContainer}>
           <Ionicons name="home" size={24} color="black" />
           <Text>대시보드</Text>
