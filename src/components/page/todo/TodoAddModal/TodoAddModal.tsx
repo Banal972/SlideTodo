@@ -27,15 +27,16 @@ import { useQueryClient } from "@tanstack/react-query"
 const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
   const queryClient = useQueryClient()
   const { close: isModalCloseHandler } = useNewTodoModalStore()
-  const { control, handleSubmit } = useForm<TodoPostValue>()
+  const { control, handleSubmit, setValue } = useForm<TodoPostValue>()
   const { goalLists } = useGetGoalList({ cursor: 1 })
   const [selectedGoal, setSelectedGoal] = useState()
   const [linkState, setLinkState] = useState(false)
   const [fileState, setFileState] = useState(false)
 
-  const { mutate } = usePostTodo(queryClient, isModalCloseHandler)
+  const { mutate } = usePostTodo(queryClient, isModalCloseHandler, setValue)
 
   const onSubmit = handleSubmit((data) => {
+    if (!selectedGoal) return Alert.alert("실패", "목표를 선택해주세요")
     const datas = {
       ...data,
       goalId: selectedGoal,
@@ -160,6 +161,14 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
                       selectedValue={selectedGoal}
                       onValueChange={(itemValue) => setSelectedGoal(itemValue)}
                     >
+                      <Picker.Item
+                        style={{
+                          fontSize: 14,
+                          lineHeight: 20,
+                        }}
+                        label={"목표를 선택해주세요"}
+                        value={""}
+                      />
                       {goalLists?.goals.map((goal) => (
                         <Picker.Item
                           key={goal.id}

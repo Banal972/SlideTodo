@@ -21,9 +21,7 @@ export default function LoginPage() {
   const [pwdInShow, setPwdInShow] = useState(true)
 
   const { mutate } = useLoginMutation(queryClient, router)
-  const onSumbit = handleSubmit((data) => {
-    mutate(data)
-  })
+  const onSumbit = handleSubmit((data) => mutate(data))
 
   const showPwdHandler = () => {
     setPwdInShow(!pwdInShow)

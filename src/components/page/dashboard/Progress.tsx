@@ -1,11 +1,10 @@
-import React from "react"
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
 import { useTodoProgress } from "@/hooks/todo/useTodoProgress"
 
 const Progress = () => {
-  const { data: progress } = useTodoProgress({})
+  const { data: progress } = useTodoProgress()
 
   return (
     <ImageBackground

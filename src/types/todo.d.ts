@@ -27,10 +27,6 @@ export interface TodosParamsType {
   size?: number
 }
 
-export interface useTodoProgressType {
-  goalId?: string
-}
-
 export interface useTodoProgressDataType {
   progress: number
 }
@@ -39,5 +35,13 @@ export interface TodoPostValue {
   title: string
   fileUrl: string
   linkUrl: string
-  goalId: string
+  goalId?: string
+}
+
+export interface TodoUpdate {
+  title: string
+  fileUrl: string
+  linkUrl: string
+  goalId: number
+  done: boolean
 }

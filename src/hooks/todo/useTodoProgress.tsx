@@ -1,15 +1,15 @@
 import axiosInstance from "@/libs/axiosInstance"
-import { useTodoProgressDataType, useTodoProgressType } from "@/types/todo"
+import { useTodoProgressDataType } from "@/types/todo"
 import { useQuery } from "@tanstack/react-query"
 
-export const useTodoProgress = ({ goalId }: useTodoProgressType) => {
+export const useTodoProgress = (id?: number) => {
   const { data, isLoading } = useQuery<useTodoProgressDataType>({
-    queryKey: ["progress"],
+    queryKey: ["progress", id],
     queryFn: async () => {
       try {
         const response = await axiosInstance.get("/todos/progress", {
           params: {
-            goalId: Number(goalId),
+            goalId: id,
           },
         })
         return response.data

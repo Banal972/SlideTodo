@@ -1,36 +1,18 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native"
+import { Image, StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
-import { Todo } from "@/hooks/todo/useGetTodos"
-import axiosInstance from "@/libs/axiosInstance"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import useUpdateTodoDone from "@/hooks/todo/useUpdateTodoDone"
+import { TodoType } from "@/types/todo"
+import { useQueryClient } from "@tanstack/react-query"
 import Checkbox from "expo-checkbox"
 import { Link } from "expo-router"
 
-const CheckList = ({ data }: { data: Todo }) => {
+const CheckList = ({ data }: { data: TodoType }) => {
   const queryClient = useQueryClient()
 
-  const { mutate } = useMutation({
-    mutationFn: async (update: {
-      title: string
-      fileUrl: string
-      linkUrl: string
-      goalId: number
-      done: boolean
-    }) => {
-      const response = await axiosInstance.patch(`/todos/${data.id}`, update)
-      return response.data
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] })
-      queryClient.invalidateQueries({ queryKey: ["progress"] })
-    },
-    onError: (error) => {
-      console.log(error)
-    },
-  })
+  const { mutate } = useUpdateTodoDone(queryClient, data)
 
-  const checkPressHanlder = () => {
+  const checkPressHanlder = () =>
     mutate({
       title: data.title,
       fileUrl: data.fileUrl,
@@ -38,7 +20,6 @@ const CheckList = ({ data }: { data: Todo }) => {
       goalId: data.goal.id,
       done: !data.done,
     })
-  }
 
   return (
     <View style={styles.listFlex}>

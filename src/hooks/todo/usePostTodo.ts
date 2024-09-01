@@ -1,11 +1,17 @@
+import { UseFormSetValue } from "react-hook-form"
 import { Alert } from "react-native"
 
 import axiosInstance from "@/libs/axiosInstance"
+import { TodoPostValue } from "@/types/todo"
 import { QueryClient, useMutation } from "@tanstack/react-query"
 
-const usePostTodo = (queryClient: QueryClient, isModalCloseHandler: () => void) => {
+const usePostTodo = (
+  queryClient: QueryClient,
+  isModalCloseHandler: () => void,
+  setValue: UseFormSetValue<TodoPostValue>,
+) => {
   return useMutation({
-    mutationFn: (data: any) => {
+    mutationFn: (data: TodoPostValue) => {
       const { title, fileUrl, linkUrl, goalId } = data
       return axiosInstance.post("/todos", {
         title: title,
@@ -14,12 +20,22 @@ const usePostTodo = (queryClient: QueryClient, isModalCloseHandler: () => void) 
         goalId: goalId,
       })
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] })
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["todos"] }),
+        queryClient.invalidateQueries({ queryKey: ["goalList"] }),
+        queryClient.invalidateQueries({ queryKey: ["progress"] }),
+      ])
       Alert.alert("성공", "할일을 등록하였습니다.", [
         {
           text: "확인",
-          onPress: () => isModalCloseHandler(),
+          onPress: () => {
+            setValue("title", "")
+            setValue("goalId", "")
+            setValue("linkUrl", "")
+            setValue("fileUrl", "")
+            isModalCloseHandler()
+          },
         },
       ])
     },
