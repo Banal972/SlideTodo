@@ -16,7 +16,7 @@ const TodoList = ({ id, goalTitle }: { id: number; goalTitle: string }) => {
       ))}
     </View>
   ) : (
-    <NullText>최근에 등록한 할 일이 없어요</NullText>
+    <NullText>아직 해야할 일이 없어요</NullText>
   )
 }
 

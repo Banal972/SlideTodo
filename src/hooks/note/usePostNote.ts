@@ -16,7 +16,10 @@ const usePostNote = (queryClient: QueryClient, router: Router) => {
       })
     },
     onSuccess: async () => {
-      await Promise.all([queryClient.invalidateQueries({ queryKey: ["todos"] })])
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["todos"] }),
+        queryClient.invalidateQueries({ queryKey: ["goalList"] }),
+      ])
       Alert.alert("성공", "노트를 작성했습니다.", [
         {
           text: "확인",

@@ -35,7 +35,7 @@ export interface TodoPostValue {
   title: string
   fileUrl: string
   linkUrl: string
-  goalId?: string
+  goalId?: number
 }
 
 export interface TodoUpdate {

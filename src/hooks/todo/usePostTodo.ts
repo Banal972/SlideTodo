@@ -31,7 +31,7 @@ const usePostTodo = (
           text: "확인",
           onPress: () => {
             setValue("title", "")
-            setValue("goalId", "")
+            setValue("goalId", 0)
             setValue("linkUrl", "")
             setValue("fileUrl", "")
             isModalCloseHandler()

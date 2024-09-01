@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native"
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
 import useUpdateTodoDone from "@/hooks/todo/useUpdateTodoDone"
@@ -26,6 +26,10 @@ const CheckList = ({ data, goalTitle }: { data: TodoType; goalTitle?: string }) 
     })
 
   const postNoteHanlder = () => {
+    if (data.noteId) {
+      return Alert.alert("경고", "이미 노트가 존재합니다.")
+    }
+
     changeData({
       title: goalTitle || "",
       todoTitle: data.title,

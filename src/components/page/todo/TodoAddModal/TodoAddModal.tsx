@@ -39,7 +39,7 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
     if (!selectedGoal) return Alert.alert("실패", "목표를 선택해주세요")
     const datas = {
       ...data,
-      goalId: selectedGoal,
+      goalId: Number(selectedGoal),
     }
     mutate(datas)
   })

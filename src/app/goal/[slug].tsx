@@ -98,7 +98,7 @@ const GoalDetail = () => {
           <AddToDoBtn />
         </View>
         <View style={{ gap: 8, marginTop: 16 }}>
-          <TodoList id={Number(slug)} />
+          <TodoList id={Number(slug)} goalTitle={data?.title || ""} />
         </View>
       </BaseContainer>
 
@@ -112,7 +112,7 @@ const GoalDetail = () => {
           <Text style={{ fontSize: 18, fontWeight: "bold", color: Color.slate800 }}>Done</Text>
         </View>
         <View style={{ gap: 8, marginTop: 16 }}>
-          <TodoDoneList id={Number(slug)} />
+          <TodoDoneList id={Number(slug)} goalTitle={data?.title || ""} />
         </View>
       </BaseContainer>
     </View>
