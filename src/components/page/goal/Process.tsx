@@ -1,12 +1,35 @@
-import { StyleSheet, Text, View } from "react-native"
+import { useEffect, useRef, useState } from "react"
+import { Animated, Easing, StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
 
 const Process = ({ progress }: { progress: number }) => {
+  const [widthAnimation] = useState(new Animated.Value(0))
+
+  useEffect(() => {
+    Animated.timing(widthAnimation, {
+      toValue: progress,
+      duration: 300,
+      easing: Easing.linear,
+      useNativeDriver: false,
+      delay: 100,
+    }).start()
+  }, [progress])
+
   return (
     <View style={styles.processContainer}>
       <View style={styles.processBox}>
-        <View style={[styles.processLine]} />
+        <Animated.View
+          style={[
+            styles.processLine,
+            {
+              width: widthAnimation.interpolate({
+                inputRange: [0, 100],
+                outputRange: ["0%", "100%"],
+              }),
+            },
+          ]}
+        />
       </View>
       <Text style={styles.processPercent}>{progress || 0}%</Text>
     </View>
@@ -35,7 +58,6 @@ const styles = StyleSheet.create({
   },
   processLine: {
     position: "absolute",
-    width: "0%",
     height: "100%",
     borderRadius: 6,
     top: 0,
