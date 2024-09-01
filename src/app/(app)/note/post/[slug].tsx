@@ -1,8 +1,19 @@
-import { useCallback, useRef } from "react"
+import { useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
-import { RichEditor, RichToolbar } from "react-native-pell-rich-editor"
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+  useWindowDimensions,
+} from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
+import { DEFAULT_TOOLBAR_ITEMS, RichText, Toolbar, useEditorBridge } from "@10play/tentap-editor"
 import Color from "@/constant/color"
 import usePostNote from "@/hooks/note/usePostNote"
 import usePostNoteStore from "@/store/usePostNoteStore"
@@ -17,8 +28,13 @@ type FormData = {
 const NotePostPage = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
-  const richText = useRef<RichEditor>(null)
-  const scrollRef = useRef<ScrollView>(null)
+
+  const editor = useEditorBridge({
+    autofocus: true,
+    avoidIosKeyboard: true,
+  })
+
+  const customToolbarItems = DEFAULT_TOOLBAR_ITEMS.filter((_, index) => index !== 2)
 
   const { slug } = useLocalSearchParams<{ slug: string }>()
 
@@ -29,10 +45,11 @@ const NotePostPage = () => {
   const { data } = usePostNoteStore()
   const { mutate } = usePostNote(queryClient, router)
 
-  const handleCursorPosition = useCallback((scrollY: number) => {
-    // Positioning scroll bar
-    scrollRef.current!.scrollTo({ y: scrollY - 30, animated: true })
-  }, [])
+  const { top } = useSafeAreaInsets()
+  const { width, height } = useWindowDimensions()
+  const isLandscape = width > height
+  const headerHeight = isLandscape ? 32 : 44
+  const keyboardVerticalOffset = headerHeight + top
 
   const onSubmit = handleSubmit((data) => {
     mutate({
@@ -45,204 +62,194 @@ const NotePostPage = () => {
   return (
     <View
       style={{
-        paddingTop: 11,
-        paddingHorizontal: 16,
-        paddingBottom: 24,
         backgroundColor: "white",
         flex: 1,
       }}
     >
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          paddingVertical: 11,
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontSize: 16, fontWeight: "600", color: Color.slate900 }}>노트 작성</Text>
-        <View style={{ flexDirection: "row", gap: 8 }}>
-          <Pressable
-            style={{
-              width: 84,
-              height: 36,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 12,
-            }}
-          >
-            <Text style={{ color: Color.blue500, fontSize: 14, fontWeight: 600 }}>임시 저장</Text>
-          </Pressable>
-          <Pressable
-            onPress={onSubmit}
-            style={{
-              width: 84,
-              height: 36,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: Color.slate400,
-              borderRadius: 12,
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 14, fontWeight: 600 }}>작성 완료</Text>
-          </Pressable>
-        </View>
-      </View>
-
-      <View
-        style={{
-          marginTop: 11,
-          flexDirection: "row",
-          gap: 6,
-          alignItems: "center",
+          paddingTop: 11,
+          paddingHorizontal: 16,
+          flex: 1,
         }}
       >
         <View
           style={{
-            width: 24,
-            height: 24,
-            borderRadius: 6,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#000",
-          }}
-        >
-          <Image
-            style={{ width: 16, height: 16 }}
-            source={require("@/assets/images/goal/icon01.png")}
-          />
-        </View>
-        <Text style={{ fontSize: 16, fontWeight: "500", color: Color.slate800 }}>{data.title}</Text>
-      </View>
-
-      <View
-        style={{
-          flexDirection: "row",
-          gap: 8,
-          marginTop: 12,
-          alignItems: "center",
-        }}
-      >
-        <View
-          style={{
-            paddingHorizontal: 2,
-            paddingVertical: 3,
-            backgroundColor: Color.slate100,
-            borderRadius: 4,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingVertical: 11,
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 14, fontWeight: "500", color: Color.slate700 }}>To do</Text>
-        </View>
-        <Text style={{ fontSize: 14, color: Color.slate700 }}>{data.todoTitle}</Text>
-      </View>
-
-      <View
-        style={{
-          marginTop: 16,
-          paddingVertical: 8,
-          flexDirection: "row",
-          borderTopWidth: 1,
-          borderBottomWidth: 1,
-          borderColor: Color.slate200,
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 10,
-        }}
-      >
-        <Controller
-          control={control}
-          name="title"
-          rules={{
-            maxLength: 30,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-              placeholder="노트의 제목을 입력해주세요"
-              maxLength={30}
+          <Text style={{ fontSize: 16, fontWeight: "600", color: Color.slate900 }}>노트 작성</Text>
+          <View style={{ flexDirection: "row", gap: 8 }}>
+            <Pressable
               style={{
-                fontSize: 16,
-                fontWeight: "500",
-                color: Color.slate900,
-                flexGrow: 1,
+                width: 84,
+                height: 36,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 12,
               }}
-            />
-          )}
-        />
-        <View style={{ flexDirection: "row" }}>
-          <Text style={{ color: Color.slate800, fontSize: 12, fontWeight: "500" }}>
-            {titleWatch ? titleWatch.length : 0}/
-          </Text>
-          <Text style={{ color: Color.blue500, fontSize: 12, fontWeight: "500" }}>30</Text>
+            >
+              <Text style={{ color: Color.blue500, fontSize: 14, fontWeight: 600 }}>임시 저장</Text>
+            </Pressable>
+            <Pressable
+              onPress={onSubmit}
+              style={{
+                width: 84,
+                height: 36,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: Color.slate400,
+                borderRadius: 12,
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 14, fontWeight: 600 }}>작성 완료</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
 
-      <View style={{ flex: 0.95 }}>
-        <View style={{ flex: 1 }}>
-          <Text
+        <View
+          style={{
+            marginTop: 11,
+            flexDirection: "row",
+            gap: 6,
+            alignItems: "center",
+          }}
+        >
+          <View
             style={{
-              fontSize: 12,
-              marginTop: 12,
-              marginBottom: 8,
-              fontWeight: "500",
-              color: Color.slate800,
+              width: 24,
+              height: 24,
+              borderRadius: 6,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#000",
             }}
           >
-            공백포함 : 총 {contentWatch ? contentWatch.length : 0}자 | 공백제외 : 총{" "}
-            {contentWatch ? contentWatch.replace(/\s/g, "").length : 0}자
+            <Image
+              style={{ width: 16, height: 16 }}
+              source={require("@/assets/images/goal/icon01.png")}
+            />
+          </View>
+          <Text style={{ fontSize: 16, fontWeight: "500", color: Color.slate800 }}>
+            {data.title}
           </Text>
-          {/* <Controller
-            name="content"
+          <Pressable
+            style={{
+              width: 24,
+              height: 24,
+              borderRadius: 1000,
+              backgroundColor: Color.slate200,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image source={require("@/assets/images/icon/link_alt.png")} />
+          </Pressable>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 8,
+            marginTop: 12,
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              paddingHorizontal: 2,
+              paddingVertical: 3,
+              backgroundColor: Color.slate100,
+              borderRadius: 4,
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 14, fontWeight: "500", color: Color.slate700 }}>To do</Text>
+          </View>
+          <Text style={{ fontSize: 14, color: Color.slate700 }}>{data.todoTitle}</Text>
+        </View>
+
+        <View
+          style={{
+            marginTop: 16,
+            paddingVertical: 8,
+            flexDirection: "row",
+            borderTopWidth: 1,
+            borderBottomWidth: 1,
+            borderColor: Color.slate200,
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <Controller
             control={control}
+            name="title"
+            rules={{
+              maxLength: 30,
+            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
                 onChangeText={onChange}
                 onBlur={onBlur}
                 value={value}
+                placeholder="노트의 제목을 입력해주세요"
+                maxLength={30}
                 style={{
                   fontSize: 16,
+                  fontWeight: "500",
                   color: Color.slate900,
                   flexGrow: 1,
                 }}
-                multiline
-                editable
-                placeholderTextColor={Color.slate400}
               />
             )}
-          /> */}
-          <ScrollView ref={scrollRef} keyboardDismissMode={"none"}>
-            <RichEditor
-              placeholder="이 곳을 클릭해 노트 작성을 시작해주세요"
-              ref={richText}
-              useContainer={true}
-              onCursorPosition={handleCursorPosition}
-            />
-          </ScrollView>
+          />
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ color: Color.slate800, fontSize: 12, fontWeight: "500" }}>
+              {titleWatch ? titleWatch.length : 0}/
+            </Text>
+            <Text style={{ color: Color.blue500, fontSize: 12, fontWeight: "500" }}>30</Text>
+          </View>
         </View>
 
-        <View
-          style={{
-            borderWidth: 1,
-            borderRadius: 1000,
-            borderColor: Color.slate200,
-            height: 44,
-            width: "100%",
-          }}
-        >
-          <RichToolbar editor={richText} style={styles.richBar} />
+        <View style={{ flex: 0.95 }}>
+          <View style={{ flex: 1 }}>
+            <Text
+              style={{
+                fontSize: 12,
+                marginTop: 12,
+                marginBottom: 8,
+                fontWeight: "500",
+                color: Color.slate800,
+              }}
+            >
+              공백포함 : 총 {contentWatch ? contentWatch.length : 0}자 | 공백제외 : 총{" "}
+              {contentWatch ? contentWatch.replace(/\s/g, "").length : 0}자
+            </Text>
+
+            <View style={{ flex: 1 }}>
+              <RichText editor={editor} />
+            </View>
+          </View>
         </View>
       </View>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{
+          position: "absolute",
+          width: "100%",
+          bottom: 0,
+        }}
+        keyboardVerticalOffset={keyboardVerticalOffset}
+      >
+        <Toolbar editor={editor} items={customToolbarItems} />
+      </KeyboardAvoidingView>
     </View>
   )
 }
 
 export default NotePostPage
-
-const styles = StyleSheet.create({
-  richBar: {
-    backgroundColor: "transparent",
-  },
-})
