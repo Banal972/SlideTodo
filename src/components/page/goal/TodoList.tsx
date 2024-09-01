@@ -4,7 +4,7 @@ import CheckList from "@/components/common/CheckList"
 import NullText from "@/components/common/NullText"
 import { useGetTodos } from "@/hooks/todo/useGetTodos"
 
-const TodoList = ({ id }: { id: number }) => {
+const TodoList = ({ id, goalTitle }: { id: number; goalTitle: string }) => {
   const { data } = useGetTodos({ goalId: id, done: false })
 
   if (!data) return null
@@ -12,7 +12,7 @@ const TodoList = ({ id }: { id: number }) => {
   return data.todos.length > 0 ? (
     <View style={styles.goalView}>
       {data.todos.map((todo) => (
-        <CheckList data={todo} key={todo.id} />
+        <CheckList data={todo} key={todo.id} goalTitle={goalTitle} />
       ))}
     </View>
   ) : (

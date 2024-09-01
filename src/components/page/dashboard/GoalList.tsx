@@ -38,12 +38,12 @@ const GoalList = () => {
 
             <View style={{ marginTop: 16 }}>
               <Text style={styles.goalViewTitle}>To do</Text>
-              <TodoList id={goal.id} />
+              <TodoList id={goal.id} goalTitle={goal.title} />
             </View>
 
             <View style={{ marginTop: 24 }}>
               <Text style={styles.goalViewTitle}>Done</Text>
-              <TodoDoneList id={goal.id} />
+              <TodoDoneList id={goal.id} goalTitle={goal.title} />
             </View>
           </View>
         ))

@@ -13,9 +13,8 @@ import { Link, useLocalSearchParams, useRouter } from "expo-router"
 
 const GoalDetail = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>()
-
   const { data } = useGetGoalDetail({ goalId: slug })
-  const { data: progress } = useTodoProgress({ goalId: slug })
+  const { data: progress } = useTodoProgress(Number(slug))
 
   const router = useRouter()
 
@@ -56,24 +55,35 @@ const GoalDetail = () => {
         </View>
       </BaseContainer>
 
-      <BaseContainer
-        color={Color.blue100}
-        style={{ flexDirection: "row", justifyContent: "space-between" }}
-      >
+      <BaseContainer color={Color.blue100}>
         <Link href={`/note/list/${slug}`}>
-          <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
-            <Image source={require("@/assets/images/goal/note.png")} />
-            <Text
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <View
               style={{
-                color: Color.slate800,
-                fontSize: 18,
-                fontWeight: "bold",
+                gap: 8,
+                flexDirection: "row",
+                alignItems: "center",
               }}
             >
-              노트 모아보기
-            </Text>
+              <Image source={require("@/assets/images/goal/note.png")} />
+              <Text
+                style={{
+                  color: Color.slate800,
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                노트 모아보기
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={24} color={Color.slate600} />
           </View>
-          <Ionicons name="chevron-forward" size={24} color={Color.slate600} />
         </Link>
       </BaseContainer>
 

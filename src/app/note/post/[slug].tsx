@@ -1,11 +1,19 @@
-import { useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Alert, Image, Pressable, Text, View } from "react-native"
-import { TextInput } from "react-native-gesture-handler"
+import {
+  Image,
+  Keyboard,
+  Pressable,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native"
+import { ScrollView } from "react-native-gesture-handler"
 
 import Color from "@/constant/color"
-import { useGetGoalDetail } from "@/hooks/goal/useGetGoalDetail"
-import useNotePostStore from "@/store/useNotePostStore"
+import usePostNote from "@/hooks/note/usePostNote"
+import usePostNoteStore from "@/store/usePostNoteStore"
+import { useQueryClient } from "@tanstack/react-query"
 import { useLocalSearchParams, useRouter } from "expo-router"
 
 type FormData = {
@@ -14,15 +22,25 @@ type FormData = {
 }
 
 const NotePostPage = () => {
-  const {
-    slug: [goalId],
-  } = useLocalSearchParams<{ slug: string[] }>()
-
+  const queryClient = useQueryClient()
   const router = useRouter()
 
-  const { control, handleSubmit, watch } = useForm<FormData>()
+  const { slug } = useLocalSearchParams<{ slug: string }>()
+
+  const { control, watch, handleSubmit } = useForm<FormData>()
   const titleWatch = watch("title")
   const contentWatch = watch("content")
+
+  const { data } = usePostNoteStore()
+  const { mutate } = usePostNote(queryClient, router)
+
+  const onSubmit = handleSubmit((data) => {
+    mutate({
+      ...data,
+      todoId: Number(slug),
+      linkUrl: "https://banal972.github.io/",
+    })
+  })
 
   return (
     <View
@@ -56,7 +74,7 @@ const NotePostPage = () => {
             <Text style={{ color: Color.blue500, fontSize: 14, fontWeight: 600 }}>임시 저장</Text>
           </Pressable>
           <Pressable
-            // onPress={onSubmit}
+            onPress={onSubmit}
             style={{
               width: 84,
               height: 36,
@@ -94,9 +112,7 @@ const NotePostPage = () => {
             source={require("@/assets/images/goal/icon01.png")}
           />
         </View>
-        <Text style={{ fontSize: 16, fontWeight: "500", color: Color.slate800 }}>
-          {golaData?.title}
-        </Text>
+        <Text style={{ fontSize: 16, fontWeight: "500", color: Color.slate800 }}>{data.title}</Text>
       </View>
 
       <View
@@ -118,7 +134,7 @@ const NotePostPage = () => {
         >
           <Text style={{ fontSize: 14, fontWeight: "500", color: Color.slate700 }}>To do</Text>
         </View>
-        <Text style={{ fontSize: 14, color: Color.slate700 }}>{todoName}</Text>
+        <Text style={{ fontSize: 14, color: Color.slate700 }}>{data.todoTitle}</Text>
       </View>
 
       <View
@@ -176,7 +192,7 @@ const NotePostPage = () => {
             }}
           >
             공백포함 : 총 {contentWatch ? contentWatch.length : 0}자 | 공백제외 : 총{" "}
-            {contentWatch ? contentWatch.trim().length : 0}자
+            {contentWatch ? contentWatch.replace(/\s/g, "").length : 0}자
           </Text>
           <Controller
             name="content"

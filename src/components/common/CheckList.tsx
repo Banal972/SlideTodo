@@ -1,16 +1,20 @@
-import { Image, StyleSheet, Text, View } from "react-native"
+import { Image, Pressable, StyleSheet, Text, View } from "react-native"
 
 import Color from "@/constant/color"
 import useUpdateTodoDone from "@/hooks/todo/useUpdateTodoDone"
+import usePostNoteStore from "@/store/usePostNoteStore"
 import { TodoType } from "@/types/todo"
 import { useQueryClient } from "@tanstack/react-query"
 import Checkbox from "expo-checkbox"
-import { Link } from "expo-router"
+import { useRouter } from "expo-router"
 
-const CheckList = ({ data }: { data: TodoType }) => {
+const CheckList = ({ data, goalTitle }: { data: TodoType; goalTitle?: string }) => {
   const queryClient = useQueryClient()
 
+  const router = useRouter()
+
   const { mutate } = useUpdateTodoDone(queryClient, data)
+  const { changeData } = usePostNoteStore()
 
   const checkPressHanlder = () =>
     mutate({
@@ -21,6 +25,14 @@ const CheckList = ({ data }: { data: TodoType }) => {
       done: !data.done,
     })
 
+  const postNoteHanlder = () => {
+    changeData({
+      title: goalTitle || "",
+      todoTitle: data.title,
+    })
+    router.push(`/note/post/${data.id}`)
+  }
+
   return (
     <View style={styles.listFlex}>
       <View style={{ flexDirection: "row", gap: 8 }}>
@@ -30,11 +42,11 @@ const CheckList = ({ data }: { data: TodoType }) => {
           style={styles.todoListCheckbox}
           onValueChange={checkPressHanlder}
         />
-        <Link href={`/note/post/${data.id}`}>
+        <Pressable onPress={postNoteHanlder}>
           <Text style={[styles.listText, data.done && { textDecorationLine: "line-through" }]}>
             {data.title}
           </Text>
-        </Link>
+        </Pressable>
       </View>
 
       <View style={{ flexDirection: "row", gap: 10 }}>
