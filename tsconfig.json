@@ -5,9 +5,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@components": ["src/components/*"],
+      "@components": ["components/*"],
       "@assets": ["src/assets/*"],
-      "@constant": ["src/constant/*"]
+      "@constant": ["constant/*"]
     }
   }
 }
