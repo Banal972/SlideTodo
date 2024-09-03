@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native"
+import { Image, ImageBackground, Text, View } from "react-native"
 import { ProgressChart } from "react-native-chart-kit"
 
-import Color from "constant/color"
 import { useTodoProgress } from "hooks/todo/useTodoProgress"
 
 const Progress = () => {
@@ -18,27 +17,21 @@ const Progress = () => {
     <ImageBackground
       source={require("@/assets/images/dashboard/progressBg.png")}
       resizeMode="cover"
-      style={styles.background}
-      imageStyle={styles.backgroundImg}
+      className="p-4 overflow-hidden"
+      imageStyle={{ borderRadius: 12 }}
     >
-      <View style={{ paddingVertical: 42, position: "relative" }}>
-        <View
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-          }}
-        >
-          <View style={styles.icon}>
+      <View className="py-[42px] relative">
+        <View className="absolute left-0 top-0">
+          <View className=" w-10 h-10 rounded-[15px] items-center justify-center bg-slate-900">
             <Image source={require("@/assets/images/dashboard/icon03.png")} />
           </View>
-          <Text style={styles.smallText}>내 진행 상황</Text>
-          <View style={styles.progressContainer}>
-            <Text style={styles.progressNumber}>{progress?.progress}</Text>
-            <Text style={styles.percent}>%</Text>
+          <Text className="mt-4 text-base font-semibold text-white">내 진행 상황</Text>
+          <View className="mt-1 items-center flex-row gap-1">
+            <Text className="text-[30px] font-bold text-white">{progress?.progress}</Text>
+            <Text className="text-base font-semibold text-white">%</Text>
           </View>
         </View>
-        <View style={{ marginLeft: "auto" }}>
+        <View className="ml-auto">
           <ProgressChart
             height={166}
             width={166}
@@ -69,43 +62,3 @@ const Progress = () => {
 }
 
 export default Progress
-
-const styles = StyleSheet.create({
-  background: {
-    padding: 16,
-    overflow: "hidden",
-  },
-  backgroundImg: {
-    borderRadius: 12,
-  },
-  icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 15,
-    backgroundColor: Color.slate900,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  smallText: {
-    marginTop: 16,
-    fontSize: 16,
-    fontWeight: "600",
-    color: "white",
-  },
-  progressContainer: {
-    marginTop: 4,
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 4,
-  },
-  progressNumber: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "white",
-  },
-  percent: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "white",
-  },
-})

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Pressable, StyleSheet, View } from "react-native"
+import { Pressable, View } from "react-native"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useQueryClient } from "@tanstack/react-query"
@@ -29,7 +29,7 @@ const SignInPage = () => {
 
   return (
     <>
-      <View style={styles.inputContainer}>
+      <View className="gap-[25px] mb-12">
         <View>
           <Label>아이디</Label>
           <Controller
@@ -50,7 +50,7 @@ const SignInPage = () => {
         </View>
         <View>
           <Label>비밀번호</Label>
-          <View style={styles.textInputContainer}>
+          <View className="relative">
             <Controller
               control={control}
               rules={{
@@ -67,7 +67,7 @@ const SignInPage = () => {
               )}
               name="password"
             />
-            <Pressable style={styles.textInputIcon} onPress={showPwdHandler}>
+            <Pressable className="absolute right-6 top-[22px]" onPress={showPwdHandler}>
               {pwdInShow ? (
                 <Ionicons name="eye-off-outline" size={24} color="black" />
               ) : (
@@ -90,18 +90,3 @@ const SignInPage = () => {
 }
 
 export default SignInPage
-
-const styles = StyleSheet.create({
-  inputContainer: {
-    gap: 25,
-    marginBottom: 48,
-  },
-  textInputIcon: {
-    position: "absolute",
-    right: 24,
-    top: 22,
-  },
-  textInputContainer: {
-    position: "relative",
-  },
-})

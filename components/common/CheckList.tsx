@@ -1,4 +1,4 @@
-import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native"
+import { Alert, Image, Pressable, Text, View } from "react-native"
 
 import { useQueryClient } from "@tanstack/react-query"
 import Color from "constant/color"
@@ -38,63 +38,36 @@ const CheckList = ({ data, goalTitle }: { data: TodoType; goalTitle?: string }) 
   }
 
   return (
-    <View style={styles.listFlex}>
-      <View style={{ flexDirection: "row", gap: 8 }}>
+    <View className="flex-row justify-between">
+      <View className="gap-2 flex-row">
         <Checkbox
           value={data.done}
           color={data.done ? Color.blue500 : undefined}
-          style={styles.todoListCheckbox}
+          className="border-slate-200 border rounded-md bg-white"
           onValueChange={checkPressHanlder}
         />
         <Pressable onPress={postNoteHanlder}>
-          <Text style={[styles.listText, data.done && { textDecorationLine: "line-through" }]}>
+          <Text className={`text-[#1F2937] text-sm leading-5 ${data.done && "line-through"}`}>
             {data.title}
           </Text>
         </Pressable>
       </View>
 
-      <View style={{ flexDirection: "row", gap: 10 }}>
+      <View className="flex-row gap-[10px]">
         {data.fileUrl && (
-          <View
-            style={{
-              width: 24,
-              height: 24,
-              borderRadius: 1000,
-              backgroundColor: Color.slate50,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <View className="w-6 h-6 rounded-full bg-slate-50 items-center justify-center">
             <Image source={require("@/assets/images/icon/ic_uploaded.png")} />
           </View>
         )}
 
         {data.linkUrl && (
-          <View
-            style={{
-              width: 24,
-              height: 24,
-              borderRadius: 1000,
-              backgroundColor: Color.blue100,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <View className="w-6 h-6 rounded-full bg-blue-100 items-center justify-center">
             <Image source={require("@/assets/images/icon/link_alt.png")} />
           </View>
         )}
 
         {data.noteId && (
-          <View
-            style={{
-              width: 24,
-              height: 24,
-              borderRadius: 1000,
-              backgroundColor: Color.slate50,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <View className="w-6 h-6 rounded-full bg-slate-50 items-center justify-center">
             <Image source={require("@/assets/images/icon/note.png")} />
           </View>
         )}
@@ -102,23 +75,5 @@ const CheckList = ({ data, goalTitle }: { data: TodoType; goalTitle?: string }) 
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  listFlex: {
-    flexDirection: "row",
-
-    justifyContent: "space-between",
-  },
-  todoListCheckbox: {
-    borderColor: Color.slate200,
-    borderRadius: 6,
-    backgroundColor: "white",
-  },
-  listText: {
-    color: "#1F2937",
-    fontSize: 14,
-    lineHeight: 20,
-  },
-})
 
 export default CheckList

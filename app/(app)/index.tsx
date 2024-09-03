@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from "react-native"
+import { ScrollView, View } from "react-native"
 
 import GoalList from "components/page/dashboard/GoalList"
 import Progress from "components/page/dashboard/Progress"
@@ -7,7 +7,7 @@ import TodoList from "components/page/dashboard/TodoList"
 const DashboardPage = () => {
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <View className="p-4 flex-1" style={{ gap: 16 }}>
         <TodoList />
         <Progress />
         <GoalList />
@@ -17,11 +17,3 @@ const DashboardPage = () => {
 }
 
 export default DashboardPage
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    gap: 16,
-  },
-})

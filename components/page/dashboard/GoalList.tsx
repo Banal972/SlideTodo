@@ -26,23 +26,23 @@ const GoalList = () => {
 
       {goalLists && goalLists.goals.length > 0 ? (
         goalLists.goals.map((goal) => (
-          <View key={goal.id} style={styles.goalListCotanier}>
-            <View style={styles.goalListFlex}>
+          <View key={goal.id} className="bg-blue-50 p-6 rounded-[32px]">
+            <View className="flex-row justify-between">
               <Link href={`/goal/${goal.id}`}>
-                <Text style={styles.goalListTitle}>{goal.title}</Text>
+                <Text className="text-slate-800 text-base font-bold">{goal.title}</Text>
               </Link>
               <AddToDoBtn />
             </View>
 
             <GoalProcess id={goal.id} />
 
-            <View style={{ marginTop: 16 }}>
-              <Text style={styles.goalViewTitle}>To do</Text>
+            <View className="mt-4">
+              <Text className="text-sm leading-5 font-semibold">To do</Text>
               <TodoList id={goal.id} goalTitle={goal.title} />
             </View>
 
             <View style={{ marginTop: 24 }}>
-              <Text style={styles.goalViewTitle}>Done</Text>
+              <Text className="text-sm leading-5 font-semibold">Done</Text>
               <TodoDoneList id={goal.id} goalTitle={goal.title} />
             </View>
           </View>
@@ -55,31 +55,3 @@ const GoalList = () => {
 }
 
 export default GoalList
-
-const styles = StyleSheet.create({
-  goalListCotanier: {
-    backgroundColor: Color.blue50,
-    padding: 24,
-    borderRadius: 32,
-  },
-  goalListFlex: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 8,
-  },
-  goalListTitle: {
-    color: Color.slate800,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  goalListLinkFlex: {
-    flexDirection: "row",
-    gap: 4,
-    alignItems: "center",
-  },
-  goalViewTitle: {
-    fontSize: 14,
-    lineHeight: 20,
-    fontWeight: "600",
-  },
-})

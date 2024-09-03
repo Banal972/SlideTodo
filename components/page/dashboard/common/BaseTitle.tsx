@@ -1,8 +1,6 @@
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native"
+import { Image, ImageSourcePropType, Text, View } from "react-native"
 
 import Octicons from "@expo/vector-icons/Octicons"
-import { useNavigation } from "@react-navigation/native"
-import Color from "constant/color"
 import { Link } from "expo-router"
 
 const BaseTitle = ({
@@ -17,24 +15,25 @@ const BaseTitle = ({
   title?: string
   linkURL?: string
 }) => {
-  const navigation = useNavigation()
-
   return (
-    <View style={styles.baseGrid}>
-      <View style={styles.baseTitleGrid}>
-        <View style={[styles.baseIcon, { backgroundColor: baseIcon.color }]}>
+    <View className="flex-row justify-between items-center">
+      <View className="flex-row items-center gap-2">
+        <View
+          className="w-10 h-10 rounded-[15px] relative"
+          style={[{ backgroundColor: baseIcon.color }]}
+        >
           {baseIcon.source && (
-            <View style={styles.imagePosition}>
+            <View className="absolute w-full h-full items-center justify-center">
               <Image source={baseIcon.source} />
             </View>
           )}
         </View>
-        <Text style={styles.baseTitle}>{title}</Text>
+        <Text className="text-slate-800 text-base leading-6 font-semibold">{title}</Text>
       </View>
       {linkURL && (
         <Link href={"/alltodo"}>
-          <View style={styles.baseLinkContainer}>
-            <Text style={styles.baseLink}>모두 보기</Text>
+          <View className="text-center flex-row gap-[10px]">
+            <Text className="text-[#4B5563] text-sm font-medium">모두 보기</Text>
             <Octicons name="chevron-right" size={24} color="#4B5563" />
           </View>
         </Link>
@@ -44,50 +43,3 @@ const BaseTitle = ({
 }
 
 export default BaseTitle
-
-const styles = StyleSheet.create({
-  baseContainer: {
-    backgroundColor: "white",
-    borderRadius: 12,
-    padding: 16,
-  },
-  baseGrid: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  baseTitleGrid: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  baseTitle: {
-    color: Color.slate800,
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: "600",
-  },
-  baseLinkContainer: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 10,
-  },
-  baseLink: {
-    color: "#4B5563",
-    fontSize: 14,
-    fontWeight: "500",
-  },
-  baseIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 15,
-    position: "relative",
-  },
-  imagePosition: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-})

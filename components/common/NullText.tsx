@@ -1,20 +1,8 @@
 import { ReactNode } from "react"
-import { StyleSheet, Text } from "react-native"
-
-import Color from "constant/color"
+import { Text } from "react-native"
 
 const NullText = ({ children }: { children: ReactNode }) => {
-  return <Text style={styles.text}>{children}</Text>
+  return <Text className="text-center text-sm text-slate-500 py-[30px] pb-[60px]">{children}</Text>
 }
 
 export default NullText
-
-const styles = StyleSheet.create({
-  text: {
-    textAlign: "center",
-    fontSize: 14,
-    color: Color.slate500,
-    paddingTop: 30,
-    paddingBottom: 60,
-  },
-})

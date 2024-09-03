@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Pressable, StyleSheet, View } from "react-native"
+import { Pressable, View } from "react-native"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
 import Button from "components/common/Button"
@@ -34,7 +34,7 @@ const SignUpPage = () => {
 
   return (
     <>
-      <View style={styles.inputContainer}>
+      <View className="gap-[25px] mb-12">
         <View>
           <Label>이름</Label>
           <Controller
@@ -70,7 +70,7 @@ const SignUpPage = () => {
         </View>
         <View>
           <Label>비밀번호</Label>
-          <View style={styles.textInputContainer}>
+          <View className="relative">
             <Controller
               control={control}
               rules={{
@@ -87,7 +87,10 @@ const SignUpPage = () => {
               )}
               name="password"
             />
-            <Pressable style={styles.textInputIcon} onPress={() => showPwdHandler("pwd")}>
+            <Pressable
+              className="absolute right-6 top-[22px]"
+              onPress={() => showPwdHandler("pwd")}
+            >
               {pwdInShow.pwd ? (
                 <Ionicons name="eye-off-outline" size={24} color="black" />
               ) : (
@@ -98,7 +101,7 @@ const SignUpPage = () => {
         </View>
         <View>
           <Label>비밀번호 확인</Label>
-          <View style={styles.textInputContainer}>
+          <View className="relative">
             <Controller
               control={control}
               rules={{
@@ -115,7 +118,10 @@ const SignUpPage = () => {
               )}
               name="pwdConfirm"
             />
-            <Pressable style={styles.textInputIcon} onPress={() => showPwdHandler("confirm")}>
+            <Pressable
+              className="absolute right-6 top-[22px]"
+              onPress={() => showPwdHandler("confirm")}
+            >
               {pwdInShow.confirm ? (
                 <Ionicons name="eye-off-outline" size={24} color="black" />
               ) : (
@@ -134,18 +140,3 @@ const SignUpPage = () => {
 }
 
 export default SignUpPage
-
-const styles = StyleSheet.create({
-  inputContainer: {
-    gap: 25,
-    marginBottom: 48,
-  },
-  textInputIcon: {
-    position: "absolute",
-    right: 24,
-    top: 22,
-  },
-  textInputContainer: {
-    position: "relative",
-  },
-})

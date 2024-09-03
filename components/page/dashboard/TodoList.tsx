@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native"
+import { View } from "react-native"
 
 import CheckList from "components/common/CheckList"
 import BaseContainer from "components/common/Container/BaseContainer"
@@ -20,7 +20,7 @@ const TodoList = () => {
         linkURL="alltodo"
       />
       {data && data.todos.length > 0 ? (
-        <View style={styles.todoList}>
+        <View className="mt-4" style={{ gap: 8 }}>
           {data.todos.map((todo) => (
             <CheckList key={todo.id} data={todo} />
           ))}
@@ -33,10 +33,3 @@ const TodoList = () => {
 }
 
 export default TodoList
-
-const styles = StyleSheet.create({
-  todoList: {
-    marginTop: 16,
-    gap: 8,
-  },
-})

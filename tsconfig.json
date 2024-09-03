@@ -4,9 +4,9 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["/*"],
       "@components": ["components/*"],
-      "@assets": ["src/assets/*"],
+      "@assets": ["assets/*"],
       "@constant": ["constant/*"]
     }
   }
