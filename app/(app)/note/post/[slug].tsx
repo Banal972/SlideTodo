@@ -1,7 +1,9 @@
+import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import {
   Image,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   Pressable,
   Text,
@@ -12,7 +14,10 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { DEFAULT_TOOLBAR_ITEMS, RichText, Toolbar, useEditorBridge } from "@10play/tentap-editor"
+import Ionicons from "@expo/vector-icons/Ionicons"
 import { useQueryClient } from "@tanstack/react-query"
+import Button from "components/common/Button"
+import Input from "components/common/Input"
 import Color from "constant/color"
 import { useLocalSearchParams, useRouter } from "expo-router"
 import usePostNote from "hooks/note/usePostNote"
@@ -21,15 +26,25 @@ import usePostNoteStore from "store/usePostNoteStore"
 type FormData = {
   title: string
   content: string
+  linkUrl: string
 }
 
 const NotePostPage = () => {
+  const [isModal, setIsModal] = useState(false)
   const queryClient = useQueryClient()
   const router = useRouter()
 
   const editor = useEditorBridge({
     autofocus: true,
     avoidIosKeyboard: true,
+    onChange: async () => {
+      const content = await editor.getText()
+
+      const withSpaces = content.length
+      const withoutSpaces = content.replace(/\s/g, "").length
+
+      setCharCount({ withSpaces, withoutSpaces })
+    },
   })
 
   const customToolbarItems = DEFAULT_TOOLBAR_ITEMS.filter((_, index) => index !== 2)
@@ -38,7 +53,6 @@ const NotePostPage = () => {
 
   const { control, watch, handleSubmit } = useForm<FormData>()
   const titleWatch = watch("title")
-  const contentWatch = watch("content")
 
   const { data } = usePostNoteStore()
   const { mutate } = usePostNote(queryClient, router)
@@ -49,205 +63,157 @@ const NotePostPage = () => {
   const headerHeight = isLandscape ? 32 : 44
   const keyboardVerticalOffset = headerHeight + top
 
-  const onSubmit = handleSubmit((data) => {
+  const [charCount, setCharCount] = useState({ withSpaces: 0, withoutSpaces: 0 })
+
+  const onSubmit = handleSubmit(async (data) => {
+    const content = await editor.getHTML()
     mutate({
       ...data,
       todoId: Number(slug),
-      linkUrl: "https://banal972.github.io/",
+      content,
     })
   })
 
   return (
-    <View
-      style={{
-        backgroundColor: "white",
-        flex: 1,
-      }}
-    >
-      <View
-        style={{
-          paddingTop: 11,
-          paddingHorizontal: 16,
-          flex: 1,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingVertical: 11,
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ fontSize: 16, fontWeight: "600", color: Color.slate900 }}>노트 작성</Text>
-          <View style={{ flexDirection: "row", gap: 8 }}>
-            <Pressable
-              style={{
-                width: 84,
-                height: 36,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 12,
-              }}
-            >
-              <Text style={{ color: Color.blue500, fontSize: 14, fontWeight: 600 }}>임시 저장</Text>
-            </Pressable>
-            <Pressable
-              onPress={onSubmit}
-              style={{
-                width: 84,
-                height: 36,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: Color.slate400,
-                borderRadius: 12,
-              }}
-            >
-              <Text style={{ color: "white", fontSize: 14, fontWeight: 600 }}>작성 완료</Text>
-            </Pressable>
+    <>
+      <View className="bg-white flex-1">
+        <View className="pt-[11px] px-4 flex-1">
+          <View className="flex-row justify-between py-[11px] items-center">
+            <Text className="text-base font-semibold text-slate-900">노트 작성</Text>
+            <View className="flex-row" style={{ gap: 8 }}>
+              <Pressable
+                onPress={onSubmit}
+                className="w-[84px] h-9 items-center justify-center bg-slate-400 rounded-xl"
+              >
+                <Text className="text-white text-sm font-semibold">작성 완료</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
 
-        <View
-          style={{
-            marginTop: 11,
-            flexDirection: "row",
-            gap: 6,
-            alignItems: "center",
-          }}
-        >
           <View
+            className="mt-[11px] flex-row items-center"
             style={{
-              width: 24,
-              height: 24,
-              borderRadius: 6,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#000",
+              gap: 6,
             }}
           >
-            <Image
-              style={{ width: 16, height: 16 }}
-              source={require("@/assets/images/goal/icon01.png")}
+            <View className="w-6 h-6 rounded-md items-center justify-center bg-black">
+              <Image className="w-4 h-4" source={require("@/assets/images/goal/icon01.png")} />
+            </View>
+            <View className="justify-between flex-1 flex-row">
+              <Text className="text-base font-medium text-slate-800">{data.title}</Text>
+              <Pressable
+                onPress={() => setIsModal(!isModal)}
+                className="w-6 h-6 rounded-full bg-slate-200 items-center justify-center"
+              >
+                <Image source={require("@/assets/images/icon/link_alt.png")} />
+              </Pressable>
+            </View>
+          </View>
+
+          <View
+            className="flex-row mt-3 items-center"
+            style={{
+              gap: 8,
+            }}
+          >
+            <View className="py-[3px] px-[2px] bg-slate-100 rounded items-center">
+              <Text className="text-sm font-medium text-slate-700">To do</Text>
+            </View>
+            <Text className="text-sm text-slate-700">{data.todoTitle}</Text>
+          </View>
+
+          <View
+            className="mt-4 px-2 flex-row border-t border-b border-slate-200 justify-between items-center"
+            style={{
+              gap: 10,
+            }}
+          >
+            <Controller
+              control={control}
+              name="title"
+              rules={{
+                maxLength: 30,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  placeholder="노트의 제목을 입력해주세요"
+                  maxLength={30}
+                  className="text-base font-medium text-slate-900 flex-grow py-2"
+                />
+              )}
             />
+            <View className="flex-row">
+              <Text className=" text-slate-800 text-xs font-medium">
+                {titleWatch ? titleWatch.length : 0} /
+              </Text>
+              <Text className="text-blue-500 text-xs font-medium"> 30</Text>
+            </View>
           </View>
-          <Text style={{ fontSize: 16, fontWeight: "500", color: Color.slate800 }}>
-            {data.title}
-          </Text>
-          <Pressable
-            style={{
-              width: 24,
-              height: 24,
-              borderRadius: 1000,
-              backgroundColor: Color.slate200,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image source={require("@/assets/images/icon/link_alt.png")} />
-          </Pressable>
-        </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 8,
-            marginTop: 12,
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              paddingHorizontal: 2,
-              paddingVertical: 3,
-              backgroundColor: Color.slate100,
-              borderRadius: 4,
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ fontSize: 14, fontWeight: "500", color: Color.slate700 }}>To do</Text>
-          </View>
-          <Text style={{ fontSize: 14, color: Color.slate700 }}>{data.todoTitle}</Text>
-        </View>
+          <View style={{ flex: 0.95 }}>
+            <View className="flex-1">
+              <Text className="text-sm mt-3 mb-2 font-medium text-slate-800">
+                공백포함 : 총 {charCount.withSpaces}자 | 공백제외 : 총{charCount.withoutSpaces}자
+              </Text>
 
-        <View
-          style={{
-            marginTop: 16,
-            paddingVertical: 8,
-            flexDirection: "row",
-            borderTopWidth: 1,
-            borderBottomWidth: 1,
-            borderColor: Color.slate200,
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 10,
-          }}
-        >
-          <Controller
-            control={control}
-            name="title"
-            rules={{
-              maxLength: 30,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-                placeholder="노트의 제목을 입력해주세요"
-                maxLength={30}
-                style={{
-                  fontSize: 16,
-                  fontWeight: "500",
-                  color: Color.slate900,
-                  flexGrow: 1,
-                }}
-              />
-            )}
-          />
-          <View style={{ flexDirection: "row" }}>
-            <Text style={{ color: Color.slate800, fontSize: 12, fontWeight: "500" }}>
-              {titleWatch ? titleWatch.length : 0}/
-            </Text>
-            <Text style={{ color: Color.blue500, fontSize: 12, fontWeight: "500" }}>30</Text>
-          </View>
-        </View>
-
-        <View style={{ flex: 0.95 }}>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{
-                fontSize: 12,
-                marginTop: 12,
-                marginBottom: 8,
-                fontWeight: "500",
-                color: Color.slate800,
-              }}
-            >
-              공백포함 : 총 {contentWatch ? contentWatch.length : 0}자 | 공백제외 : 총{" "}
-              {contentWatch ? contentWatch.replace(/\s/g, "").length : 0}자
-            </Text>
-
-            <View style={{ flex: 1 }}>
-              <RichText editor={editor} />
+              <View style={{ flex: 1 }}>
+                <RichText editor={editor} />
+              </View>
             </View>
           </View>
         </View>
-      </View>
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{
-          position: "absolute",
-          width: "100%",
-          bottom: 0,
-        }}
-        keyboardVerticalOffset={keyboardVerticalOffset}
-      >
-        <Toolbar editor={editor} items={customToolbarItems} />
-      </KeyboardAvoidingView>
-    </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          className="absolute w-full bottom-0"
+          keyboardVerticalOffset={keyboardVerticalOffset}
+        >
+          <Toolbar editor={editor} items={customToolbarItems} />
+        </KeyboardAvoidingView>
+      </View>
+      <LinkModal control={control} isModal={isModal} setIsModal={setIsModal} />
+    </>
   )
 }
 
 export default NotePostPage
+
+const LinkModal = ({ control, isModal, setIsModal }: any) => {
+  return (
+    <Modal visible={isModal} animationType="fade" transparent>
+      <View className="flex-1 bg-black/50 items-center justify-center">
+        <View className="bg-white w-[95%] p-6 rounded-xl overflow-hidden">
+          <View className="justify-between flex-row">
+            <Text className="text-lg font-bold text-slate-800">링크 등록</Text>
+            <Pressable onPress={() => setIsModal(false)}>
+              <Ionicons name="close" size={24} color={Color.slate500} />
+            </Pressable>
+          </View>
+          <View className="mt-8" style={{ gap: 12 }}>
+            <Text className="font-semibold text-slate-800">링크 주소</Text>
+            <Controller
+              control={control}
+              name="linkUrl"
+              render={({ field: { onBlur, onChange, value } }) => (
+                <Input
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="링크 주소를 입력해주세요"
+                />
+              )}
+            />
+          </View>
+          <Button
+            onPress={() => setIsModal(false)}
+            label="확인"
+            style={{ marginTop: 40, backgroundColor: Color.blue500 }}
+          />
+        </View>
+      </View>
+    </Modal>
+  )
+}

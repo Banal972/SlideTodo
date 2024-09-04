@@ -4,12 +4,16 @@ import { useQueryClient } from "@tanstack/react-query"
 import NoteBottom from "components/common/AllTodoList/NoteBottom"
 import Color from "constant/color"
 import Checkbox from "expo-checkbox"
+import { useRouter } from "expo-router"
 import * as WebBrowser from "expo-web-browser"
 import useUpdateTodoDone from "hooks/todo/useUpdateTodoDone"
+import usePostNoteStore from "store/usePostNoteStore"
 import { TodoType } from "types/todo"
 
 const AllTodoList = ({ todo }: { todo: TodoType }) => {
   const queryClient = useQueryClient()
+  const router = useRouter()
+  const { changeData } = usePostNoteStore()
   const { mutate } = useUpdateTodoDone(queryClient, todo)
   const checkPressHanlder = () =>
     mutate({
@@ -48,9 +52,19 @@ const AllTodoList = ({ todo }: { todo: TodoType }) => {
           )}
 
           {!todo.noteId && (
-            <View className="w-6 h-6 rounded-full bg-slate-50 items-center justify-center">
-              <Image source={require("@/assets/images/icon/note.png")} />
-            </View>
+            <Pressable
+              onPress={() => {
+                changeData({
+                  title: todo.goal.title,
+                  todoTitle: todo.title,
+                })
+                router.push(`/note/post/${todo.id}`)
+              }}
+            >
+              <View className="w-6 h-6 rounded-full bg-slate-50 items-center justify-center">
+                <Image source={require("@/assets/images/icon/note.png")} />
+              </View>
+            </Pressable>
           )}
         </View>
       </View>

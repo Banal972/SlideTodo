@@ -45,7 +45,6 @@ export default Input
 const styles = StyleSheet.create({
   textInput: {
     backgroundColor: Color.slate50,
-    marginTop: 12,
     fontSize: 14,
     lineHeight: 20,
     height: 44,

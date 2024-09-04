@@ -1,28 +1,43 @@
-import { Image, Modal, Pressable, SafeAreaView, Text, View } from "react-native"
+import {
+  Image,
+  Modal,
+  Pressable,
+  SafeAreaView,
+  Text,
+  View,
+  useWindowDimensions,
+} from "react-native"
+import RenderHtml from "react-native-render-html"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
 import dayjs from "dayjs"
+import * as WebBrowser from "expo-web-browser"
 import { useGetNoteDetail } from "hooks/note/useGetNoteDetail"
 import useNoteDetailModalStore from "store/useNoteDetailModalStore"
 
 const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
   const { data, close } = useNoteDetailModalStore()
-
   const { data: noteDetail } = useGetNoteDetail({ noteId: data.noteId })
+  const { width } = useWindowDimensions()
 
   const modalClose = () => {
     close()
   }
 
+  const handlePressBrowser = async (link: string) => {
+    await WebBrowser.openBrowserAsync(link)
+  }
+
   return (
     <Modal animationType="slide" transparent visible={isModal} className="flex-1">
       <SafeAreaView className="flex-1 bg-white">
-        <View className="p-4  flex-1">
+        <View className="p-4 flex-1">
           <View>
             <Pressable onPress={modalClose}>
               <Ionicons name="close" size={24} color="black" />
             </Pressable>
           </View>
+
           <View
             className=" mt-4 flex-row items-center"
             style={{
@@ -52,18 +67,27 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
             </Text>
           </View>
 
-          <View className="mt-6">
+          <View className="mt-6 flex-1">
             <View className="py-3 border border-l-0 border-r-0 border-slate-200">
               <Text className="text-lg font-medium text-slate-800">{noteDetail?.title}</Text>
             </View>
-            <View className="pt-4">
+
+            <View className="pt-4 flex-1">
               {noteDetail?.linkUrl && (
-                <View className="px-4 py-1 bg-slate-200 rounded-full mb-4">
-                  <Text className="text-base font-normal text-slate-800">{noteDetail.linkUrl}</Text>
-                </View>
+                <Pressable onPress={() => handlePressBrowser(noteDetail.linkUrl)}>
+                  <View className="px-4 py-1 bg-slate-200 rounded-full mb-4">
+                    <Text className="text-base font-normal text-slate-800">
+                      {noteDetail.linkUrl}
+                    </Text>
+                  </View>
+                </Pressable>
               )}
 
-              <Text className="text-slate-700 text-base">{noteDetail?.content}</Text>
+              <View className="flex-1">
+                {noteDetail && (
+                  <RenderHtml contentWidth={width} source={{ html: noteDetail.content }} />
+                )}
+              </View>
             </View>
           </View>
         </View>
