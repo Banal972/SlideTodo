@@ -1,5 +1,4 @@
-import React from "react"
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { Pressable, Text } from "react-native"
 
 import Color from "constant/color"
 import Checkbox from "expo-checkbox"
@@ -14,16 +13,19 @@ const Seleted = ({ state, setState, label }: SeletedType) => {
   return (
     <Pressable
       onPress={() => setState(!state)}
-      style={[styles.pressableStyle, { backgroundColor: !state ? Color.slate100 : Color.slate900 }]}
+      className="items-center justify-center flex-row px-2 h-10 rounded-lg"
+      style={[{ gap: 4 }, { backgroundColor: !state ? Color.slate100 : Color.slate900 }]}
     >
-      <Checkbox value={state} color={Color.blue500} style={styles.checkboxStyle} />
+      <Checkbox
+        value={state}
+        color={Color.blue500}
+        className="border-slate-200 w-[18] h-[18] rounded-md bg-white"
+      />
       <Text
-        style={[
-          styles.textStyle,
-          {
-            color: !state ? Color.slate800 : "#fff",
-          },
-        ]}
+        className=" font-medium text-base"
+        style={{
+          color: !state ? Color.slate800 : "#fff",
+        }}
       >
         {label}
       </Text>
@@ -32,26 +34,3 @@ const Seleted = ({ state, setState, label }: SeletedType) => {
 }
 
 export default Seleted
-
-const styles = StyleSheet.create({
-  pressableStyle: {
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    gap: 4,
-    paddingHorizontal: 8,
-    height: 40,
-    borderRadius: 8,
-  },
-  checkboxStyle: {
-    borderColor: Color.slate200,
-    width: 18,
-    height: 18,
-    borderRadius: 6,
-    backgroundColor: "#fff",
-  },
-  textStyle: {
-    fontWeight: "500",
-    fontSize: 16,
-  },
-})

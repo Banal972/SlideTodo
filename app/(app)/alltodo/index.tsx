@@ -1,9 +1,9 @@
 import { Fragment, Suspense, useEffect, useState } from "react"
 import { Animated, Easing, Pressable, Text, View } from "react-native"
 
+import AllTodoList from "components/common/AllTodoList/AllTodoList"
 import AddToDoBtn from "components/common/Button/AddToDoBtn"
 import MoreBtn from "components/common/Button/MoreBtn"
-import AllTodoList from "components/page/alltodo/AllTodoList"
 import { todoType } from "constant/type"
 import { useGetTodos } from "hooks/todo/useGetTodos"
 

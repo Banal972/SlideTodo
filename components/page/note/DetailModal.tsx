@@ -1,7 +1,6 @@
 import { Image, Modal, Pressable, SafeAreaView, Text, View } from "react-native"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
-import Color from "constant/color"
 import dayjs from "dayjs"
 import { useGetNoteDetail } from "hooks/note/useGetNoteDetail"
 import useNoteDetailModalStore from "store/useNoteDetailModalStore"
@@ -16,125 +15,55 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
   }
 
   return (
-    <Modal animationType="slide" transparent visible={isModal} style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ padding: 16, backgroundColor: "white", flex: 1 }}>
+    <Modal animationType="slide" transparent visible={isModal} className="flex-1">
+      <SafeAreaView className="flex-1 bg-white">
+        <View className="p-4  flex-1">
           <View>
             <Pressable onPress={modalClose}>
               <Ionicons name="close" size={24} color="black" />
             </Pressable>
           </View>
           <View
+            className=" mt-4 flex-row items-center"
             style={{
-              marginTop: 16,
-              flexDirection: "row",
               gap: 6,
-              alignItems: "center",
             }}
           >
-            <View
-              style={{
-                width: 24,
-                height: 24,
-                borderRadius: 6,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#000",
-              }}
-            >
-              <Image
-                style={{ width: 16, height: 16 }}
-                source={require("@/assets/images/goal/icon01.png")}
-              />
+            <View className="w-6 h-6 rounded-md items-center justify-center bg-black">
+              <Image className="w-4 h-4" source={require("@/assets/images/goal/icon01.png")} />
             </View>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "500",
-                color: Color.slate800,
-              }}
-            >
-              {noteDetail?.goal.title}
-            </Text>
+            <Text className="text-base font-medium text-slate-800">{noteDetail?.goal.title}</Text>
           </View>
 
-          <View
-            style={{
-              justifyContent: "space-between",
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 12,
-            }}
-          >
+          <View className="justify-between flex-row items-center mt-3">
             <View
+              className="flex-row items-center"
               style={{
-                flexDirection: "row",
                 gap: 8,
-                alignItems: "center",
               }}
             >
-              <View
-                style={{
-                  paddingHorizontal: 2,
-                  paddingVertical: 3,
-                  backgroundColor: Color.slate100,
-                  borderRadius: 4,
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ fontSize: 14, fontWeight: "500", color: Color.slate700 }}>
-                  To do
-                </Text>
+              <View className="py-[3px] px-[2px] bg-slate-100 rounded items-center">
+                <Text className="text-sm font-medium text-slate-700 px-1">To do</Text>
               </View>
-              <Text style={{ fontSize: 14, color: Color.slate700 }}>{noteDetail?.todo.title}</Text>
+              <Text className="text-sm text-slate-700">{noteDetail?.todo.title}</Text>
             </View>
-            <Text
-              style={{
-                color: Color.slate500,
-                fontSize: 12,
-              }}
-            >
+            <Text className="text-slate-500 text-xs">
               {dayjs(noteDetail?.createdAt).format("YYYY.MM.DD")}
             </Text>
           </View>
 
-          <View
-            style={{
-              marginTop: 24,
-            }}
-          >
-            <View
-              style={{
-                paddingVertical: 12,
-                borderWidth: 1,
-                borderLeftWidth: 0,
-                borderRightWidth: 0,
-                borderColor: Color.slate200,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 500,
-                  color: Color.slate800,
-                }}
-              >
-                {noteDetail?.title}
-              </Text>
+          <View className="mt-6">
+            <View className="py-3 border border-l-0 border-r-0 border-slate-200">
+              <Text className="text-lg font-medium text-slate-800">{noteDetail?.title}</Text>
             </View>
-            <View
-              style={{
-                paddingTop: 16,
-              }}
-            >
-              <Text
-                style={{
-                  color: Color.slate700,
-                  fontSize: 16,
-                }}
-              >
-                {noteDetail?.content}
-              </Text>
+            <View className="pt-4">
+              {noteDetail?.linkUrl && (
+                <View className="px-4 py-1 bg-slate-200 rounded-full mb-4">
+                  <Text className="text-base font-normal text-slate-800">{noteDetail.linkUrl}</Text>
+                </View>
+              )}
+
+              <Text className="text-slate-700 text-base">{noteDetail?.content}</Text>
             </View>
           </View>
         </View>

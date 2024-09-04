@@ -1,10 +1,10 @@
 import { Fragment } from "react"
 import { View } from "react-native"
 
+import AllTodoList from "components/common/AllTodoList/AllTodoList"
 import MoreBtn from "components/common/Button/MoreBtn"
 import BaseContainer from "components/common/Container/BaseContainer"
 import NullText from "components/common/NullText"
-import AllTodoList from "components/page/alltodo/AllTodoList"
 import BaseTitle from "components/page/dashboard/common/BaseTitle"
 import { useGetTodos } from "hooks/todo/useGetTodos"
 

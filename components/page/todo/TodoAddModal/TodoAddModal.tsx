@@ -22,7 +22,6 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
   const { goalLists } = useGetGoalList({ cursor: 1 })
   const [selectedGoal, setSelectedGoal] = useState()
   const [linkState, setLinkState] = useState(false)
-  const [fileState, setFileState] = useState(false)
 
   const { mutate } = usePostTodo(queryClient, isModalCloseHandler, reset)
 
@@ -72,7 +71,6 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
                 <View>
                   <Label>자료</Label>
                   <View className="flex-row mt-3" style={{ gap: 12 }}>
-                    <Seleted state={fileState} setState={setFileState} label="파일 업로드" />
                     <Seleted state={linkState} setState={setLinkState} label="링크 첨부" />
                   </View>
 
@@ -91,25 +89,6 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
                         )}
                       />
                     </View>
-                  )}
-
-                  {fileState && (
-                    <Pressable
-                      className="mt-3 h-[184px] items-center justify-center bg-slate-50"
-                      onPress={() => {
-                        Alert.alert("미구현", "아직 미구현 상태 입니다.")
-                      }}
-                    >
-                      <View
-                        className="flex-col justify-center items-center"
-                        style={{
-                          gap: 5,
-                        }}
-                      >
-                        <Ionicons name="add" size={24} color={Color.slate400} />
-                        <Text className="text-slate-400 text-base">파일을 업로드해주세요</Text>
-                      </View>
-                    </Pressable>
                   )}
                 </View>
 
