@@ -51,11 +51,11 @@ const NotePostPage = () => {
 
   const { slug } = useLocalSearchParams<{ slug: string }>()
 
-  const { control, watch, handleSubmit } = useForm<FormData>()
+  const { control, watch, handleSubmit, reset } = useForm<FormData>()
   const titleWatch = watch("title")
 
   const { data } = usePostNoteStore()
-  const { mutate } = usePostNote(queryClient, router)
+  const { mutate } = usePostNote(queryClient, router, reset, editor)
 
   const { top } = useSafeAreaInsets()
   const { width, height } = useWindowDimensions()
