@@ -7,28 +7,16 @@ import { useQueryClient } from "@tanstack/react-query"
 import Color from "constant/color"
 import { useRouter } from "expo-router"
 import useDeleteNote from "hooks/note/useDeleteNote"
+import useGetTodoNote from "hooks/todo/useGetTodoNote"
 import axiosInstance from "libs/axiosInstance"
 import useNoteDetailModalStore from "store/useNoteDetailModalStore"
 
 const NoteBottom = ({ noteId }: { noteId: number }) => {
   const [isModal, setIsModal] = useState(false)
-  const [title, setTitle] = useState("")
 
   const { open } = useNoteDetailModalStore()
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const response = await axiosInstance.get(`/notes/${noteId}`)
-        setTitle(response.data.title)
-      } catch (e: any) {
-        const { message } = e.response.data
-        throw new Error(message)
-      }
-    }
-
-    fetch()
-  }, [noteId])
+  const { data: title } = useGetTodoNote({ noteId })
 
   return (
     <>

@@ -16,9 +16,9 @@ const useUpdateNote = (queryClient: QueryClient, router: Router) => {
     },
     onSuccess: async () => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["todos"] }),
+        queryClient.invalidateQueries({ queryKey: ["todoNote"] }),
+        queryClient.invalidateQueries({ queryKey: ["noteDetail"] }),
         queryClient.invalidateQueries({ queryKey: ["notes"] }),
-        queryClient.invalidateQueries({ queryKey: ["goalList"] }),
       ])
       Alert.alert("성공", "노트를 수정했습니다.", [
         {
