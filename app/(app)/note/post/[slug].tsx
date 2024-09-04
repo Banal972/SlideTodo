@@ -1,11 +1,9 @@
-import { useRef } from "react"
 import { Controller, useForm } from "react-hook-form"
 import {
   Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  ScrollView,
   Text,
   TextInput,
   View,

@@ -3,7 +3,7 @@ import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-nati
 import Ionicons from "@expo/vector-icons/Ionicons"
 import BaseContainer from "components/common/Container/BaseContainer"
 import Color from "constant/color"
-import { useLocalSearchParams } from "expo-router"
+import { Link, useLocalSearchParams } from "expo-router"
 import { useGetGoalDetail } from "hooks/goal/useGetGoalDetail"
 import { useGetNoteList } from "hooks/note/useGetNoteList"
 import useNoteDetailModalStore from "store/useNoteDetailModalStore"
@@ -20,39 +20,18 @@ const NoteList = () => {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={{ gap: 16, padding: 16, flex: 1 }}>
+      <View className="p-4 flex-1" style={{ gap: 16 }}>
         <BaseContainer color="white">
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-              <View
-                style={{
-                  width: 40,
-                  height: 40,
-                  backgroundColor: Color.slate800,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 15,
-                }}
-              >
-                <Image source={require("@/assets/images/goal/icon01.png")} />
+          <Link href={`/goal/${slug}`}>
+            <View className="flex-row justify-between items-cente">
+              <View className="flex-row items-center" style={{ gap: 8 }}>
+                <View className="w-10 h-10  bg-slate-800 items-center justify-center rounded-[15px]">
+                  <Image source={require("@/assets/images/goal/icon01.png")} />
+                </View>
+                <Text className="text-base font-semibold text-slate-800">{detail?.title}</Text>
               </View>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "600",
-                  color: Color.slate800,
-                }}
-              >
-                {detail?.title}
-              </Text>
             </View>
-          </View>
+          </Link>
         </BaseContainer>
 
         {data && data.notes.length > 0 ? (
@@ -60,67 +39,32 @@ const NoteList = () => {
             <Pressable key={note.id} onPress={() => openNoteDetail(note.id)}>
               <BaseContainer color="white">
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                  <View
-                    style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: 8,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: Color.blue100,
-                    }}
-                  >
+                  <View className="w-7 h-7 rounded-lg items-center justify-center bg-blue-100">
                     <Image source={require("@/assets/images/goal/flip.png")} />
                   </View>
                   <Pressable>
                     <Ionicons name="ellipsis-vertical" size={24} color={Color.slate400} />
                   </Pressable>
                 </View>
-                <Text
-                  style={{
-                    marginTop: 16,
-                    fontSize: 18,
-                    fontWeight: "500",
-                    color: Color.slate800,
-                  }}
-                >
-                  {note.title}
-                </Text>
+                <Text className="mt-4 text-lg font-medium text-slate-800">{note.title}</Text>
+                <View className="my-3 h-[1px] w-full bg-slate-200" />
                 <View
+                  className="flex-row items-center"
                   style={{
-                    marginVertical: 12,
-                    height: 1,
-                    width: "100%",
-                    backgroundColor: Color.slate200,
-                  }}
-                />
-                <View
-                  style={{
-                    flexDirection: "row",
                     gap: 8,
-                    alignItems: "center",
                   }}
                 >
-                  <Text
-                    style={{
-                      backgroundColor: Color.slate100,
-                      paddingHorizontal: 3,
-                      paddingVertical: 2,
-                      borderRadius: 4,
-                      fontSize: 12,
-                      fontWeight: "500",
-                    }}
-                  >
+                  <Text className="bg-slate-100 px-[3px] py-[2px] rounded text-xs font-medium">
                     To do
                   </Text>
-                  <Text style={{ fontSize: 12, color: Color.slate700 }}>{note.title}</Text>
+                  <Text className="text-xs text-slate-700">{note.title}</Text>
                 </View>
               </BaseContainer>
             </Pressable>
           ))
         ) : (
-          <View style={styles.nullTextContainer}>
-            <Text style={styles.nullText}>아직 등록된 노트가 없어요</Text>
+          <View className="flex-1 items-center justify-center">
+            <Text className="text-slate-500 text-sm">아직 등록된 노트가 없어요</Text>
           </View>
         )}
       </View>
@@ -129,15 +73,3 @@ const NoteList = () => {
 }
 
 export default NoteList
-
-const styles = StyleSheet.create({
-  nullTextContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  nullText: {
-    color: Color.slate500,
-    fontSize: 14,
-  },
-})

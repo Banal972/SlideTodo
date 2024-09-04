@@ -40,7 +40,6 @@ export default Process
 
 const styles = StyleSheet.create({
   processContainer: {
-    marginTop: 16,
     gap: 8,
     backgroundColor: "white",
     flexDirection: "row",
