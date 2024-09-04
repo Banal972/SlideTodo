@@ -15,6 +15,7 @@ const useDeleteGoal = (queryClient: QueryClient, router: Router) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["goalList"] }),
         queryClient.invalidateQueries({ queryKey: ["todos"] }),
+        queryClient.invalidateQueries({ queryKey: ["progress"] }),
       ])
       Alert.alert("성공", "목표를 삭제했습니다.")
       router.push(ROUTE.dashboard)

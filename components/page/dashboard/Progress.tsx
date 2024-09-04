@@ -27,7 +27,9 @@ const Progress = () => {
           </View>
           <Text className="mt-4 text-base font-semibold text-white">내 진행 상황</Text>
           <View className="mt-1 items-center flex-row gap-1">
-            <Text className="text-[30px] font-bold text-white">{progress?.progress}</Text>
+            <Text className="text-[30px] font-bold text-white">
+              {progress?.progress ? progress.progress : 0}
+            </Text>
             <Text className="text-base font-semibold text-white">%</Text>
           </View>
         </View>
