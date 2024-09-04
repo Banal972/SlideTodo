@@ -8,9 +8,8 @@ import Button from "components/common/Button"
 import AddToDoBtn from "components/common/Button/AddToDoBtn"
 import BaseContainer from "components/common/Container/BaseContainer"
 import Input from "components/common/Input"
+import GoalTodoList from "components/page/goal/GoalTodoList"
 import Process from "components/page/goal/Process"
-import TodoDoneList from "components/page/goal/TodoDoneList"
-import TodoList from "components/page/goal/TodoList"
 import Color from "constant/color"
 import { Link, useLocalSearchParams, useRouter } from "expo-router"
 import useDeleteGoal from "hooks/goal/useDeleteGoal"
@@ -149,7 +148,7 @@ const GoalDetail = () => {
             <AddToDoBtn />
           </View>
           <View style={{ gap: 8, marginTop: 16 }}>
-            <TodoList id={Number(slug)} goalTitle={data?.title || ""} />
+            <GoalTodoList id={Number(slug)} done={false} />
           </View>
         </BaseContainer>
 
@@ -163,7 +162,7 @@ const GoalDetail = () => {
             <Text style={{ fontSize: 18, fontWeight: "bold", color: Color.slate800 }}>Done</Text>
           </View>
           <View style={{ gap: 8, marginTop: 16 }}>
-            <TodoDoneList id={Number(slug)} goalTitle={data?.title || ""} />
+            <GoalTodoList id={Number(slug)} done={true} />
           </View>
         </BaseContainer>
       </View>

@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View } from "react-native"
+import { Text, View } from "react-native"
 
 import AddToDoBtn from "components/common/Button/AddToDoBtn"
 import BaseContainer from "components/common/Container/BaseContainer"
 import NullText from "components/common/NullText"
 import GoalProcess from "components/page/dashboard/GoalProcess"
 import BaseTitle from "components/page/dashboard/common/BaseTitle"
-import TodoDoneList from "components/page/goal/TodoDoneList"
-import TodoList from "components/page/goal/TodoList"
+import GoalTodoList from "components/page/goal/GoalTodoList"
 import Color from "constant/color"
 import { Link } from "expo-router"
 import { useGetGoalList } from "hooks/goal/useGetGoalList"
@@ -38,12 +37,12 @@ const GoalList = () => {
 
             <View className="mt-4">
               <Text className="text-sm leading-5 font-semibold">To do</Text>
-              <TodoList id={goal.id} goalTitle={goal.title} />
+              <GoalTodoList id={goal.id} done={false} size={3} />
             </View>
 
             <View style={{ marginTop: 24 }}>
               <Text className="text-sm leading-5 font-semibold">Done</Text>
-              <TodoDoneList id={goal.id} goalTitle={goal.title} />
+              <GoalTodoList id={goal.id} done={true} size={3} />
             </View>
           </View>
         ))

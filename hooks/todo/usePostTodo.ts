@@ -1,4 +1,4 @@
-import { UseFormSetValue } from "react-hook-form"
+import { UseFormReset } from "react-hook-form"
 import { Alert } from "react-native"
 
 import { QueryClient, useMutation } from "@tanstack/react-query"
@@ -8,7 +8,7 @@ import { TodoPostValue } from "types/todo"
 const usePostTodo = (
   queryClient: QueryClient,
   isModalCloseHandler: () => void,
-  setValue: UseFormSetValue<TodoPostValue>,
+  reset: UseFormReset<TodoPostValue>,
 ) => {
   return useMutation({
     mutationFn: (data: TodoPostValue) => {
@@ -30,14 +30,11 @@ const usePostTodo = (
         {
           text: "확인",
           onPress: () => {
-            setValue("title", "")
-            setValue("goalId", 0)
-            setValue("linkUrl", "")
-            setValue("fileUrl", "")
             isModalCloseHandler()
           },
         },
       ])
+      reset()
     },
     onError: (error: any) => {
       const { message } = error.response.data

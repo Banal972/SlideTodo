@@ -1,18 +1,24 @@
 import { ReactNode, useEffect } from "react"
 
+import { Redirect } from "expo-router"
 import { getStore } from "libs/secureStore"
 import useUserStore from "store/useUserStore"
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { signIn } = useUserStore()
+  const login = useUserStore((state) => state.login)
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated)
 
   useEffect(() => {
-    const checkToken = async () => {
+    async function checkToken() {
       const token = await getStore("accessToken")
-      if (token) signIn()
+      if (token) {
+        login(token)
+      }
     }
     checkToken()
   }, [])
+
+  if (!isAuthenticated) return <Redirect href="/sign-in" />
 
   return children
 }

@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import NoteDetailModal from "components/page/note/DetailModal"
 import TodoAddModal from "components/page/todo/TodoAddModal/TodoAddModal"
 import { Slot } from "expo-router"
-import AuthProvider from "provider/AuthProvider"
 import useNewTodoModalStore from "store/useNewTodoModalStore"
 import useNoteDetailModalStore from "store/useNoteDetailModalStore"
 
@@ -24,9 +23,7 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Slot />
-      </AuthProvider>
+      <Slot />
       <NoteDetailModal isModal={isModal} />
       <TodoAddModal isModal={addIsModal} />
     </QueryClientProvider>

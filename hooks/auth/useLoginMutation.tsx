@@ -4,12 +4,11 @@ import { QueryClient, useMutation } from "@tanstack/react-query"
 import ROUTE from "constant/route"
 import { Router } from "expo-router"
 import axiosInstance from "libs/axiosInstance"
-import { saveStore } from "libs/secureStore"
 import useUserStore from "store/useUserStore"
 import { LoginFormValue } from "types/auth"
 
 const useLoginMutation = (queryClient: QueryClient, router: Router) => {
-  const { signIn } = useUserStore()
+  const login = useUserStore((state) => state.login)
 
   return useMutation({
     mutationFn: async (data: LoginFormValue) => {
@@ -30,9 +29,8 @@ const useLoginMutation = (queryClient: QueryClient, router: Router) => {
     },
     onSuccess: (res) => {
       const { accessToken } = res.data
-      saveStore("accessToken", accessToken)
+      login(accessToken)
       queryClient.invalidateQueries({ queryKey: ["user"] })
-      signIn()
       router.push(ROUTE.dashboard)
     },
     onError: (error: any) => {

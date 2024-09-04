@@ -1,40 +1,91 @@
-import { useState } from "react"
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { Fragment, Suspense, useEffect, useState } from "react"
+import { Animated, Easing, Pressable, Text, View } from "react-native"
 
 import AddToDoBtn from "components/common/Button/AddToDoBtn"
-import CheckList from "components/common/CheckList"
-import Color from "constant/color"
+import MoreBtn from "components/common/Button/MoreBtn"
+import AllTodoList from "components/page/alltodo/AllTodoList"
 import { todoType } from "constant/type"
 import { useGetTodos } from "hooks/todo/useGetTodos"
 
-const AllTodoPage = () => {
-  const [type, setType] = useState<boolean | null>(null)
-  const { data } = useGetTodos({ done: type })
+const SkeletonTodo = () => {
+  const [opacityAnim] = useState(new Animated.Value(0.4))
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacityAnim, {
+          toValue: 1,
+          duration: 700,
+          useNativeDriver: true,
+          easing: Easing.inOut(Easing.ease),
+        }),
+        Animated.timing(opacityAnim, {
+          toValue: 0.4,
+          duration: 700,
+          useNativeDriver: true,
+          easing: Easing.inOut(Easing.ease),
+        }),
+      ]),
+    ).start()
+  }, [])
 
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>모든 할 일({data?.todos.length || 0})</Text>
+    <>
+      {new Array(5).fill(0).map((_, i) => (
+        <Animated.View
+          key={i}
+          className="w-full h-4 bg-gray-300"
+          style={{ opacity: opacityAnim }}
+        />
+      ))}
+    </>
+  )
+}
+
+const AllTodoPage = () => {
+  const [type, setType] = useState<boolean | null>(null)
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTodos({
+    done: type,
+    size: 30,
+  })
+
+  return (
+    <View className="p-4">
+      <View className="flex-row justify-between">
+        <Text className="text-base font-semibold text-slate-900">
+          모든 할 일 ({data.pages[0].totalCount || 0})
+        </Text>
         <AddToDoBtn />
       </View>
 
-      <View style={styles.todoContainer}>
-        <View style={styles.tagContainer}>
+      <View className="bg-white border border-slate-100 rounded-xl mt-4 p-4">
+        <View className="flex-row gap-2">
           {todoType.map((types, index) => (
             <Pressable
               key={index + 1}
-              style={[styles.tagButton, type === types.key && styles.tagButtonActive]}
+              className={`px-3 py-1 rounded-[17px] border border-slate-200 ${type === types.key && "bg-blue-500 border-blue-500"}`}
               onPress={() => setType(types.key)}
             >
-              <Text style={[styles.tagButtonText, type === types.key && { color: "#fff" }]}>
+              <Text
+                className={` text-slate-800 text-sm font-medium ${type === types.key && "text-white"}`}
+              >
                 {types.value}
               </Text>
             </Pressable>
           ))}
         </View>
 
-        <View style={styles.checkListContainer}>
-          {data && data.todos.map((todo) => <CheckList key={todo.id} data={todo} />)}
+        <View className="mt-4" style={{ gap: 8 }}>
+          <Suspense fallback={<SkeletonTodo />}>
+            {data.pages.map((page, i) => (
+              <Fragment key={i}>
+                {page.todos.map((todo: any) => (
+                  <AllTodoList todo={todo} key={todo.id} />
+                ))}
+              </Fragment>
+            ))}
+            {(isFetchingNextPage || hasNextPage) && <MoreBtn onPress={fetchNextPage} />}
+          </Suspense>
         </View>
       </View>
     </View>
@@ -42,50 +93,3 @@ const AllTodoPage = () => {
 }
 
 export default AllTodoPage
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: Color.slate900,
-  },
-  todoContainer: {
-    backgroundColor: "#ffffff",
-    borderWidth: 1,
-    borderColor: Color.slate100,
-    borderRadius: 12,
-    marginTop: 16,
-    padding: 16,
-  },
-  tagContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  tagButtonActive: {
-    backgroundColor: Color.blue500,
-    borderColor: Color.blue500,
-  },
-  tagButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 17,
-    borderWidth: 1,
-    borderColor: Color.slate200,
-  },
-  tagButtonText: {
-    color: Color.slate800,
-    fontSize: 14,
-    fontWeight: "500",
-  },
-  checkListContainer: {
-    marginTop: 16,
-    gap: 8,
-  },
-})
