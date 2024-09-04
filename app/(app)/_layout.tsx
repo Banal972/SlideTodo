@@ -17,11 +17,26 @@ export default function AppLayout() {
           },
         })}
       >
-        <Drawer.Screen name="index" />
-        <Drawer.Screen name="alltodo/index" />
-        <Drawer.Screen name="goal/[slug]" />
-        <Drawer.Screen name="note/list/[slug]" />
-        <Drawer.Screen name="note/post/[slug]" />
+        <Drawer.Screen
+          name="index"
+          options={{ headerTitle: "대시보드", headerTitleAlign: "left" }}
+        />
+        <Drawer.Screen
+          name="alltodo/index"
+          options={{ headerTitle: "", headerTitleAlign: "left" }}
+        />
+        <Drawer.Screen
+          name="goal/[slug]"
+          options={{ headerTitle: "목표", headerTitleAlign: "left" }}
+        />
+        <Drawer.Screen
+          name="note/list/[slug]"
+          options={{ headerTitle: "", headerTitleAlign: "left" }}
+        />
+        <Drawer.Screen
+          name="note/post/[slug]"
+          options={{ headerTitle: "", headerTitleAlign: "left" }}
+        />
       </Drawer>
     </AuthProvider>
   )

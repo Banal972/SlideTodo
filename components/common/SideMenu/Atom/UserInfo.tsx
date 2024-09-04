@@ -5,21 +5,19 @@ import Color from "constant/color"
 import ROUTE from "constant/route"
 import { useRouter } from "expo-router"
 import useUser from "hooks/user/useUser"
-import { saveStore } from "libs/secureStore"
 import useUserStore from "store/useUserStore"
 
 const UserInfo = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
   const { user } = useUser()
   const router = useRouter()
-  const { signOut } = useUserStore()
+  const { logout } = useUserStore()
 
   const logoutHandler = () => {
     Alert.alert("로그아웃", "정말 로그아웃 하시겠습니까?", [
       {
         text: "네",
         onPress: async () => {
-          await saveStore("accessToken", "")
-          signOut()
+          logout()
           router.push(ROUTE.singnIn)
         },
       },
