@@ -33,7 +33,6 @@ export interface useTodoProgressDataType {
 
 export interface TodoPostValue {
   title: string
-  fileUrl: string
   linkUrl: string
   goalId?: number
 }

@@ -17,7 +17,7 @@ const BaseTitle = ({
 }) => {
   return (
     <View className="flex-row justify-between items-center">
-      <View className="flex-row items-center gap-2">
+      <View className="flex-row items-center" style={{ gap: 8 }}>
         <View
           className="w-10 h-10 rounded-[15px] relative"
           style={[{ backgroundColor: baseIcon.color }]}
@@ -32,9 +32,9 @@ const BaseTitle = ({
       </View>
       {linkURL && (
         <Link href={"/alltodo"}>
-          <View className="text-center flex-row gap-[10px]">
+          <View className="text-center flex-row" style={{ gap: 10 }}>
             <Text className="text-[#4B5563] text-sm font-medium">모두 보기</Text>
-            <Octicons name="chevron-right" size={24} color="#4B5563" />
+            <Octicons name="chevron-right" size={16} color="#4B5563" />
           </View>
         </Link>
       )}

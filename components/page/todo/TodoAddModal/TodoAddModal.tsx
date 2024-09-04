@@ -12,18 +12,21 @@ import Seleted from "components/page/todo/TodoAddModal/Atom/Seleted"
 import Color from "constant/color"
 import { useGetGoalList } from "hooks/goal/useGetGoalList"
 import usePostTodo from "hooks/todo/usePostTodo"
+import useUpdateTodo from "hooks/todo/useUpdateTodo"
 import useNewTodoModalStore from "store/useNewTodoModalStore"
 import { TodoPostValue } from "types/todo"
 
 const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
   const queryClient = useQueryClient()
-  const { close: isModalCloseHandler } = useNewTodoModalStore()
+  const { todoId, close: isModalCloseHandler } = useNewTodoModalStore()
   const { control, handleSubmit, reset } = useForm<TodoPostValue>()
   const { goalLists } = useGetGoalList({ cursor: 1 })
   const [selectedGoal, setSelectedGoal] = useState()
   const [linkState, setLinkState] = useState(false)
 
-  const { mutate } = usePostTodo(queryClient, isModalCloseHandler, reset)
+  const { mutate: updateMutate } = useUpdateTodo(queryClient, isModalCloseHandler, reset)
+
+  const { mutate: postMutate } = usePostTodo(queryClient, isModalCloseHandler, reset)
 
   const onSubmit = handleSubmit((data) => {
     if (!selectedGoal) return Alert.alert("실패", "목표를 선택해주세요")
@@ -31,7 +34,12 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
       ...data,
       goalId: Number(selectedGoal),
     }
-    mutate(datas)
+
+    if (todoId) {
+      updateMutate({ ...datas, todoId })
+    } else {
+      postMutate(datas)
+    }
   })
 
   return (
@@ -39,7 +47,9 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
       <SafeAreaView className="flex-1 bg-white">
         <View className="py-6 px-4 border-white flex-1">
           <View className="flex-row justify-between pb-5">
-            <Text className="text-lg leading-7 font-bold">할 일 생성</Text>
+            <Text className="text-lg leading-7 font-bold">
+              {todoId ? "할 일 수정" : "할 일 생성"}
+            </Text>
             <Pressable onPress={isModalCloseHandler}>
               <Ionicons name="close" size={24} color="black" />
             </Pressable>

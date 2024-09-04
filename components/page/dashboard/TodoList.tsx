@@ -22,7 +22,7 @@ const TodoList = () => {
         linkURL="alltodo"
       />
 
-      <View className="mt-4" style={{ gap: 8 }}>
+      <View className="mt-4" style={{ gap: 15 }}>
         {data.pages.map((page, i) => (
           <Fragment key={i}>
             {page.totalCount === 0 && <NullText>최근에 등록한 할 일이 없어요</NullText>}

@@ -2,13 +2,15 @@ import { create } from "zustand"
 
 interface Store {
   isModal: boolean
-  open: () => void
+  todoId: number | null
+  open: ({ todoId }: { todoId?: number }) => void
   close: () => void
 }
 
 const useNewTodoModalStore = create<Store>((set) => ({
   isModal: false,
-  open: () => set(() => ({ isModal: true })),
+  todoId: null,
+  open: ({ todoId }) => set(() => ({ isModal: true, todoId: todoId || null })),
   close: () => set(() => ({ isModal: false })),
 }))
 
