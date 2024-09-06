@@ -15,14 +15,16 @@
     },
     "ios": {
       "buildNumber": "1.0.0",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bn.slideTodo"
     },
     "android": {
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#3B82F6"
-      }
+      },
+      "package": "com.bn.slideTodo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -42,6 +44,15 @@
           "iCloudContainerEnvironment": "Production"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5ad3101b-d244-43f0-8a8a-27adec6a7336"
+      }
+    },
+    "owner": "kimjiyu"
   }
 }
