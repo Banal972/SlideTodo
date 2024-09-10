@@ -14,8 +14,9 @@ import dayjs from "dayjs"
 import * as WebBrowser from "expo-web-browser"
 import { useGetNoteDetail } from "hooks/note/useGetNoteDetail"
 import useNoteDetailModalStore from "store/useNoteDetailModalStore"
+import { INoteDetailModal } from "types/note"
 
-const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
+const NoteDetailModal = ({ isModal }: INoteDetailModal) => {
   const { modalClose, noteDetail } = useDetail()
 
   const { width } = useWindowDimensions()

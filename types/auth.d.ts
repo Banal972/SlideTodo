@@ -9,3 +9,9 @@ export interface SignFormValue extends LoginFormValue {
   name: string
   pwdConfirm: string
 }
+
+export interface IBottomLink {
+  label: string
+  linkHref: string
+  linkLabel: string
+}

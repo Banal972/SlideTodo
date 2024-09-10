@@ -1,13 +1,6 @@
-import { ReactNode } from "react"
-import { GestureResponderEvent, StyleProp, Text, TouchableOpacity, ViewStyle } from "react-native"
+import { Text, TouchableOpacity } from "react-native"
 
-interface ISmallBtn {
-  onPress?: (event: GestureResponderEvent) => void
-  style?: StyleProp<ViewStyle>
-  backgroundColor?: string
-  color?: string
-  children?: ReactNode
-}
+import { ISmallBtn } from "types/global"
 
 const SmallBtn = ({ onPress, style, backgroundColor, color, children }: ISmallBtn) => {
   return (

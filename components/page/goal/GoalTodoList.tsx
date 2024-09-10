@@ -6,12 +6,7 @@ import MoreBtn from "components/common/Button/MoreBtn"
 import NullText from "components/common/NullText"
 import SkeletonTodo from "components/page/todo/SkeletonTodo"
 import { useGetTodos } from "hooks/todo/useGetTodos"
-
-interface IGoalTodoList {
-  id: number
-  done: boolean
-  size?: number
-}
+import { IGoalTodoList } from "types/goal"
 
 const GoalTodoList = ({ id, done, size }: IGoalTodoList) => {
   const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTodos({

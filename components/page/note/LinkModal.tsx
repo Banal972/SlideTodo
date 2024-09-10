@@ -1,4 +1,4 @@
-import { Control, Controller } from "react-hook-form"
+import { Controller } from "react-hook-form"
 import { TouchableOpacity } from "react-native"
 import { Text, View } from "react-native"
 import { Modal } from "react-native"
@@ -7,18 +7,7 @@ import Ionicons from "@expo/vector-icons/Ionicons"
 import Button from "components/common/Button"
 import Input from "components/common/Input"
 import Color from "constant/color"
-
-type FormData = {
-  title: string
-  content: string
-  linkUrl: string
-}
-
-interface ILinkModal {
-  control: Control<FormData, any>
-  isModal: boolean
-  setIsModal: React.Dispatch<React.SetStateAction<boolean>>
-}
+import { ILinkModal } from "types/note"
 
 const LinkModal = ({ control, isModal, setIsModal }: ILinkModal) => {
   return (

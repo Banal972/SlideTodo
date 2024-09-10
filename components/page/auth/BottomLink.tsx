@@ -1,12 +1,7 @@
 import { Text, View } from "react-native"
 
 import { Link } from "expo-router"
-
-interface IBottomLink {
-  label: string
-  linkHref: string
-  linkLabel: string
-}
+import { IBottomLink } from "types/auth"
 
 const BottomLink = ({ label, linkHref, linkLabel }: IBottomLink) => {
   return (

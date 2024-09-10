@@ -7,9 +7,10 @@ import MoreBtn from "components/common/Button/MoreBtn"
 import SkeletonTodo from "components/page/todo/SkeletonTodo"
 import { todoType } from "constant/type"
 import { useGetTodos } from "hooks/todo/useGetTodos"
+import { AllTodoType } from "types/todo"
 
 const AllTodoPage = () => {
-  const [type, setType] = useState<boolean | null>(null)
+  const [type, setType] = useState<AllTodoType>(null)
   const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTodos({
     done: type,
     size: 30,

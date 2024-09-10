@@ -14,9 +14,9 @@ import { useGetGoalList } from "hooks/goal/useGetGoalList"
 import usePostTodo from "hooks/todo/usePostTodo"
 import useUpdateTodo from "hooks/todo/useUpdateTodo"
 import useNewTodoModalStore from "store/useNewTodoModalStore"
-import { TodoPostValue } from "types/todo"
+import { IuseSubmit, TTodoModal, TodoPostValue } from "types/todo"
 
-const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
+const TodoAddModal = ({ isModal }: TTodoModal) => {
   const { todoId, close: isModalCloseHandler } = useNewTodoModalStore()
   const { goalLists } = useGetGoalList({ cursor: 1 })
   const [linkState, setLinkState] = useState(false)
@@ -132,15 +132,7 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
 
 export default TodoAddModal
 
-const useSubmit = ({
-  todoId,
-  isModalCloseHandler,
-  selectedGoal,
-}: {
-  todoId: number | null
-  isModalCloseHandler: () => void
-  selectedGoal: undefined
-}) => {
+const useSubmit = ({ todoId, isModalCloseHandler, selectedGoal }: IuseSubmit) => {
   const queryClient = useQueryClient()
   const { control, handleSubmit, reset } = useForm<TodoPostValue>()
 

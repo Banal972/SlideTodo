@@ -1,24 +1,9 @@
-import {
-  GestureResponderEvent,
-  StyleProp,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from "react-native"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 import Color from "constant/color"
+import { IButton } from "types/global"
 
-const Button = ({
-  style,
-  label,
-  onPress,
-}: {
-  style?: StyleProp<ViewStyle>
-  label: string
-  onPress?: (event: GestureResponderEvent) => void
-}) => {
+const Button = ({ style, label, onPress }: IButton) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.button, style]}>

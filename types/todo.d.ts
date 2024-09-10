@@ -1,6 +1,16 @@
 import { GoalType } from "types/goal"
 
-interface TodoType {
+export type AllTodoType = boolean | null
+
+export type TTodoModal = { isModal: boolean }
+
+export interface IuseSubmit {
+  todoId: number | null
+  isModalCloseHandler: () => void
+  selectedGoal: undefined
+}
+
+export interface TodoType {
   noteId: number
   done: boolean
   linkUrl: string
@@ -43,4 +53,10 @@ export interface TodoUpdate {
   linkUrl: string
   goalId: number
   done: boolean
+}
+
+export interface SeletedType {
+  state: boolean
+  setState: (value: React.SetStateAction<boolean>) => void
+  label: string
 }

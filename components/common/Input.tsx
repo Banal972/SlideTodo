@@ -1,13 +1,7 @@
-import {
-  NativeSyntheticEvent,
-  ReturnKeyTypeOptions,
-  StyleSheet,
-  TextInput,
-  TextInputFocusEventData,
-  TextInputSubmitEditingEventData,
-} from "react-native"
+import { StyleSheet, TextInput } from "react-native"
 
 import Color from "constant/color"
+import { IInput } from "types/global"
 
 const Input = ({
   placeholder,
@@ -17,15 +11,7 @@ const Input = ({
   value,
   returnKeyType,
   onSubmitEditing,
-}: {
-  onBlur?: (event: NativeSyntheticEvent<TextInputFocusEventData>) => void
-  onChangeText?: (text: string) => void
-  value?: string
-  placeholder: string
-  secureTextEntry?: boolean
-  returnKeyType?: ReturnKeyTypeOptions | undefined
-  onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void
-}) => {
+}: IInput) => {
   return (
     <TextInput
       onBlur={onBlur}

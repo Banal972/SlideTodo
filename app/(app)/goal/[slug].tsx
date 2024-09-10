@@ -13,9 +13,10 @@ import { useLocalSearchParams, useRouter } from "expo-router"
 import useDeleteGoal from "hooks/goal/useDeleteGoal"
 import { useGetGoalDetail } from "hooks/goal/useGetGoalDetail"
 import { useTodoProgress } from "hooks/todo/useTodoProgress"
+import { GoalSlug, IuseDelete } from "types/goal"
 
 const GoalDetail = () => {
-  const { slug } = useLocalSearchParams<{ slug: string }>()
+  const { slug } = useLocalSearchParams<GoalSlug>()
   const { data } = useGetGoalDetail({ goalId: slug })
   const { data: progress } = useTodoProgress(Number(slug))
   const [isVisible, setIsVisible] = useState(false)
@@ -124,13 +125,7 @@ const GoalDetail = () => {
 
 export default GoalDetail
 
-const useDelete = ({
-  slug,
-  setIsVisible,
-}: {
-  slug: string
-  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
-}) => {
+const useDelete = ({ slug, setIsVisible }: IuseDelete) => {
   const queryClient = useQueryClient()
   const router = useRouter()
   const { mutate } = useDeleteGoal(queryClient, router)

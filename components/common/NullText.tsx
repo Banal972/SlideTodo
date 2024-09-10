@@ -1,7 +1,8 @@
-import { ReactNode } from "react"
 import { Text } from "react-native"
 
-const NullText = ({ children }: { children: ReactNode }) => {
+import { ChildrenProps } from "types/global"
+
+const NullText = ({ children }: ChildrenProps) => {
   return <Text className="text-center text-sm text-slate-500 py-[30px] pb-[60px]">{children}</Text>
 }
 

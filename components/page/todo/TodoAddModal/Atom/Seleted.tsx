@@ -2,12 +2,7 @@ import { Text, TouchableOpacity } from "react-native"
 
 import Color from "constant/color"
 import Checkbox from "expo-checkbox"
-
-interface SeletedType {
-  state: boolean
-  setState: (value: React.SetStateAction<boolean>) => void
-  label: string
-}
+import { SeletedType } from "types/todo"
 
 const Seleted = ({ state, setState, label }: SeletedType) => {
   return (

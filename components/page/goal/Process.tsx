@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react"
 import { Animated, Easing, Text, View } from "react-native"
 
-const Process = ({ progress }: { progress: number }) => {
-  const [widthAnimation] = useState(new Animated.Value(0))
+import { Tprogress } from "types/goal"
 
-  useEffect(() => {
-    Animated.timing(widthAnimation, {
-      toValue: progress,
-      duration: 300,
-      easing: Easing.linear,
-      useNativeDriver: false,
-      delay: 100,
-    }).start()
-  }, [progress])
+const Process = ({ progress }: Tprogress) => {
+  const { widthAnimation } = useAni({ progress })
 
   return (
     <View
@@ -38,3 +30,19 @@ const Process = ({ progress }: { progress: number }) => {
 }
 
 export default Process
+
+const useAni = ({ progress }: Tprogress) => {
+  const [widthAnimation] = useState(new Animated.Value(0))
+
+  useEffect(() => {
+    Animated.timing(widthAnimation, {
+      toValue: progress,
+      duration: 300,
+      easing: Easing.linear,
+      useNativeDriver: false,
+      delay: 100,
+    }).start()
+  }, [progress])
+
+  return { widthAnimation }
+}

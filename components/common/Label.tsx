@@ -1,9 +1,9 @@
-import { ReactNode } from "react"
 import { StyleSheet, Text } from "react-native"
 
 import Color from "constant/color"
+import { ChildrenProps } from "types/global"
 
-const Label = ({ children }: { children: ReactNode }) => {
+const Label = ({ children }: ChildrenProps) => {
   return <Text style={styles.textInputLabel}>{children}</Text>
 }
 

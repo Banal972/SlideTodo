@@ -5,9 +5,10 @@ import NoteContainer from "components/page/note/NoteContainer"
 import { Link, useLocalSearchParams } from "expo-router"
 import { useGetGoalDetail } from "hooks/goal/useGetGoalDetail"
 import { useGetNoteList } from "hooks/note/useGetNoteList"
+import { NoteSlug } from "types/note"
 
 const NoteList = () => {
-  const { slug } = useLocalSearchParams<{ slug: string }>()
+  const { slug } = useLocalSearchParams<NoteSlug>()
   const { data: detail } = useGetGoalDetail({ goalId: slug })
   const { data } = useGetNoteList({ goalId: Number(slug) })
 
@@ -28,7 +29,7 @@ const NoteList = () => {
         </BaseContainer>
 
         {data && data.notes.length > 0 ? (
-          data.notes.map((note) => <NoteContainer note={note} />)
+          data.notes.map((note) => <NoteContainer key={note.id} note={note} />)
         ) : (
           <View className="flex-1 items-center justify-center">
             <Text className="text-slate-500 text-sm">아직 등록된 노트가 없어요</Text>

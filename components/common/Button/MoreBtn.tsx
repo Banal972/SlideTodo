@@ -3,8 +3,9 @@ import { Text, TouchableOpacity } from "react-native"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
 import Color from "constant/color"
+import { TMoreBtn } from "types/global"
 
-const MoreBtn = ({ onPress }: { onPress: () => void }) => {
+const MoreBtn = ({ onPress }: TMoreBtn) => {
   return (
     <TouchableOpacity
       onPress={onPress}

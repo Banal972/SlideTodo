@@ -7,13 +7,7 @@ import Button from "components/common/Button"
 import Input from "components/common/Input"
 import Color from "constant/color"
 import useEditGoal from "hooks/goal/useEditGoal"
-
-interface IEditModal {
-  slug: string
-  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
-  isEditVisible: boolean
-  setIsEditVisible: React.Dispatch<React.SetStateAction<boolean>>
-}
+import { IEditModal } from "types/goal"
 
 const EditModal = ({ slug, setIsVisible, isEditVisible, setIsEditVisible }: IEditModal) => {
   const { onSubmit, control } = useEdit({ slug, setIsVisible, setIsEditVisible })

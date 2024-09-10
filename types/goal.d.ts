@@ -1,3 +1,11 @@
+export type GoalSlug = {
+  slug: string
+}
+
+export type Tprogress = {
+  progress: number
+}
+
 export interface goalListType {
   nextCursor: number
   totalCount: number
@@ -21,4 +29,20 @@ export interface goalListParams {
 
 export interface PostGoalType {
   goal: string
+}
+
+export interface IuseDelete extends GoalSlug {
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export interface IEditModal extends GoalSlug {
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
+  isEditVisible: boolean
+  setIsEditVisible: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export interface IGoalTodoList {
+  id: number
+  done: boolean
+  size?: number
 }

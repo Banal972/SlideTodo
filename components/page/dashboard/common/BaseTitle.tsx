@@ -1,18 +1,8 @@
-import { Image, ImageSourcePropType, Text, View } from "react-native"
+import { Image, Text, View } from "react-native"
 
 import Octicons from "@expo/vector-icons/Octicons"
 import { Link } from "expo-router"
-
-interface IbaseIcon {
-  color?: string
-  source?: ImageSourcePropType
-}
-
-interface IBaseTitle {
-  baseIcon: IbaseIcon
-  title?: string
-  linkURL?: string
-}
+import { IBaseTitle } from "types/dashboard"
 
 const BaseTitle = ({ baseIcon, title, linkURL }: IBaseTitle) => {
   return (

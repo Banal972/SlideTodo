@@ -18,12 +18,7 @@ import useEditor from "hooks/note/post/useEditor"
 import useKeyboardVerticalOffset from "hooks/note/post/useKeyboardVerticalOffset"
 import usePostNote from "hooks/note/usePostNote"
 import usePostNoteStore from "store/usePostNoteStore"
-
-type FormData = {
-  title: string
-  content: string
-  linkUrl: string
-}
+import { PostFormData } from "types/note"
 
 const NotePostPage = () => {
   const { data } = usePostNoteStore()
@@ -143,7 +138,7 @@ export default NotePostPage
 const useSumbit = ({ editor }: { editor: EditorBridge }) => {
   const queryClient = useQueryClient()
   const router = useRouter()
-  const { control, watch, handleSubmit, reset } = useForm<FormData>()
+  const { control, watch, handleSubmit, reset } = useForm<PostFormData>()
   const { slug } = useLocalSearchParams<{ slug: string }>()
   const { mutate } = usePostNote(queryClient, router, reset, editor)
   const onSubmit = handleSubmit(async (data) => {

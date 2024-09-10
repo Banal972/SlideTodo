@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native"
 
-import { EditorBridge, RichText, Toolbar } from "@10play/tentap-editor"
+import { RichText, Toolbar } from "@10play/tentap-editor"
 import { useQueryClient } from "@tanstack/react-query"
 import LinkModal from "components/page/note/LinkModal"
 import { useLocalSearchParams, useRouter } from "expo-router"
@@ -18,15 +18,10 @@ import useEditor from "hooks/note/post/useEditor"
 import useKeyboardVerticalOffset from "hooks/note/post/useKeyboardVerticalOffset"
 import { useGetNoteDetail } from "hooks/note/useGetNoteDetail"
 import useUpdateNote from "hooks/note/useUpdateNote"
-
-type FormData = {
-  title: string
-  content: string
-  linkUrl: string
-}
+import { IuseSumbit, NoteSlug, PostFormData } from "types/note"
 
 const NotePostPage = () => {
-  const { slug } = useLocalSearchParams<{ slug: string }>()
+  const { slug } = useLocalSearchParams<NoteSlug>()
   const [isModal, setIsModal] = useState(false)
 
   const { editor, customToolbarItems, charCount } = useEditor()
@@ -152,10 +147,10 @@ const NotePostPage = () => {
 
 export default NotePostPage
 
-const useSumbit = ({ slug, editor }: { slug: string; editor: EditorBridge }) => {
+const useSumbit = ({ slug, editor }: IuseSumbit) => {
   const queryClient = useQueryClient()
   const router = useRouter()
-  const { control, watch, handleSubmit, setValue } = useForm<FormData>()
+  const { control, watch, handleSubmit, setValue } = useForm<PostFormData>()
   const { mutate } = useUpdateNote(queryClient, router)
   const onSubmit = handleSubmit(async (data) => {
     const content = await editor.getHTML()

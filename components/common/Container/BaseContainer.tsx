@@ -1,17 +1,8 @@
-import { ReactNode } from "react"
-import { StyleProp, View, ViewStyle } from "react-native"
+import { View } from "react-native"
 
-const BaseContainer = ({
-  children,
-  color,
-  style,
-  className,
-}: {
-  children?: ReactNode
-  color?: string
-  style?: StyleProp<ViewStyle>
-  className?: string
-}) => {
+import { IBaseContainer } from "types/global"
+
+const BaseContainer = ({ children, color, style, className }: IBaseContainer) => {
   return (
     <View
       className={`${className} rounded-2xl p-4 overflow-hidden`}
