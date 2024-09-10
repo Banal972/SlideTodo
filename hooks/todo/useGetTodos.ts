@@ -1,6 +1,6 @@
-import { useInfiniteQuery, useSuspenseInfiniteQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import axiosInstance from "libs/axiosInstance"
-import { TodosParamsType } from "types/todo"
+import { IuseGetTodosFetch, TodosParamsType } from "types/todo"
 
 export const useGetTodos = ({ goalId, done, size }: TodosParamsType) => {
   const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
@@ -21,7 +21,7 @@ export const useGetTodos = ({ goalId, done, size }: TodosParamsType) => {
   }
 }
 
-const fetchs = async ({ goalId, done, size }: any, pageParam: any) => {
+const fetchs = async ({ goalId, done, size }: IuseGetTodosFetch, pageParam: number) => {
   let params
 
   if (pageParam === 0) {

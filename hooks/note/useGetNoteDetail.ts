@@ -1,34 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
 import axiosInstance from "libs/axiosInstance"
-
-export interface Root {
-  todo: Todo
-  linkUrl: string
-  content: string
-  updatedAt: string
-  createdAt: string
-  title: string
-  id: number
-  goal: Goal
-  userId: number
-  teamId: string
-}
-
-export interface Todo {
-  done: boolean
-  fileUrl: string
-  linkUrl: string
-  title: string
-  id: number
-}
-
-export interface Goal {
-  title: string
-  id: number
-}
+import { INoteDetail } from "types/note"
 
 export const useGetNoteDetail = ({ noteId }: { noteId: number }) => {
-  const { data, isLoading } = useQuery<Root>({
+  const { data, isLoading } = useQuery<INoteDetail>({
     queryKey: ["noteDetail", noteId],
     queryFn: async () => {
       try {

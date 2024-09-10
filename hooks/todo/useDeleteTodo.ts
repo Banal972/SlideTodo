@@ -2,10 +2,11 @@ import { Alert } from "react-native"
 
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import axiosInstance from "libs/axiosInstance"
+import { TTodoId } from "types/todo"
 
 const useDeleteTodo = (queryClient: QueryClient, isModalCloseHandler: () => void) => {
   return useMutation({
-    mutationFn: (todoId: number) => {
+    mutationFn: (todoId: TTodoId) => {
       return axiosInstance.delete(`/todos/${todoId}`)
     },
     onSuccess: async () => {

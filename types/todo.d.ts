@@ -1,5 +1,7 @@
 import { GoalType } from "types/goal"
 
+export type TTodoId = number
+
 export type AllTodoType = boolean | null
 
 export type TTodoModal = { isModal: boolean }
@@ -59,4 +61,17 @@ export interface SeletedType {
   state: boolean
   setState: (value: React.SetStateAction<boolean>) => void
   label: string
+}
+
+export interface IuseGetTodosFetch {
+  goalId?: number
+  done?: boolean | null
+  size?: number
+}
+
+export interface IuseUpdateTodo {
+  title: string
+  linkUrl: string
+  goalId?: number
+  todoId: number
 }

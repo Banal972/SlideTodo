@@ -3,10 +3,11 @@ import { Alert } from "react-native"
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import { Router } from "expo-router"
 import axiosInstance from "libs/axiosInstance"
+import { IUpdateNote } from "types/note"
 
 const useUpdateNote = (queryClient: QueryClient, router: Router) => {
   return useMutation({
-    mutationFn: (data: { title: string; content: string; linkUrl: string; noteId: number }) => {
+    mutationFn: (data: IUpdateNote) => {
       const { title, content, linkUrl, noteId } = data
       return axiosInstance.patch(`/notes/${noteId}`, {
         title,

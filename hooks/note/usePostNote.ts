@@ -5,21 +5,16 @@ import { EditorBridge } from "@10play/tentap-editor"
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import { Router } from "expo-router"
 import axiosInstance from "libs/axiosInstance"
-
-type FormData = {
-  title: string
-  content: string
-  linkUrl: string
-}
+import { IPostNote, PostFormData } from "types/note"
 
 const usePostNote = (
   queryClient: QueryClient,
   router: Router,
-  reset: UseFormReset<FormData>,
+  reset: UseFormReset<PostFormData>,
   editor: EditorBridge,
 ) => {
   return useMutation({
-    mutationFn: (data: { todoId: number; title: string; content: string; linkUrl: string }) => {
+    mutationFn: (data: IPostNote) => {
       const { todoId, title, content, linkUrl } = data
       return axiosInstance.post("/notes", {
         todoId,

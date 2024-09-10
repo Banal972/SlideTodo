@@ -1,6 +1,7 @@
 import { Alert } from "react-native"
 
 import { QueryClient, useMutation } from "@tanstack/react-query"
+import { EMAILREG } from "constant/reg"
 import ROUTE from "constant/route"
 import { Router } from "expo-router"
 import axiosInstance from "libs/axiosInstance"
@@ -14,11 +15,7 @@ const useLoginMutation = (queryClient: QueryClient, router: Router) => {
     mutationFn: async (data: LoginFormValue) => {
       const { email, password } = data
 
-      if (
-        !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(
-          email,
-        )
-      ) {
+      if (!EMAILREG.test(email)) {
         throw new Error("이메일 형식으로 작성해 주세요")
       }
 

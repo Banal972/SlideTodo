@@ -46,3 +46,7 @@ export interface IGoalTodoList {
   done: boolean
   size?: number
 }
+
+export interface IuseGetGoalDetail {
+  goalId: string
+}

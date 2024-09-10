@@ -1,42 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
 import axiosInstance from "libs/axiosInstance"
+import { IuseGetNoteListReturn, IuseGetNoteListType } from "types/note"
 
-interface useGetNoteListType {
-  goalId?: number
-  cursor?: number
-  size?: number
-}
-
-export interface Root {
-  nextCursor: number
-  totalCount: number
-  notes: Note[]
-}
-
-export interface Note {
-  todo: Todo
-  updatedAt: string
-  createdAt: string
-  title: string
-  id: number
-  goal: Goal
-  userId: number
-  teamId: string
-}
-
-export interface Todo {
-  done: boolean
-  title: string
-  id: number
-}
-
-export interface Goal {
-  title: string
-  id: number
-}
-
-export const useGetNoteList = ({ goalId, cursor, size }: useGetNoteListType) => {
-  const { data, isLoading } = useQuery<Root>({
+export const useGetNoteList = ({ goalId, cursor, size }: IuseGetNoteListType) => {
+  const { data, isLoading } = useQuery<IuseGetNoteListReturn>({
     queryKey: ["notes", goalId],
     queryFn: async () => {
       try {

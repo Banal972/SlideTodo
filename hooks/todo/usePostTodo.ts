@@ -12,10 +12,9 @@ const usePostTodo = (
 ) => {
   return useMutation({
     mutationFn: (data: TodoPostValue) => {
-      const { title, fileUrl, linkUrl, goalId } = data
+      const { title, linkUrl, goalId } = data
       return axiosInstance.post("/todos", {
         title: title,
-        fileUrl: fileUrl,
         linkUrl: linkUrl,
         goalId: goalId,
       })

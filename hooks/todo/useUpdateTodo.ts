@@ -3,18 +3,15 @@ import { Alert } from "react-native"
 
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import axiosInstance from "libs/axiosInstance"
+import { IuseUpdateTodo, TodoPostValue } from "types/todo"
 
 const useUpdateTodo = (
   queryClient: QueryClient,
   isModalCloseHandler: () => void,
-  reset: UseFormReset<{
-    title: string
-    linkUrl: string
-    goalId?: number
-  }>,
+  reset: UseFormReset<TodoPostValue>,
 ) => {
   return useMutation({
-    mutationFn: (data: { title: string; linkUrl: string; goalId?: number; todoId: number }) => {
+    mutationFn: (data: IuseUpdateTodo) => {
       const { title, linkUrl, goalId, todoId } = data
       return axiosInstance.patch(`/todos/${todoId}`, {
         title: title,
