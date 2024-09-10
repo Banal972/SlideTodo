@@ -20,7 +20,7 @@ const SignInPage = () => {
   return (
     <>
       <View className="gap-[25px] mb-12">
-        <View>
+        <View style={{ gap: 10 }}>
           <Label>아이디</Label>
           <Controller
             control={control}
@@ -38,7 +38,7 @@ const SignInPage = () => {
             name="email"
           />
         </View>
-        <View>
+        <View style={{ gap: 10 }}>
           <Label>비밀번호</Label>
           <View className="relative">
             <Controller
@@ -57,7 +57,7 @@ const SignInPage = () => {
               )}
               name="password"
             />
-            <TouchableOpacity className="absolute right-6 top-[22px]" onPress={showPwdHandler}>
+            <TouchableOpacity className="absolute right-6 top-[10px]" onPress={showPwdHandler}>
               {pwdInShow ? (
                 <Ionicons name="eye-off-outline" size={24} color="black" />
               ) : (

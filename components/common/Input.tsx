@@ -10,6 +10,7 @@ const Input = ({
   value,
   returnKeyType,
   onSubmitEditing,
+  className,
 }: IInput) => {
   return (
     <TextInput
@@ -17,7 +18,7 @@ const Input = ({
       onChangeText={onChangeText}
       value={value}
       secureTextEntry={secureTextEntry}
-      className="text-slate-50 text-sm leading-5 h-11 px-6 rounded-xl"
+      className={`bg-slate-50 text-sm leading-5 h-11 px-6 rounded-xl ${className}`}
       placeholder={placeholder}
       onSubmitEditing={onSubmitEditing}
       returnKeyType={returnKeyType}

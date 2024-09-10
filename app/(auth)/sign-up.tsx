@@ -19,7 +19,7 @@ const SignUpPage = () => {
   return (
     <>
       <View className="gap-[25px] mb-12">
-        <View>
+        <View style={{ gap: 10 }}>
           <Label>이름</Label>
           <Controller
             control={control}
@@ -34,7 +34,7 @@ const SignUpPage = () => {
             )}
           />
         </View>
-        <View>
+        <View style={{ gap: 10 }}>
           <Label>이메일</Label>
           <Controller
             control={control}
@@ -52,7 +52,7 @@ const SignUpPage = () => {
             name="email"
           />
         </View>
-        <View>
+        <View style={{ gap: 10 }}>
           <Label>비밀번호</Label>
           <View className="relative">
             <Controller
@@ -72,7 +72,7 @@ const SignUpPage = () => {
               name="password"
             />
             <TouchableOpacity
-              className="absolute right-6 top-[22px]"
+              className="absolute right-6 top-[10px]"
               onPress={() => showPwdHandler("pwd")}
             >
               {pwdInShow.pwd ? (
@@ -83,7 +83,7 @@ const SignUpPage = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View>
+        <View style={{ gap: 10 }}>
           <Label>비밀번호 확인</Label>
           <View className="relative">
             <Controller
@@ -103,7 +103,7 @@ const SignUpPage = () => {
               name="pwdConfirm"
             />
             <TouchableOpacity
-              className="absolute right-6 top-[22px]"
+              className="absolute right-6 top-[10px]"
               onPress={() => showPwdHandler("confirm")}
             >
               {pwdInShow.confirm ? (

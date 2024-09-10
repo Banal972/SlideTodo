@@ -31,6 +31,7 @@ export interface IInput {
   secureTextEntry?: boolean
   returnKeyType?: ReturnKeyTypeOptions | undefined
   onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void
+  className?: string
 }
 
 export type ChildrenProps = {
