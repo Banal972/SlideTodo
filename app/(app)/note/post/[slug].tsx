@@ -3,23 +3,19 @@ import { Controller, useForm } from "react-hook-form"
 import {
   Image,
   KeyboardAvoidingView,
-  Modal,
   Platform,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  useWindowDimensions,
 } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { DEFAULT_TOOLBAR_ITEMS, RichText, Toolbar, useEditorBridge } from "@10play/tentap-editor"
-import Ionicons from "@expo/vector-icons/Ionicons"
+import { EditorBridge, RichText, Toolbar } from "@10play/tentap-editor"
 import { useQueryClient } from "@tanstack/react-query"
-import Button from "components/common/Button"
-import Input from "components/common/Input"
-import Color from "constant/color"
+import LinkModal from "components/page/note/LinkModal"
 import { useLocalSearchParams, useRouter } from "expo-router"
+import useEditor from "hooks/note/post/useEditor"
+import useKeyboardVerticalOffset from "hooks/note/post/useKeyboardVerticalOffset"
 import usePostNote from "hooks/note/usePostNote"
 import usePostNoteStore from "store/usePostNoteStore"
 
@@ -30,49 +26,12 @@ type FormData = {
 }
 
 const NotePostPage = () => {
-  const [isModal, setIsModal] = useState(false)
-  const queryClient = useQueryClient()
-  const router = useRouter()
-
-  const editor = useEditorBridge({
-    autofocus: true,
-    avoidIosKeyboard: true,
-    onChange: async () => {
-      const content = await editor.getText()
-
-      const withSpaces = content.length
-      const withoutSpaces = content.replace(/\s/g, "").length
-
-      setCharCount({ withSpaces, withoutSpaces })
-    },
-  })
-
-  const customToolbarItems = DEFAULT_TOOLBAR_ITEMS.filter((_, index) => index !== 2)
-
-  const { slug } = useLocalSearchParams<{ slug: string }>()
-
-  const { control, watch, handleSubmit, reset } = useForm<FormData>()
-  const titleWatch = watch("title")
-
   const { data } = usePostNoteStore()
-  const { mutate } = usePostNote(queryClient, router, reset, editor)
-
-  const { top } = useSafeAreaInsets()
-  const { width, height } = useWindowDimensions()
-  const isLandscape = width > height
-  const headerHeight = isLandscape ? 32 : 44
-  const keyboardVerticalOffset = headerHeight + top
-
-  const [charCount, setCharCount] = useState({ withSpaces: 0, withoutSpaces: 0 })
-
-  const onSubmit = handleSubmit(async (data) => {
-    const content = await editor.getHTML()
-    mutate({
-      ...data,
-      todoId: Number(slug),
-      content,
-    })
-  })
+  const [isModal, setIsModal] = useState(false)
+  const { editor, customToolbarItems, charCount } = useEditor()
+  const { control, watch, onSubmit } = useSumbit({ editor })
+  const titleWatch = watch("title")
+  const { keyboardVerticalOffset } = useKeyboardVerticalOffset()
 
   return (
     <>
@@ -181,39 +140,20 @@ const NotePostPage = () => {
 
 export default NotePostPage
 
-const LinkModal = ({ control, isModal, setIsModal }: any) => {
-  return (
-    <Modal visible={isModal} animationType="fade" transparent>
-      <View className="flex-1 bg-black/50 items-center justify-center">
-        <View className="bg-white w-[95%] p-6 rounded-xl overflow-hidden">
-          <View className="justify-between flex-row">
-            <Text className="text-lg font-bold text-slate-800">링크 등록</Text>
-            <TouchableOpacity onPress={() => setIsModal(false)}>
-              <Ionicons name="close" size={24} color={Color.slate500} />
-            </TouchableOpacity>
-          </View>
-          <View className="mt-8" style={{ gap: 12 }}>
-            <Text className="font-semibold text-slate-800">링크 주소</Text>
-            <Controller
-              control={control}
-              name="linkUrl"
-              render={({ field: { onBlur, onChange, value } }) => (
-                <Input
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="링크 주소를 입력해주세요"
-                />
-              )}
-            />
-          </View>
-          <Button
-            onPress={() => setIsModal(false)}
-            label="확인"
-            style={{ marginTop: 40, backgroundColor: Color.blue500 }}
-          />
-        </View>
-      </View>
-    </Modal>
-  )
+const useSumbit = ({ editor }: { editor: EditorBridge }) => {
+  const queryClient = useQueryClient()
+  const router = useRouter()
+  const { control, watch, handleSubmit, reset } = useForm<FormData>()
+  const { slug } = useLocalSearchParams<{ slug: string }>()
+  const { mutate } = usePostNote(queryClient, router, reset, editor)
+  const onSubmit = handleSubmit(async (data) => {
+    const content = await editor.getHTML()
+    mutate({
+      ...data,
+      todoId: Number(slug),
+      content,
+    })
+  })
+
+  return { control, watch, onSubmit }
 }

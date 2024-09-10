@@ -17,7 +17,7 @@ const AllTodoPage = () => {
 
   return (
     <View className="p-4">
-      <View className="flex-row justify-between">
+      <View className="flex-row justify-between items-center">
         <Text className="text-base font-semibold text-slate-900">
           모든 할 일 ({data?.pages[0].totalCount || 0})
         </Text>

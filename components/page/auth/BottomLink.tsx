@@ -1,29 +1,23 @@
-import { StyleSheet, Text, View } from "react-native"
+import { Text, View } from "react-native"
 
-import Color from "constant/color"
 import { Link } from "expo-router"
 
-const BottomLink = ({
-  label,
-  linkHref,
-  linkLabel,
-}: {
+interface IBottomLink {
   label: string
   linkHref: string
   linkLabel: string
-}) => {
+}
+
+const BottomLink = ({ label, linkHref, linkLabel }: IBottomLink) => {
   return (
     <View
+      className="flex-row items-center mt-10 justify-center"
       style={{
-        flexDirection: "row",
-        alignItems: "center",
-        marginTop: 40,
-        justifyContent: "center",
         gap: 4,
       }}
     >
-      <Text style={styles.sign}>{label}</Text>
-      <Link href={linkHref} style={styles.signLink}>
+      <Text className="text-center text-slate-800 text-sm font-medium">{label}</Text>
+      <Link href={linkHref} className="text-[#3182F6] font-medium text-sm">
         {linkLabel}
       </Link>
     </View>
@@ -31,17 +25,3 @@ const BottomLink = ({
 }
 
 export default BottomLink
-
-const styles = StyleSheet.create({
-  sign: {
-    textAlign: "center",
-    color: Color.slate800,
-    fontSize: 14,
-    fontWeight: "medium",
-  },
-  signLink: {
-    color: "#3182F6",
-    fontWeight: "medium",
-    fontSize: 14,
-  },
-})

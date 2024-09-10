@@ -1,7 +1,5 @@
-import { useEffect, useRef, useState } from "react"
-import { Animated, Easing, StyleSheet, Text, View } from "react-native"
-
-import Color from "constant/color"
+import { useEffect, useState } from "react"
+import { Animated, Easing, Text, View } from "react-native"
 
 const Process = ({ progress }: { progress: number }) => {
   const [widthAnimation] = useState(new Animated.Value(0))
@@ -17,11 +15,14 @@ const Process = ({ progress }: { progress: number }) => {
   }, [progress])
 
   return (
-    <View style={styles.processContainer}>
-      <View style={styles.processBox}>
+    <View
+      className="bg-white flex-row items-center px-[9px] py-[2px] rounded-full"
+      style={{ gap: 8 }}
+    >
+      <View className="relative flex-1 h-1 rounded-md bg-slate-100">
         <Animated.View
+          className="absolute h-full rounded-md top-0 left-0 bg-slate-900"
           style={[
-            styles.processLine,
             {
               width: widthAnimation.interpolate({
                 inputRange: [0, 100],
@@ -31,41 +32,9 @@ const Process = ({ progress }: { progress: number }) => {
           ]}
         />
       </View>
-      <Text style={styles.processPercent}>{progress || 0}%</Text>
+      <Text className="text-[#0F172A] text-xs font-semibold">{progress || 0}%</Text>
     </View>
   )
 }
 
 export default Process
-
-const styles = StyleSheet.create({
-  processContainer: {
-    gap: 8,
-    backgroundColor: "white",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 9,
-    paddingVertical: 2,
-    borderRadius: 100,
-  },
-  processBox: {
-    position: "relative",
-    flex: 1,
-    height: 4,
-    borderRadius: 6,
-    backgroundColor: Color.slate100,
-  },
-  processLine: {
-    position: "absolute",
-    height: "100%",
-    borderRadius: 6,
-    top: 0,
-    left: 0,
-    backgroundColor: Color.slate900,
-  },
-  processPercent: {
-    color: "#0F172A",
-    fontSize: 12,
-    fontWeight: "600",
-  },
-})
