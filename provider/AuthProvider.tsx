@@ -7,19 +7,7 @@ import { getStore } from "libs/secureStore"
 import useUserStore from "store/useUserStore"
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { login, isAuthenticated } = useUserStore()
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    async function checkToken() {
-      const token = await getStore("accessToken")
-      if (token) {
-        await login(token)
-      }
-      setIsLoading(false)
-    }
-    checkToken()
-  }, [login])
+  const { isLoading, isAuthenticated } = useAuthenticated()
 
   if (isLoading) {
     return (
@@ -35,3 +23,21 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 }
 
 export default AuthProvider
+
+const useAuthenticated = () => {
+  const { login, isAuthenticated } = useUserStore()
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function checkToken() {
+      const token = await getStore("accessToken")
+      if (token) {
+        await login(token)
+      }
+      setIsLoading(false)
+    }
+    checkToken()
+  }, [login])
+
+  return { isLoading, isAuthenticated }
+}
