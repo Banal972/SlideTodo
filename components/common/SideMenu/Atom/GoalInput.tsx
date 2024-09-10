@@ -11,22 +11,9 @@ import PostGoalLists from "hooks/goal/PostGoalLists"
 import { PostGoalType } from "types/goal"
 
 const GoalInput = () => {
-  const queryClient = useQueryClient()
+  const { isGoalInput, setIsGoalInput, isGoalHandler } = useGoalInput()
 
-  const [isGoalInput, setIsGoalInput] = useState(false)
-  const { control, handleSubmit, setValue } = useForm<PostGoalType>()
-
-  const { mutate } = PostGoalLists(queryClient)
-
-  const isGoalHandler = () => {
-    setIsGoalInput(!isGoalInput)
-  }
-
-  const onAddGoalSubmit = handleSubmit((data) => {
-    mutate(data)
-    setValue("goal", "")
-    setIsGoalInput(false)
-  })
+  const { control, onAddGoalSubmit } = useSubmit({ setIsGoalInput })
 
   return (
     <>
@@ -89,3 +76,33 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 })
+
+const useGoalInput = () => {
+  const [isGoalInput, setIsGoalInput] = useState(false)
+
+  const isGoalHandler = () => {
+    setIsGoalInput(!isGoalInput)
+  }
+
+  return { isGoalInput, setIsGoalInput, isGoalHandler }
+}
+
+const useSubmit = ({
+  setIsGoalInput,
+}: {
+  setIsGoalInput: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
+  const queryClient = useQueryClient()
+
+  const { control, handleSubmit, setValue } = useForm<PostGoalType>()
+
+  const { mutate } = PostGoalLists(queryClient)
+
+  const onAddGoalSubmit = handleSubmit((data) => {
+    mutate(data)
+    setValue("goal", "")
+    setIsGoalInput(false)
+  })
+
+  return { control, onAddGoalSubmit }
+}

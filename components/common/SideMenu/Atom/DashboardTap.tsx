@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native"
+import { Text, View } from "react-native"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
 import SmallBtn from "components/common/Button/SmallBtn"
@@ -11,19 +11,9 @@ const DashboardTap = () => {
   const { open: newModalOpenHandler } = useNewTodoModalStore()
 
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        borderWidth: 1,
-        borderColor: Color.slate200,
-        alignItems: "center",
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-      }}
-    >
+    <View className="flex-row justify-between border border-slate-200 items-center px-4 py-3">
       <Link href={ROUTE.dashboard}>
-        <View style={styles.listBtnContainer}>
+        <View className="flex-row items-center" style={{ gap: 8 }}>
           <Ionicons name="home" size={24} color="black" />
           <Text>대시보드</Text>
         </View>
@@ -37,15 +27,3 @@ const DashboardTap = () => {
 }
 
 export default DashboardTap
-
-const styles = StyleSheet.create({
-  listBtnContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  listTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-})

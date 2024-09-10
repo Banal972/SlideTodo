@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { Text, View } from "react-native"
 
 import { Link } from "expo-router"
 import { useGetGoalList } from "hooks/goal/useGetGoalList"
@@ -16,7 +16,7 @@ const GoalList = () => {
     >
       {goalLists &&
         goalLists.goals.map((goalList) => (
-          <Text key={goalList.id} style={styles.listTitle}>
+          <Text key={goalList.id} className="text-base font-medium">
             <Link href={`/goal/${goalList.id}`}>· {goalList.title}</Link>
           </Text>
         ))}
@@ -25,15 +25,3 @@ const GoalList = () => {
 }
 
 export default GoalList
-
-const styles = StyleSheet.create({
-  listBtnContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  listTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-})
