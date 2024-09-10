@@ -19,7 +19,11 @@ const DashboardTap = () => {
         </View>
       </Link>
 
-      <SmallBtn onPress={newModalOpenHandler} backgroundColor={Color.blue500} color={"#fff"}>
+      <SmallBtn
+        onPress={() => newModalOpenHandler({})}
+        backgroundColor={Color.blue500}
+        color={"#fff"}
+      >
         + 새 할 일
       </SmallBtn>
     </View>

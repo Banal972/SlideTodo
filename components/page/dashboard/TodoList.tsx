@@ -6,10 +6,13 @@ import MoreBtn from "components/common/Button/MoreBtn"
 import BaseContainer from "components/common/Container/BaseContainer"
 import NullText from "components/common/NullText"
 import BaseTitle from "components/page/dashboard/common/BaseTitle"
+import SkeletonTodo from "components/page/todo/SkeletonTodo"
 import { useGetTodos } from "hooks/todo/useGetTodos"
 
 const TodoList = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTodos({ size: 10 })
+  const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTodos({
+    size: 10,
+  })
 
   return (
     <BaseContainer color="white">
@@ -23,14 +26,20 @@ const TodoList = () => {
       />
 
       <View className="mt-4" style={{ gap: 15 }}>
-        {data.pages.map((page, i) => (
-          <Fragment key={i}>
-            {page.totalCount === 0 && <NullText>최근에 등록한 할 일이 없어요</NullText>}
-            {page.totalCount !== 0 &&
-              page.todos.map((todo: any) => <AllTodoList key={todo.id} todo={todo} />)}
-          </Fragment>
-        ))}
-        {(isFetchingNextPage || hasNextPage) && <MoreBtn onPress={fetchNextPage} />}
+        {isPending ? (
+          <SkeletonTodo />
+        ) : (
+          <>
+            {data?.pages.map((page, i) => (
+              <Fragment key={i}>
+                {page.totalCount === 0 && <NullText>최근에 등록한 할 일이 없어요</NullText>}
+                {page.totalCount !== 0 &&
+                  page.todos.map((todo: any) => <AllTodoList key={todo.id} todo={todo} />)}
+              </Fragment>
+            ))}
+            {(isFetchingNextPage || hasNextPage) && <MoreBtn onPress={fetchNextPage} />}
+          </>
+        )}
       </View>
     </BaseContainer>
   )

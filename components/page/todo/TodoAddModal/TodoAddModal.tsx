@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Alert, Modal, Pressable, SafeAreaView, ScrollView, Text, View } from "react-native"
+import { Alert, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Picker } from "@react-native-picker/picker"
@@ -32,9 +32,9 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
             <Text className="text-lg leading-7 font-bold">
               {todoId ? "할 일 수정" : "할 일 생성"}
             </Text>
-            <Pressable onPress={isModalCloseHandler}>
+            <TouchableOpacity onPress={isModalCloseHandler}>
               <Ionicons name="close" size={24} color="black" />
-            </Pressable>
+            </TouchableOpacity>
           </View>
           <ScrollView style={{ flex: 1 }}>
             <View>

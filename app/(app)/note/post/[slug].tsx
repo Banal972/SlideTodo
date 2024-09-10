@@ -5,9 +5,9 @@ import {
   KeyboardAvoidingView,
   Modal,
   Platform,
-  Pressable,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
   useWindowDimensions,
 } from "react-native"
@@ -81,12 +81,12 @@ const NotePostPage = () => {
           <View className="flex-row justify-between py-[11px] items-center">
             <Text className="text-base font-semibold text-slate-900">노트 작성</Text>
             <View className="flex-row" style={{ gap: 8 }}>
-              <Pressable
+              <TouchableOpacity
                 onPress={onSubmit}
                 className="w-[84px] h-9 items-center justify-center bg-slate-400 rounded-xl"
               >
                 <Text className="text-white text-sm font-semibold">작성 완료</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -101,12 +101,12 @@ const NotePostPage = () => {
             </View>
             <View className="justify-between flex-1 flex-row">
               <Text className="text-base font-medium text-slate-800">{data.title}</Text>
-              <Pressable
+              <TouchableOpacity
                 onPress={() => setIsModal(!isModal)}
                 className="w-6 h-6 rounded-full bg-slate-200 items-center justify-center"
               >
                 <Image source={require("@/assets/images/icon/link_alt.png")} />
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -188,9 +188,9 @@ const LinkModal = ({ control, isModal, setIsModal }: any) => {
         <View className="bg-white w-[95%] p-6 rounded-xl overflow-hidden">
           <View className="justify-between flex-row">
             <Text className="text-lg font-bold text-slate-800">링크 등록</Text>
-            <Pressable onPress={() => setIsModal(false)}>
+            <TouchableOpacity onPress={() => setIsModal(false)}>
               <Ionicons name="close" size={24} color={Color.slate500} />
-            </Pressable>
+            </TouchableOpacity>
           </View>
           <View className="mt-8" style={{ gap: 12 }}>
             <Text className="font-semibold text-slate-800">링크 주소</Text>

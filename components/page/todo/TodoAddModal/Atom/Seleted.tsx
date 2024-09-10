@@ -1,4 +1,4 @@
-import { Pressable, Text } from "react-native"
+import { Text, TouchableOpacity } from "react-native"
 
 import Color from "constant/color"
 import Checkbox from "expo-checkbox"
@@ -11,7 +11,7 @@ interface SeletedType {
 
 const Seleted = ({ state, setState, label }: SeletedType) => {
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={() => setState(!state)}
       className="items-center justify-center flex-row px-2 h-10 rounded-lg"
       style={[{ gap: 4 }, { backgroundColor: !state ? Color.slate100 : Color.slate900 }]}
@@ -29,7 +29,7 @@ const Seleted = ({ state, setState, label }: SeletedType) => {
       >
         {label}
       </Text>
-    </Pressable>
+    </TouchableOpacity>
   )
 }
 

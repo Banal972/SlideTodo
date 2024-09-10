@@ -1,9 +1,9 @@
 import {
   Image,
   Modal,
-  Pressable,
   SafeAreaView,
   Text,
+  TouchableOpacity,
   View,
   useWindowDimensions,
 } from "react-native"
@@ -29,9 +29,9 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
       <SafeAreaView className="flex-1 bg-white">
         <View className="p-4 flex-1">
           <View>
-            <Pressable onPress={modalClose}>
+            <TouchableOpacity onPress={modalClose}>
               <Ionicons name="close" size={24} color="black" />
-            </Pressable>
+            </TouchableOpacity>
           </View>
 
           <View
@@ -70,13 +70,13 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
 
             <View className="pt-4 flex-1">
               {noteDetail?.linkUrl && (
-                <Pressable onPress={() => handlePressBrowser(noteDetail.linkUrl)}>
+                <TouchableOpacity onPress={() => handlePressBrowser(noteDetail.linkUrl)}>
                   <View className="px-4 py-1 bg-slate-200 rounded-full mb-4">
                     <Text className="text-base font-normal text-slate-800">
                       {noteDetail.linkUrl}
                     </Text>
                   </View>
-                </Pressable>
+                </TouchableOpacity>
               )}
 
               <View className="flex-1">

@@ -1,45 +1,26 @@
 import { ReactNode } from "react"
-import {
-  GestureResponderEvent,
-  Pressable,
-  StyleProp,
-  StyleSheet,
-  Text,
-  ViewStyle,
-} from "react-native"
+import { GestureResponderEvent, StyleProp, Text, TouchableOpacity, ViewStyle } from "react-native"
 
-const SmallBtn = ({
-  onPress,
-  style,
-  backgroundColor,
-  color,
-  children,
-}: {
+interface ISmallBtn {
   onPress?: (event: GestureResponderEvent) => void
   style?: StyleProp<ViewStyle>
   backgroundColor?: string
   color?: string
   children?: ReactNode
-}) => {
+}
+
+const SmallBtn = ({ onPress, style, backgroundColor, color, children }: ISmallBtn) => {
   return (
-    <Pressable style={[styles.listBtn, style, { backgroundColor }]} onPress={onPress}>
-      <Text style={[styles.listBtnText, { color }]}>{children}</Text>
-    </Pressable>
+    <TouchableOpacity
+      className="w-[94px] h-9 rounded-lg items-center justify-center"
+      style={[style, { backgroundColor }]}
+      onPress={onPress}
+    >
+      <Text className="text-sm font-semibold" style={[{ color }]}>
+        {children}
+      </Text>
+    </TouchableOpacity>
   )
 }
 
 export default SmallBtn
-
-const styles = StyleSheet.create({
-  listBtn: {
-    width: 94,
-    height: 36,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  listBtnText: {
-    fontSize: 14,
-    fontWeight: "600",
-  },
-})

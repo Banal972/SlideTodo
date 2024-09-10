@@ -1,9 +1,9 @@
 import {
   GestureResponderEvent,
-  Pressable,
   StyleProp,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native"
@@ -20,11 +20,11 @@ const Button = ({
   onPress?: (event: GestureResponderEvent) => void
 }) => {
   return (
-    <Pressable onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <View style={[styles.button, style]}>
         <Text style={styles.buttonText}>{label}</Text>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   )
 }
 

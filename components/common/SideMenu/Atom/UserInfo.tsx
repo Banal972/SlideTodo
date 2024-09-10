@@ -1,4 +1,4 @@
-import { Alert, Image, ImageBackground, Pressable, Text, View } from "react-native"
+import { Alert, Image, ImageBackground, Text, TouchableOpacity, View } from "react-native"
 
 import { DrawerNavigationHelpers } from "@react-navigation/drawer/lib/typescript/src/types"
 import Color from "constant/color"
@@ -43,13 +43,13 @@ const UserInfo = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
         }}
       >
         <Image source={require("@/assets/images/sideMenu/logo.png")} />
-        <Pressable
+        <TouchableOpacity
           onPress={() => {
             navigation.closeDrawer()
           }}
         >
           <Image source={require("@/assets/images/sideMenu/fold.png")} />
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
       <View
@@ -107,7 +107,7 @@ const UserInfo = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
             </Text>
           </View>
         </View>
-        <Pressable>
+        <TouchableOpacity>
           <Text
             style={{
               color: Color.slate400,
@@ -118,7 +118,7 @@ const UserInfo = ({ navigation }: { navigation: DrawerNavigationHelpers }) => {
           >
             로그아웃
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </View>
   )

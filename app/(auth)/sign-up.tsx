@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Pressable, View } from "react-native"
+import { TouchableOpacity, View } from "react-native"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
 import Button from "components/common/Button"
@@ -71,7 +71,7 @@ const SignUpPage = () => {
               )}
               name="password"
             />
-            <Pressable
+            <TouchableOpacity
               className="absolute right-6 top-[22px]"
               onPress={() => showPwdHandler("pwd")}
             >
@@ -80,7 +80,7 @@ const SignUpPage = () => {
               ) : (
                 <Ionicons name="eye-outline" size={24} color="black" />
               )}
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
         <View>
@@ -102,7 +102,7 @@ const SignUpPage = () => {
               )}
               name="pwdConfirm"
             />
-            <Pressable
+            <TouchableOpacity
               className="absolute right-6 top-[22px]"
               onPress={() => showPwdHandler("confirm")}
             >
@@ -111,7 +111,7 @@ const SignUpPage = () => {
               ) : (
                 <Ionicons name="eye-outline" size={24} color="black" />
               )}
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

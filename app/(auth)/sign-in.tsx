@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Pressable, View } from "react-native"
+import { TouchableOpacity, View } from "react-native"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useQueryClient } from "@tanstack/react-query"
@@ -57,13 +57,13 @@ const SignInPage = () => {
               )}
               name="password"
             />
-            <Pressable className="absolute right-6 top-[22px]" onPress={showPwdHandler}>
+            <TouchableOpacity className="absolute right-6 top-[22px]" onPress={showPwdHandler}>
               {pwdInShow ? (
                 <Ionicons name="eye-off-outline" size={24} color="black" />
               ) : (
                 <Ionicons name="eye-outline" size={24} color="black" />
               )}
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
