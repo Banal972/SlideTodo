@@ -13,24 +13,8 @@ import useSignMutation from "hooks/auth/useSignMutation"
 import { SignFormValue, pwdInShowState } from "types/auth"
 
 const SignUpPage = () => {
-  const router = useRouter()
-  const { control, handleSubmit } = useForm<SignFormValue>()
-  const { mutate } = useSignMutation(router)
-  const [pwdInShow, setPwdInShow] = useState<pwdInShowState>({
-    pwd: true,
-    confirm: true,
-  })
-
-  const showPwdHandler = (key: string) => {
-    setPwdInShow((prev) => ({
-      ...prev,
-      [key]: !pwdInShow[key],
-    }))
-  }
-
-  const onSubmitHandler = handleSubmit((data) => {
-    mutate(data)
-  })
+  const { onSubmitHandler, control } = useSumbit()
+  const { showPwdHandler, pwdInShow } = usePwd()
 
   return (
     <>
@@ -131,12 +115,37 @@ const SignUpPage = () => {
           </View>
         </View>
       </View>
-
       <Button label="회원가입" onPress={onSubmitHandler} />
-
       <BottomLink label="이미 회원이신가요?" linkHref={ROUTE.singnIn} linkLabel="로그인" />
     </>
   )
 }
 
 export default SignUpPage
+
+const usePwd = () => {
+  const [pwdInShow, setPwdInShow] = useState<pwdInShowState>({
+    pwd: true,
+    confirm: true,
+  })
+
+  const showPwdHandler = (key: string) => {
+    setPwdInShow((prev) => ({
+      ...prev,
+      [key]: !pwdInShow[key],
+    }))
+  }
+
+  return { showPwdHandler, pwdInShow }
+}
+
+const useSumbit = () => {
+  const router = useRouter()
+  const { control, handleSubmit } = useForm<SignFormValue>()
+  const { mutate } = useSignMutation(router)
+  const onSubmitHandler = handleSubmit((data) => {
+    mutate(data)
+  })
+
+  return { onSubmitHandler, control }
+}

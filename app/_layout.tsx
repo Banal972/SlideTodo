@@ -5,18 +5,6 @@ import { Slot } from "expo-router"
 import useNewTodoModalStore from "store/useNewTodoModalStore"
 import useNoteDetailModalStore from "store/useNoteDetailModalStore"
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60000,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: 1,
-    },
-  },
-})
-
 export default function RootLayout() {
   const { isModal } = useNoteDetailModalStore()
   const { isModal: addIsModal } = useNewTodoModalStore()
@@ -29,3 +17,15 @@ export default function RootLayout() {
     </QueryClientProvider>
   )
 }
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60000,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1,
+    },
+  },
+})

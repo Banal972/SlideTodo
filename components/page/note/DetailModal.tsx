@@ -16,13 +16,9 @@ import { useGetNoteDetail } from "hooks/note/useGetNoteDetail"
 import useNoteDetailModalStore from "store/useNoteDetailModalStore"
 
 const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
-  const { data, close } = useNoteDetailModalStore()
-  const { data: noteDetail } = useGetNoteDetail({ noteId: data.noteId })
-  const { width } = useWindowDimensions()
+  const { modalClose, noteDetail } = useDetail()
 
-  const modalClose = () => {
-    close()
-  }
+  const { width } = useWindowDimensions()
 
   const handlePressBrowser = async (link: string) => {
     await WebBrowser.openBrowserAsync(link)
@@ -97,3 +93,13 @@ const NoteDetailModal = ({ isModal }: { isModal: boolean }) => {
 }
 
 export default NoteDetailModal
+
+const useDetail = () => {
+  const { data, close } = useNoteDetailModalStore()
+  const { data: noteDetail } = useGetNoteDetail({ noteId: data.noteId })
+  const modalClose = () => {
+    close()
+  }
+
+  return { noteDetail, modalClose }
+}

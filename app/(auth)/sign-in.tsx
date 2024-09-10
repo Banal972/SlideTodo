@@ -14,18 +14,8 @@ import useLoginMutation from "hooks/auth/useLoginMutation"
 import { LoginFormValue } from "types/auth"
 
 const SignInPage = () => {
-  const queryClient = useQueryClient()
-  const router = useRouter()
-
-  const { control, handleSubmit } = useForm<LoginFormValue>()
-  const [pwdInShow, setPwdInShow] = useState(true)
-
-  const { mutate } = useLoginMutation(queryClient, router)
-  const onSumbit = handleSubmit((data) => mutate(data))
-
-  const showPwdHandler = () => {
-    setPwdInShow(!pwdInShow)
-  }
+  const { control, onSumbit } = useSubmit()
+  const { pwdInShow, showPwdHandler } = usePwd()
 
   return (
     <>
@@ -77,9 +67,7 @@ const SignInPage = () => {
           </View>
         </View>
       </View>
-
       <Button label="로그인" onPress={onSumbit} />
-
       <BottomLink
         label="투두 리스트가 처음이신가요? "
         linkHref={ROUTE.singnUp}
@@ -90,3 +78,24 @@ const SignInPage = () => {
 }
 
 export default SignInPage
+
+const usePwd = () => {
+  const [pwdInShow, setPwdInShow] = useState(true)
+
+  const showPwdHandler = () => {
+    setPwdInShow(!pwdInShow)
+  }
+
+  return { pwdInShow, showPwdHandler }
+}
+
+const useSubmit = () => {
+  const queryClient = useQueryClient()
+  const router = useRouter()
+
+  const { control, handleSubmit } = useForm<LoginFormValue>()
+  const { mutate } = useLoginMutation(queryClient, router)
+  const onSumbit = handleSubmit((data) => mutate(data))
+
+  return { control, onSumbit }
+}

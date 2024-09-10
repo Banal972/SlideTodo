@@ -17,30 +17,12 @@ import useNewTodoModalStore from "store/useNewTodoModalStore"
 import { TodoPostValue } from "types/todo"
 
 const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
-  const queryClient = useQueryClient()
   const { todoId, close: isModalCloseHandler } = useNewTodoModalStore()
-  const { control, handleSubmit, reset } = useForm<TodoPostValue>()
   const { goalLists } = useGetGoalList({ cursor: 1 })
-  const [selectedGoal, setSelectedGoal] = useState()
   const [linkState, setLinkState] = useState(false)
+  const [selectedGoal, setSelectedGoal] = useState()
 
-  const { mutate: updateMutate } = useUpdateTodo(queryClient, isModalCloseHandler, reset)
-
-  const { mutate: postMutate } = usePostTodo(queryClient, isModalCloseHandler, reset)
-
-  const onSubmit = handleSubmit((data) => {
-    if (!selectedGoal) return Alert.alert("실패", "목표를 선택해주세요")
-    const datas = {
-      ...data,
-      goalId: Number(selectedGoal),
-    }
-
-    if (todoId) {
-      updateMutate({ ...datas, todoId })
-    } else {
-      postMutate(datas)
-    }
-  })
+  const { onSubmit, control } = useSubmit({ todoId, isModalCloseHandler, selectedGoal })
 
   return (
     <Modal animationType="slide" transparent={true} visible={isModal} style={{ flex: 1 }}>
@@ -149,3 +131,34 @@ const TodoAddModal = ({ isModal }: { isModal: boolean }) => {
 }
 
 export default TodoAddModal
+
+const useSubmit = ({
+  todoId,
+  isModalCloseHandler,
+  selectedGoal,
+}: {
+  todoId: number | null
+  isModalCloseHandler: () => void
+  selectedGoal: undefined
+}) => {
+  const queryClient = useQueryClient()
+  const { control, handleSubmit, reset } = useForm<TodoPostValue>()
+
+  const { mutate: updateMutate } = useUpdateTodo(queryClient, isModalCloseHandler, reset)
+  const { mutate: postMutate } = usePostTodo(queryClient, isModalCloseHandler, reset)
+  const onSubmit = handleSubmit((data) => {
+    if (!selectedGoal) return Alert.alert("실패", "목표를 선택해주세요")
+    const datas = {
+      ...data,
+      goalId: Number(selectedGoal),
+    }
+
+    if (todoId) {
+      updateMutate({ ...datas, todoId })
+    } else {
+      postMutate(datas)
+    }
+  })
+
+  return { onSubmit, control }
+}
