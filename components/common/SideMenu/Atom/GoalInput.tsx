@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { StyleSheet, Text, View } from "react-native"
+import { Text, View } from "react-native"
 
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useQueryClient } from "@tanstack/react-query"
@@ -17,14 +17,8 @@ const GoalInput = () => {
 
   return (
     <>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <View style={styles.listBtnContainer}>
+      <View className="flex-row justify-between items-center">
+        <View className="flex-row items-center" style={{ gap: 8 }}>
           <Ionicons name="flag" size={24} color="black" />
           <Text>목표</Text>
         </View>
@@ -64,18 +58,6 @@ const GoalInput = () => {
 }
 
 export default GoalInput
-
-const styles = StyleSheet.create({
-  listBtnContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  listTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-})
 
 const useGoalInput = () => {
   const [isGoalInput, setIsGoalInput] = useState(false)

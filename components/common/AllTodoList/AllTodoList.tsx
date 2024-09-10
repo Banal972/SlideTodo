@@ -16,31 +16,16 @@ import usePostNoteStore from "store/usePostNoteStore"
 import { TodoType } from "types/todo"
 
 const AllTodoList = ({ todo }: { todo: TodoType }) => {
-  const [isModal, setIsModal] = useState(false)
-  const queryClient = useQueryClient()
   const router = useRouter()
+  const { open } = useNewTodoModalStore()
   const { changeData } = usePostNoteStore()
-  const { mutate } = useUpdateTodoDone(queryClient, todo)
-  const checkPressHanlder = () =>
-    mutate({
-      title: todo.title,
-      fileUrl: todo.fileUrl,
-      linkUrl: todo.linkUrl,
-      goalId: todo.goal.id,
-      done: !todo.done,
-    })
+  const [isModal, setIsModal] = useState(false)
 
   const handlePressBrowser = async (link: string) => {
     await WebBrowser.openBrowserAsync(link)
   }
 
-  const { open } = useNewTodoModalStore()
-
-  const closeModal = () => {
-    setIsModal(false)
-  }
-
-  const { mutate: DeleteMutate } = useDeleteTodo(queryClient, closeModal)
+  const { DeleteMutate, checkPressHanlder } = useSumbit({ todo, setIsModal })
 
   return (
     <>
@@ -127,3 +112,30 @@ const AllTodoList = ({ todo }: { todo: TodoType }) => {
 }
 
 export default AllTodoList
+
+const useSumbit = ({
+  todo,
+  setIsModal,
+}: {
+  todo: TodoType
+  setIsModal: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
+  const queryClient = useQueryClient()
+  const { mutate } = useUpdateTodoDone(queryClient, todo)
+  const checkPressHanlder = () =>
+    mutate({
+      title: todo.title,
+      fileUrl: todo.fileUrl,
+      linkUrl: todo.linkUrl,
+      goalId: todo.goal.id,
+      done: !todo.done,
+    })
+
+  const closeModal = () => {
+    setIsModal(false)
+  }
+
+  const { mutate: DeleteMutate } = useDeleteTodo(queryClient, closeModal)
+
+  return { DeleteMutate, checkPressHanlder }
+}

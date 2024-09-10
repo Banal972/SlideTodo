@@ -1,6 +1,5 @@
-import { StyleSheet, TextInput } from "react-native"
+import { TextInput } from "react-native"
 
-import Color from "constant/color"
 import { IInput } from "types/global"
 
 const Input = ({
@@ -18,7 +17,7 @@ const Input = ({
       onChangeText={onChangeText}
       value={value}
       secureTextEntry={secureTextEntry}
-      style={styles.textInput}
+      className="text-slate-50 text-sm leading-5 h-11 px-6 rounded-xl"
       placeholder={placeholder}
       onSubmitEditing={onSubmitEditing}
       returnKeyType={returnKeyType}
@@ -27,14 +26,3 @@ const Input = ({
 }
 
 export default Input
-
-const styles = StyleSheet.create({
-  textInput: {
-    backgroundColor: Color.slate50,
-    fontSize: 14,
-    lineHeight: 20,
-    height: 44,
-    paddingHorizontal: 24,
-    borderRadius: 12,
-  },
-})
