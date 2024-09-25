@@ -6,11 +6,19 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API": "https://sp-slidtodo-api.vercel.app",
+        "EXPO_PUBLIC_API_TEAMID": "team555"
+      }
     },
     "preview": {
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "env": {
+          "EXPO_PUBLIC_API": "https://sp-slidtodo-api.vercel.app",
+          "EXPO_PUBLIC_API_TEAMID": "team555"
+        }
       }
     },
     "production": {
