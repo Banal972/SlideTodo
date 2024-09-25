@@ -10,6 +10,10 @@ Expo의 사용법과 활용법을 알고자 진행한 프로젝트 입니다.
 
 [v1.0.0](https://github.com/Banal972/SlideTodo/releases/tag/v1.0.0)
 
+테스트 계정
+ID : test@test.com
+PW : xptmxm1234
+
 ## 개발 기간
 
 2024.07 ~ 2024.09
